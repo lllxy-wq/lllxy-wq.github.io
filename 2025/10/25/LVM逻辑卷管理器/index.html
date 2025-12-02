@@ -1,0 +1,697 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/Cynthia.png">
+  <link rel="icon" href="/img/Cynthia.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="LVM（逻辑卷管理器）逻辑卷管理器是Linux系统用于对硬盘分区进行管理的一种机制，理论性较强，其创建初衷是为了解决硬盘设备在创建分区后不易修改分区大小的缺陷。尽管对传统的硬盘分区进行强制扩容或缩容从理论上来讲是可行的，但是却可能造成数据的丢失。而LVM技术是在硬盘分区和文件系统之间添加了一个逻辑层，它提供了一个抽象的卷组，可以把多块硬盘进行卷组合并。这样一来，用户不必关心物理硬盘设备的底层架构和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LVM逻辑卷管理器">
+<meta property="og:url" content="http://example.com/2025/10/25/LVM%E9%80%BB%E8%BE%91%E5%8D%B7%E7%AE%A1%E7%90%86%E5%99%A8/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="LVM（逻辑卷管理器）逻辑卷管理器是Linux系统用于对硬盘分区进行管理的一种机制，理论性较强，其创建初衷是为了解决硬盘设备在创建分区后不易修改分区大小的缺陷。尽管对传统的硬盘分区进行强制扩容或缩容从理论上来讲是可行的，但是却可能造成数据的丢失。而LVM技术是在硬盘分区和文件系统之间添加了一个逻辑层，它提供了一个抽象的卷组，可以把多块硬盘进行卷组合并。这样一来，用户不必关心物理硬盘设备的底层架构和">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-25T03:23:23.947Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>LVM逻辑卷管理器 - 我的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="LVM逻辑卷管理器"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-25 00:00" pubdate>
+          2025年10月25日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">LVM逻辑卷管理器</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="LVM（逻辑卷管理器）"><a href="#LVM（逻辑卷管理器）" class="headerlink" title="LVM（逻辑卷管理器）"></a>LVM（逻辑卷管理器）</h1><p>逻<br>辑卷管理器是Linux系统用于对硬盘分区进行管理的一种机制，理论性较强，其创建初衷是为了解决硬盘设备在创建分区后不易修改分区大小的缺陷。尽管对传统的硬盘分区进行强制扩容或缩容从理论上来讲是可行的，但是却可能造成数据的丢失。而LVM技术是在硬盘分区和文件系统之间添加了一个逻辑层，它提供了一个抽象的卷组，可以把多块硬盘进行卷组合并。这样一来，用户不必关心物理硬盘设备的底层架构和布局，就可以实现对硬盘分区的动态调整。</p>
+<p>物理卷处于LVM中的最底层，可以将其理解为物理硬盘、硬盘分区或者RAID磁盘阵列，这都可以。卷组建立在物理卷之上，一个卷组可以包含多个物理卷，而且在卷组创建之后也可以继续向其中添加新的物理卷。逻辑卷是用卷组中空闲的资源建立的，并且逻辑卷在建立后可以动态地扩展或缩小空间。这就是LVM的核心理念。</p>
+<p>PE(物理卷)最小存储单元，VG（卷组）通过PV组合好PE，成一个整的；然后LV（逻辑卷）从VG分出来可供挂载使用</p>
+<h2 id="部署逻辑卷"><a href="#部署逻辑卷" class="headerlink" title="部署逻辑卷"></a>部署逻辑卷</h2><p>常用的LVM部署命令</p>
+<table>
+<thead>
+<tr>
+<th>功能&#x2F;命令</th>
+<th>物理卷管理</th>
+<th>卷组管理</th>
+<th>逻辑卷管理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>扫描</td>
+<td>pvscan</td>
+<td>vgscan</td>
+<td>lvscan</td>
+</tr>
+<tr>
+<td>建立</td>
+<td>pvcreate</td>
+<td>vgcreate</td>
+<td>lvcreate</td>
+</tr>
+<tr>
+<td>显示</td>
+<td>pvdisplay</td>
+<td>vgdisplay</td>
+<td>lvdisplay</td>
+</tr>
+<tr>
+<td>删除</td>
+<td>pvremove</td>
+<td>vgremove</td>
+<td>lvremove</td>
+</tr>
+<tr>
+<td>扩展</td>
+<td></td>
+<td>vgextend</td>
+<td>lvextend</td>
+</tr>
+<tr>
+<td>缩小</td>
+<td></td>
+<td>vgreduce</td>
+<td>lvreduce</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#第1步：让新添加的两块硬盘设备支持LVM技术</span><br>[root@localhost ~]# pvcreate /dev/nvme0n2 /dev/nvme0n3<br><span class="hljs-comment">#有时候创建不成功，有残留数据需要重新做分区表</span><br><span class="hljs-comment">#[root@localhost ~]#parted /dev/sd[b-c] mklabel msdos</span><br><br><span class="hljs-comment">#第2步：把两块硬盘设备加入到storage卷组中，然后查看卷组的状态</span><br>[root@localhost ~]# vgcreate storage /dev/nvme0n2 /dev/nvme0n3<br>  Volume group <span class="hljs-string">&quot;storage&quot;</span> successfully created<br>[root@localhost ~]# vgdisplay storage<br><br><span class="hljs-comment">#第3步：切割出一个约为150MB的逻辑卷设备。</span><br><span class="hljs-comment">#这里需要注意切割单位的问题。在对逻辑卷进行切割时有两种计量单位:第一种是以容量为单位，所使用的参数为-L。例如，使用-L 150M生成一个大小为150MB的逻辑卷;另外一种是以基本单元的个数为单位，所使用的参数为-l。每个基本单元的大小默认为4MB。例如，使用-l 37可以生成一个大小为37×4MB=148MB的逻辑卷。</span><br><span class="hljs-comment"># [root@localhost ~]# lvcreate -n vo -l 37 -I 8M storage</span><br>[root@localhost ~]# lvcreate -n vo -l 37 storage<br>  Logical volume <span class="hljs-string">&quot;vo&quot;</span> created.<br><span class="hljs-comment"># 每个PE占4M，37*4=148M，远少于/dev/nvme0n2的5G，不会占用到第二个PV（/dev/nvme0n3），所以lsblk只看到占用了/dev/nvme0n2</span><br><br>[root@localhost ~]# lsblk<br>[root@localhost ~]# lvdisplay<br><br><span class="hljs-comment">#第4步：把生成好的逻辑卷进行格式化，然后挂载使用。</span><br>[root@localhost ~]# mkfs.ext4 /dev/storage/vo<br><br>[root@localhost ~]# <span class="hljs-built_in">mkdir</span> /mnt/vo<br>[root@localhost ~]# mount /dev/storage/vo /mnt/vo<br>[root@localhost ~]# <span class="hljs-built_in">df</span> -h<br>Filesystem              Size  Used Avail Use% Mounted on<br>devtmpfs                4.0M     0  4.0M   0% /dev<br>tmpfs                   872M     0  872M   0% /dev/shm<br>tmpfs                   349M  5.2M  344M   2% /run<br>/dev/mapper/rl-root      17G  1.7G   16G  10% /<br>/dev/nvme0n1p1          960M  261M  700M  28% /boot<br>tmpfs                   175M     0  175M   0% /run/user/0<br>/dev/mapper/storage-vo  134M   14K  123M   1% /mnt/vo<br>[root@localhost ~]# lsblk<br>NAME         MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS<br>sr0           11:0    1  1.7G  0 rom<br>nvme0n1      259:0    0   20G  0 disk<br>├─nvme0n1p1  259:1    0    1G  0 part /boot<br>└─nvme0n1p2  259:2    0   19G  0 part<br>  ├─rl-root  253:0    0   17G  0 lvm  /<br>  └─rl-swap  253:1    0    2G  0 lvm  [SWAP]<br>nvme0n2      259:3    0    5G  0 disk<br>└─storage-vo 253:2    0  148M  0 lvm  /mnt/vo<br>nvme0n3      259:4    0    5G  0 disk<br>nvme0n4      259:5    0    5G  0 disk<br>nvme0n5      259:6    0    5G  0 disk<br>nvme0n6      259:7    0    5G  0 disk<br><br>[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;/dev/storage/vo /mnt/vo ext4 defaults 0 0&quot;</span> &gt;&gt; /etc/fstab<br></code></pre></td></tr></table></figure>
+
+<h2 id="扩容逻辑卷"><a href="#扩容逻辑卷" class="headerlink" title="扩容逻辑卷"></a>扩容逻辑卷</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#第1步：把上一个实验中的逻辑卷vo扩展至290MB</span><br>[root@localhost ~]# umount /mnt/vo<br>[root@localhost ~]# lvextend -L 290M /dev/storage/vo<br><br><span class="hljs-comment">#第2步：检查硬盘完整性，并重置硬盘容量，否则挂载了还是148M</span><br>[root@localhost ~]# e2fsck -f /dev/storage/vo<br>[root@localhost ~]# resize2fs /dev/storage/vo<br><br><span class="hljs-comment">#第3步：重新挂载硬盘设备并查看挂载状态</span><br>[root@localhost ~]# systemctl daemon-reload<br>[root@localhost ~]# mount -a<br>[root@localhost ~]# <span class="hljs-built_in">df</span> -h<br>Filesystem              Size  Used Avail Use% Mounted on<br>devtmpfs                4.0M     0  4.0M   0% /dev<br>tmpfs                   872M     0  872M   0% /dev/shm<br>tmpfs                   349M  5.2M  344M   2% /run<br>/dev/mapper/rl-root      17G  1.7G   16G  10% /<br>/dev/nvme0n1p1          960M  261M  700M  28% /boot<br>tmpfs                   175M     0  175M   0% /run/user/0<br>/dev/mapper/storage-vo  268M   14K  250M   1% /mnt/vo<br><br><span class="hljs-comment">#第4步，如果扩容到6G，则会占用到nvme0n3的pv</span><br>[root@localhost ~]# umount /mnt/vo<br>[root@localhost ~]# lvextend -L 6G /dev/storage/vo<br>[root@localhost ~]# e2fsck -f /dev/storage/vo<br>[root@localhost ~]# resize2fs /dev/storage/vo<br>[root@localhost ~]# mount -a<br>[root@localhost ~]# lsblk<br>NAME         MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS<br>sr0           11:0    1  1.7G  0 rom<br>nvme0n1      259:0    0   20G  0 disk<br>├─nvme0n1p1  259:1    0    1G  0 part /boot<br>└─nvme0n1p2  259:2    0   19G  0 part<br>  ├─rl-root  253:0    0   17G  0 lvm  /<br>  └─rl-swap  253:1    0    2G  0 lvm  [SWAP]<br>nvme0n2      259:3    0    5G  0 disk<br>└─storage-vo 253:2    0    6G  0 lvm  /mnt/vo<br>nvme0n3      259:4    0    5G  0 disk<br>└─storage-vo 253:2    0    6G  0 lvm  /mnt/vo<br>nvme0n4      259:5    0    5G  0 disk<br>nvme0n5      259:6    0    5G  0 disk<br>nvme0n6      259:7    0    5G  0 disk<br>[root@localhost ~]# <span class="hljs-built_in">df</span> -h<br>Filesystem              Size  Used Avail Use% Mounted on<br>devtmpfs                4.0M     0  4.0M   0% /dev<br>tmpfs                   872M     0  872M   0% /dev/shm<br>tmpfs                   349M  5.2M  344M   2% /run<br>/dev/mapper/rl-root      17G  1.7G   16G  10% /<br>/dev/nvme0n1p1          960M  261M  700M  28% /boot<br>tmpfs                   175M     0  175M   0% /run/user/0<br>/dev/mapper/storage-vo  5.7G   14K  5.4G   1% /mnt/vo<br></code></pre></td></tr></table></figure>
+
+<h2 id="缩小逻辑卷"><a href="#缩小逻辑卷" class="headerlink" title="缩小逻辑卷"></a>缩小逻辑卷</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#第1步：检查文件系统的完整性</span><br>[root@localhost ~]# umount /mnt/vo<br>[root@localhost ~]# e2fsck -f /dev/storage/vo<br><br><span class="hljs-comment">#第2步：把逻辑卷vo的容量减小到120MB</span><br>[root@localhost ~]# resize2fs /dev/storage/vo 120M<br>[root@localhost ~]# lvreduce -L 120M /dev/storage/vo<br><br><span class="hljs-comment">#第3步：重新挂载文件系统并查看系统状态</span><br>[root@localhost ~]# mount -a<br>[root@localhost ~]# <span class="hljs-built_in">df</span> -h<br>Filesystem              Size  Used Avail Use% Mounted on<br>devtmpfs                4.0M     0  4.0M   0% /dev<br>tmpfs                   872M     0  872M   0% /dev/shm<br>tmpfs                   349M  5.2M  344M   2% /run<br>/dev/mapper/rl-root      17G  1.7G   16G  10% /<br>/dev/nvme0n1p1          960M  261M  700M  28% /boot<br>tmpfs                   175M     0  175M   0% /run/user/0<br>/dev/mapper/storage-vo  108M   14K   99M   1% /mnt/vo<br></code></pre></td></tr></table></figure>
+
+<h2 id="逻辑卷快照"><a href="#逻辑卷快照" class="headerlink" title="逻辑卷快照"></a>逻辑卷快照</h2><p>LVM还具备有“快照卷”功能，该功能类似于虚拟机软件的还原时间点功能。例如，可以对某一个逻辑卷设备做一次快照，如果日后发现数据被改错了，就可以利用之前做好的快照卷进行覆盖还原。LVM的快照卷功能有两个特点：</p>
+<ul>
+<li>快照卷的容量必须等同于逻辑卷的容量；</li>
+<li>快照卷仅一次有效，一旦执行还原操作后则会被立即自动删除。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#接下来用重定向往逻辑卷设备所挂载的目录中写入一个文件</span><br>[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;hello world&quot;</span> &gt; /mnt/vo/readme.txt<br>[root@localhost ~]# <span class="hljs-built_in">ls</span> -l /mnt/vo<br>total 14<br>drwx------. 2 root root 12288 Apr 18 13:38 lost+found<br>-rw-r--r--. 1 root root    12 Apr 18 13:48 readme.txt<br><span class="hljs-comment">#第1步：使用-s参数生成一个快照卷，使用-L参数指定切割的大小。另外，还需要在命令后面写上是针对哪个逻辑卷执行的快照操作。强烈建议快照大小和原来的LVM一样大</span><br>[root@localhost ~]# lvcreate -L 120M -s -n SNAP /dev/storage/vo<br><br><span class="hljs-comment">#强烈建议快照大小和原来的LVM一样大，虽然指定大小是120M，并不是创建一个120M大小的快照，除非修改、新增的文件超出120M才会出事情，删除不影响。</span><br>  Logical volume <span class="hljs-string">&quot;SNAP&quot;</span> created.<br><br><span class="hljs-comment">#第2步：在逻辑卷所挂载的目录中创建一个50MB的垃圾文件，然后再查看快照卷的状态。可以发现存储空间占的用量上升了</span><br>[root@localhost ~]# <span class="hljs-built_in">dd</span> <span class="hljs-keyword">if</span>=/dev/zero of=/mnt/vo/<br><br><span class="hljs-comment">#第3步：为了校验SNAP快照卷的效果，需要对逻辑卷进行快照还原操作。在此之前记得先卸载掉逻辑卷设备与目录的挂载。</span><br>[root@localhost ~]# umount /mnt/vo<br>[root@localhost ~]# lvconvert --merge /dev/storage/SNAP <br><br><span class="hljs-comment">#第4步：快照卷会被自动删除掉，并且刚刚在逻辑卷设备被执行快照操作后再创建出来的50MB的垃圾文件也被清除了</span><br>[root@localhost ~]# mount -a<br>[root@localhost ~]# <span class="hljs-built_in">ls</span> /mnt/vo/<br>lost+found  readme.txt<br></code></pre></td></tr></table></figure>
+
+<h2 id="删除逻辑卷"><a href="#删除逻辑卷" class="headerlink" title="删除逻辑卷"></a>删除逻辑卷</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#第1步：取消逻辑卷与目录的挂载关联，删除配置文件中永久生效的设备参数。</span><br>[root@localhost ~]# umount /mnt/vo/<br>[root@localhost ~]# vi /etc/fstab <br><span class="hljs-comment">#</span><br><span class="hljs-comment"># /etc/fstab</span><br><span class="hljs-comment"># Created by anaconda on Mon Apr 15 17:31:00 2019</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Accessible filesystems, by reference, are maintained under &#x27;/dev/disk&#x27;</span><br><span class="hljs-comment"># See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info</span><br><span class="hljs-comment">#</span><br>/dev/mapper/centos-root /                       xfs     defaults        0 0<br>UUID=63e91158-e754-41c3-b35d-7b9698e71355 /boot                   xfs     defaults        0 0<br>/dev/mapper/centos-swap swap                    swap    defaults        0 0<br><br><span class="hljs-comment">#第2步：删除逻辑卷设备，需要输入y来确认操作</span><br>[root@localhost ~]# lvremove /dev/storage/vo <br>Do you really want to remove active logical volume storage/vo? [y/n]: y<br>  Logical volume <span class="hljs-string">&quot;vo&quot;</span> successfully removed<br><br><span class="hljs-comment">#第3步：删除卷组，此处只写卷组名称即可，不需要设备的绝对路径。</span><br>[root@localhost ~]# vgremove storage<br>  Volume group <span class="hljs-string">&quot;storage&quot;</span> successfully removed<br><br><span class="hljs-comment">#第4步：删除物理卷设备</span><br>[root@localhost ~]# pvremove /dev/nvme0n2 /dev/nvme0n3<br>  Labels on physical volume <span class="hljs-string">&quot;/dev/nvme0n2&quot;</span> successfully wiped.<br>  Labels on physical volume <span class="hljs-string">&quot;/dev/nvme0n3&quot;</span> successfully wiped.<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Linux/Linux%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="category-chain-item">Linux基础部分</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>LVM逻辑卷管理器</div>
+      <div>http://example.com/2025/10/25/LVM逻辑卷管理器/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年10月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/10/26/%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%97%A5%E5%BF%97/" title="计划任务与日志">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计划任务与日志</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/25/Linux%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/" title="Linux网络管理">
+                        <span class="hidden-mobile">Linux网络管理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

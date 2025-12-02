@@ -19,21 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="初始shell用户直接输入命令，Linux是理解不了的，Shell就会在中间充当翻译官的角色，把用户的命令翻译给Linux内核，然后Linux内核会执行命令。 用户就可以使用Shell，对Linux系统进行大部分的管理。 使用Shell分为两种方式：1.交互式命令行，输入一行回车后执行一行的命令，适合量少的工作。2.Shell脚本，输入多行命令，然后保存为文件，然后执行文件，适合批量工作或重复性的">
+    <meta name="description" content="Samba文件共享什么是SambaSamba 是一个开源软件套件，允许 Linux&#x2F;Unix 系统与 Windows 系统之间实现文件共享和打印服务。Samba 使用 SMB（Server Message Block）&#x2F;CIFS（Common Internet File System）协议，这些协议是 Windows 系统共享资源的基础。 发展历程1992 年：Samba 项目">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux命令行">
-<meta property="og:url" content="http://example.com/2025/09/25/Linux%E5%91%BD%E4%BB%A4%E8%A1%8C/index.html">
+<meta property="og:title" content="Samba文件共享">
+<meta property="og:url" content="http://example.com/2025/10/28/Samba%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB/index.html">
 <meta property="og:site_name" content="我的博客">
-<meta property="og:description" content="初始shell用户直接输入命令，Linux是理解不了的，Shell就会在中间充当翻译官的角色，把用户的命令翻译给Linux内核，然后Linux内核会执行命令。 用户就可以使用Shell，对Linux系统进行大部分的管理。 使用Shell分为两种方式：1.交互式命令行，输入一行回车后执行一行的命令，适合量少的工作。2.Shell脚本，输入多行命令，然后保存为文件，然后执行文件，适合批量工作或重复性的">
+<meta property="og:description" content="Samba文件共享什么是SambaSamba 是一个开源软件套件，允许 Linux&#x2F;Unix 系统与 Windows 系统之间实现文件共享和打印服务。Samba 使用 SMB（Server Message Block）&#x2F;CIFS（Common Internet File System）协议，这些协议是 Windows 系统共享资源的基础。 发展历程1992 年：Samba 项目">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-09-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-26T07:13:46.744Z">
+<meta property="article:published_time" content="2025-10-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-28T08:20:35.041Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Linux命令行 - 我的博客</title>
+  <title>Samba文件共享 - 我的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -187,7 +187,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Linux命令行"></span>
+            <span id="subtitle" data-typed-text="Samba文件共享"></span>
           
         </div>
 
@@ -198,8 +198,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-09-25 00:00" pubdate>
-          2025年9月25日 凌晨
+        <time datetime="2025-10-28 00:00" pubdate>
+          2025年10月28日 凌晨
         </time>
       </span>
     
@@ -210,7 +210,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k 字
+          738 字
         
       </span>
     
@@ -221,7 +221,7 @@
         
         
         
-          12 分钟
+          7 分钟
         
       </span>
     
@@ -258,173 +258,36 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Linux命令行</h1>
+            <h1 id="seo-header">Samba文件共享</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="初始shell"><a href="#初始shell" class="headerlink" title="初始shell"></a>初始shell</h1><p>用户直接输入命令，Linux是理解不了的，Shell就会在中间充当翻译官的角色，把用户的命令翻译给Linux内核，然后Linux内核会执行命令。</p>
-<p>用户就可以使用Shell，对Linux系统进行大部分的管理。</p>
-<p>使用Shell分为两种方式：<br>1.交互式命令行，输入一行回车后执行一行的命令，适合量少的工作。<br>2.Shell脚本，输入多行命令，然后保存为文件，然后执行文件，适合批量工作或重复性的工作。</p>
-<h1 id="Bash-Shell提示符"><a href="#Bash-Shell提示符" class="headerlink" title="Bash Shell提示符"></a>Bash Shell提示符</h1><p>登录Linux系统后，默认进入交互式命令行模式，光标前面就会会看到提示符，提示符一般格式为:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]#<br>[用户名@主机名 目录名]权限标识<br></code></pre></td></tr></table></figure>
-<p>用户名：当前登录的用户名<br>主机名：当前登录的计算机名称，修改主机名：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">hostnametcl set-hostname 新主机名<br><span class="hljs-comment">#可能不会立即生效，Ctrl+D退出再登录新的主机名就会生效</span><br></code></pre></td></tr></table></figure>
-<p>目录名：当前光标所在的目录，用户家目录表示成~<br>权限标识：超级管理员权限就表示成#，普通用户权限就表示成$</p>
-<h1 id="常见的命令"><a href="#常见的命令" class="headerlink" title="常见的命令"></a>常见的命令</h1><h2 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h2><p>用于显示当前文件下所含的内容（文件即子目录）<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"> <span class="hljs-comment"># 查看当前目录下的文件</span><br>[root@localhost ~]# <span class="hljs-built_in">ls</span><br><br> <span class="hljs-comment"># 查看当前目录下的所有文件，包括隐藏文件即以.开头的文件</span><br>[root@localhost ~]# <span class="hljs-built_in">ls</span> -a<br><br> <span class="hljs-comment"># 查看当前目录下的文件详情，包括隐藏文件</span><br> [root@localhost ~]# <span class="hljs-built_in">ls</span> -hal<br><br> <span class="hljs-comment"># 查看/usr/sbin目录下的文件，并显示处目录文件程序的区别</span><br> <span class="hljs-comment"># 普通的文件只有文件名，可执行文件后面带*，文件夹后面带/</span><br> [root@localhost ~]# <span class="hljs-built_in">ls</span> -F /usr/sbin/<br></code></pre></td></tr></table></figure></p>
-<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><p> 选项的循序随便</p>
+                <h1 id="Samba文件共享"><a href="#Samba文件共享" class="headerlink" title="Samba文件共享"></a>Samba文件共享</h1><h2 id="什么是Samba"><a href="#什么是Samba" class="headerlink" title="什么是Samba"></a>什么是Samba</h2><p>Samba 是一个开源软件套件，允许 Linux&#x2F;Unix 系统与 Windows 系统之间实现文件共享和打印服务。Samba 使用 SMB（Server Message Block）&#x2F;CIFS（Common Internet File System）协议，这些协议是 Windows 系统共享资源的基础。</p>
+<h2 id="发展历程"><a href="#发展历程" class="headerlink" title="发展历程"></a>发展历程</h2><p>1992 年：Samba 项目由 Andrew Tridgell 发起，最初作为一个简单工具来查看 DOS 文件共享。<br>1994 年：Samba 正式命名，支持 SMB 协议。<br>1996 年：开始支持 Windows NT 域。<br>2003 年：引入 LDAP 集成，支持 Active Directory。<br>2012 年：Samba 4 发布，完全实现了 Active Directory 的功能。<br>现在：Samba 成为企业级跨平台文件共享的核心工具之一。</p>
+<h2 id="Samba用途"><a href="#Samba用途" class="headerlink" title="Samba用途"></a>Samba用途</h2><p>文件共享：允许用户在不同操作系统之间共享文件。<br>打印服务：提供跨平台的打印服务和在线编辑。<br>域控制器：Samba 可以用作 Windows 网络的域控制器。<br>认证与授权：支持用户认证、访问控制和权限管理。<br>跨平台互操作性：让 Linux&#x2F;Unix 系统与 Windows 系统无缝协作。</p>
+<p>Windows计算机网络管理模式：</p>
 <ul>
-<li>-a:显示所有的隐藏文件</li>
-<li>-l:显示文件的详细信息</li>
-<li>-h:显示文件大小为可读性即将显示出来的文件大小以合适的单位显示出来</li>
-<li>-F:显示文件类型，在文件名称后面加上文件类型标识符，例如可执行文档加*、目录加&#x2F;、链接加@</li>
-<li>-R:递归显示所有子目录下的文件，把目录下面的文件也列出来</li>
-<li>-t:按照文件创建的时间排序</li>
-<li>-r：将结果进行逆序排序</li>
+<li>工作组WORKGROUP：计算机对等关系，帐号信息各自管理</li>
+<li>域DOMAIN：C&#x2F;S结构，帐号信息集中管理，DC,AD</li>
 </ul>
-<h2 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h2><p> 当前用户所在的目录</p>
-<h2 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h2><p> 用于当前切换工作目录<br> Linux里面的所有目录都是以&#x2F;开头的<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 切换到/usr/bin目录</span><br>[root@localhost ~]# <span class="hljs-built_in">cd</span> /usr/bin<br><br><span class="hljs-comment"># 切换到上一级目录</span><br>[root@localhost bin]# <span class="hljs-built_in">cd</span> ..<br><br><span class="hljs-comment"># 切换到家目录</span><br>[root@localhost bin]# <span class="hljs-built_in">cd</span> ~<br><br><span class="hljs-comment"># 返回上一次所在目录</span><br>[root@localhost ~]# <span class="hljs-built_in">cd</span> -<br></code></pre></td></tr></table></figure></p>
-<h2 id="clear"><a href="#clear" class="headerlink" title="clear"></a>clear</h2><p> 清屏，快捷键Ctrl+L也可以</p>
-<h2 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h2><p> 用于字符串的输出<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"> <span class="hljs-comment"># 显示出hello world</span><br> [root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;hello world&quot;</span><br><span class="hljs-comment"># 用两行显示出hello world</span><br> [root@localhost ~]# <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;hello\nworld&quot;</span><br><span class="hljs-comment"># 输出hello world的时候让系统发出警报音</span><br> [root@localhost ~]# <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;hello\aworld&quot;</span><br></code></pre></td></tr></table></figure></p>
-<h3 id="选项-1"><a href="#选项-1" class="headerlink" title="选项"></a>选项</h3><ul>
-<li>-n:换行符，光标留在行尾</li>
-<li>-e:转义字符，允许对下列出的加反斜线的转移字符进行解释<br>– \a报警符<br>– \b退格符<br>– \f换页符<br>– \n换行符<br>– \r回车符<br>– \t水平制表符<br>– \v垂直制表符</li>
+<h2 id="Samba相关软件包介绍"><a href="#Samba相关软件包介绍" class="headerlink" title="Samba相关软件包介绍"></a>Samba相关软件包介绍</h2><p>在 Rocky Linux 中，Samba 的核心组件包含以下软件包：<br>samba：Samba 的主包，包括核心服务和工具。<br>samba-client：提供客户端工具，用于访问远程的 SMB&#x2F;CIFS 共享。<br>samba-common：共享的配置文件和库。<br>samba-libs：Samba 运行所需的库。<br>samba-common-tools：包含测试和管理工具，例如 smbstatus。<br>smbclient：命令行工具，用于访问 SMB&#x2F;CIFS 共享。<br>cifs-utils：提供挂载 SMB 文件系统的工具（如 mount.cifs）。</p>
+<h2 id="相关服务进程"><a href="#相关服务进程" class="headerlink" title="相关服务进程"></a>相关服务进程</h2><p>smbd：提供文件共享和打印服务，TCP：139、445。<br>nmbd：负责 NetBIOS 名称解析和浏览功能，UDP：137、138。<br>winbindd：用于与 Windows 域集成，支持用户和组的认证。<br>samba-ad-dc：Samba 4 中的域控制器服务。</p>
+<h2 id="Samba主配置文件"><a href="#Samba主配置文件" class="headerlink" title="Samba主配置文件"></a>Samba主配置文件</h2><p>主配置文件：&#x2F;etc&#x2F;samba&#x2F;smb.conf 帮助参看：man smb.conf<br>语法检查： testparm [-v] [&#x2F;etc&#x2F;samba&#x2F;smb.conf]</p>
+<p>[global]<br>   workgroup &#x3D; WORKGROUP        # 工作组名称<br>   server string &#x3D; Samba Server # 服务器描述<br>   security &#x3D; user              # 认证模式<br>   log file &#x3D; &#x2F;var&#x2F;log&#x2F;samba&#x2F;log.%m # 日志文件路径<br>   max log size &#x3D; 50            # 最大日志文件大小（KB）<br>   dns proxy &#x3D; no               # 禁用 DNS 代理</p>
+<p>[shared]<br>   path &#x3D; &#x2F;srv&#x2F;samba&#x2F;shared      # 共享路径<br>   browseable &#x3D; yes              # 是否可浏览<br>   writable &#x3D; yes                # 是否可写<br>   valid users &#x3D; @smbgroup       # 允许访问的用户&#x2F;组</p>
+<h3 id="全局设置（-global-）"><a href="#全局设置（-global-）" class="headerlink" title="全局设置（[global]）"></a>全局设置（[global]）</h3><ul>
+<li>workgroup：指定工作组名称，默认是 WORKGROUP。</li>
+<li>security：<br>– user：用户级认证（常用）。<br>– share：共享级认证（不推荐）。<br>– domain：域级认证。<br>– ads：Active Directory 服务。</li>
+<li>log file：日志文件路径。</li>
+<li>max log size：限制日志文件大小。</li>
 </ul>
-<h1 id="系统命令"><a href="#系统命令" class="headerlink" title="系统命令"></a>系统命令</h1><h2 id="poweroff"><a href="#poweroff" class="headerlink" title="poweroff"></a>poweroff</h2><p>关闭系统</p>
-<h2 id="reboot"><a href="#reboot" class="headerlink" title="reboot"></a>reboot</h2><p>重启系统</p>
-<h2 id="whoami"><a href="#whoami" class="headerlink" title="whoami"></a>whoami</h2><p>显示当前用户名</p>
-<h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><ul>
-<li>Ctrl+C:终止当前正在执行的命令</li>
-<li>Ctrl+D:退出当前用户，等价于exit</li>
-<li>Ctrl+L:清屏</li>
-<li>Ctrl+A:将光标移动到行首</li>
-<li>Ctrl+E:将光标移动到行尾</li>
-<li>Ctrl+K:删除从光标到行尾的所有字符</li>
-<li>Ctrl+U:删除从行首到光标之间的所有字符</li>
-<li>Ctrl+R:搜索历史命令，利用关键词</li>
+<h3 id="共享设置（-共享名-）"><a href="#共享设置（-共享名-）" class="headerlink" title="共享设置（[共享名]）"></a>共享设置（[共享名]）</h3><ul>
+<li>path：共享目录的路径。</li>
+<li>browseable：决定共享是否可被浏览。</li>
+<li>writable：是否允许写入。</li>
+<li>valid users：指定允许访问的用户或组。</li>
 </ul>
-<h1 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h1><h2 id="history"><a href="#history" class="headerlink" title="history"></a>history</h2><p>查看历史输入的命令</p>
-<h3 id="选项-2"><a href="#选项-2" class="headerlink" title="选项"></a>选项</h3><ul>
-<li>-c:清除当前shell中所有历史命令</li>
-<li>-r:从历史文件中读取命令</li>
-<li>-w:将当前shell中的所有历史命令保存到历史文件中</li>
-</ul>
-<p>使用！执行历史命令</p>
-<ul>
-<li>!n:执行历史命令第n条</li>
-<li>!string:从最近的命令中执行以string开头的命令</li>
-<li>!-n:执行历史命令倒数第n条</li>
-<li>！！:执行上一条命令</li>
-</ul>
-<h2 id="help"><a href="#help" class="headerlink" title="help"></a>help</h2><p>查看命令的帮助信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看echo的帮助信息</span><br>[root@localhost ~]# <span class="hljs-built_in">help</span> <span class="hljs-built_in">echo</span><br></code></pre></td></tr></table></figure>
-
-<h2 id="man"><a href="#man" class="headerlink" title="man"></a>man</h2><p>查看命令的帮助手册<br>-快捷键</p>
-<table>
-<thead>
-<tr>
-<th>按键</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>空格键</td>
-<td>向下翻一页</td>
-</tr>
-<tr>
-<td>PaGe down</td>
-<td>向下翻一页</td>
-</tr>
-<tr>
-<td>PaGe up</td>
-<td>向上翻一页</td>
-</tr>
-<tr>
-<td>home</td>
-<td>直接前往首页</td>
-</tr>
-<tr>
-<td>end</td>
-<td>直接前往尾页</td>
-</tr>
-<tr>
-<td>&#x2F;</td>
-<td>从上至下搜索某个关键词，如“&#x2F;linux”</td>
-</tr>
-<tr>
-<td>?</td>
-<td>从下至上搜索某个关键词，如“?linux”</td>
-</tr>
-<tr>
-<td>n</td>
-<td>定位到下一个搜索到的关键词</td>
-</tr>
-<tr>
-<td>N</td>
-<td>定位到上一个搜索到的关键词</td>
-</tr>
-<tr>
-<td>q</td>
-<td>退出帮助文档</td>
-</tr>
-</tbody></table>
-<p>-手册的结构</p>
-<table>
-<thead>
-<tr>
-<th>结构名称</th>
-<th>代表意义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>NAME</td>
-<td>命令的名称</td>
-</tr>
-<tr>
-<td>SYNOPSIS</td>
-<td>参数的大致使用方法</td>
-</tr>
-<tr>
-<td>DESCRIPTION</td>
-<td>介绍说明</td>
-</tr>
-<tr>
-<td>EXAMPLES</td>
-<td>演示（附带简单说明）</td>
-</tr>
-<tr>
-<td>OVERVIEW</td>
-<td>概述</td>
-</tr>
-<tr>
-<td>DEFAULTS</td>
-<td>默认的功能</td>
-</tr>
-<tr>
-<td>OPTIONS</td>
-<td>具体的可用选项（带介绍）</td>
-</tr>
-<tr>
-<td>ENVIRONMENT</td>
-<td>环境变量</td>
-</tr>
-<tr>
-<td>FILES</td>
-<td>用到的文件</td>
-</tr>
-<tr>
-<td>SEE ALSO</td>
-<td>相关的资料</td>
-</tr>
-<tr>
-<td>HISTORY</td>
-<td>维护历史与联系方式</td>
-</tr>
-</tbody></table>
-<h2 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h2><p>查看系统当前的别名</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 修改别名</span><br>[root@localhost ~]# <span class="hljs-built_in">alias</span> wl=<span class="hljs-string">&#x27;ip address&#x27;</span>（只在当前的环境生效，重登后就没用了）<br>[root@localhost ~]# wl<br><br><span class="hljs-comment"># 永久修改别名</span><br>[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;alias wl=&#x27;ip address&#x27;&quot;</span> &gt;&gt; /etc/bashrc<br></code></pre></td></tr></table></figure>
-
-<h1 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看系统当前的环境变量</span><br>[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-variable">$PATH</span><br><span class="hljs-comment"># 修改环境变量 临时生效</span><br>[root@localhost ~]# <span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$PATH</span>:/usr/local/bin<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -448,7 +311,7 @@
   
     <span>></span>
     
-  <a href="/categories/Linux/Linux%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="category-chain-item">Linux基础部分</a>
+  <a href="/categories/Linux/Linux%E4%BC%81%E4%B8%9A%E6%9C%8D%E5%8A%A1/" class="category-chain-item">Linux企业服务</a>
   
   
 
@@ -470,8 +333,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Linux命令行</div>
-      <div>http://example.com/2025/09/25/Linux命令行/</div>
+      <div>Samba文件共享</div>
+      <div>http://example.com/2025/10/28/Samba文件共享/</div>
     </div>
     <div class="license-meta">
       
@@ -483,7 +346,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年9月25日</div>
+          <div>2025年10月28日</div>
         </div>
       
       
@@ -515,9 +378,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/09/26/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="Linux文件管理">
+                      <a href="/2025/10/28/PTF%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="PTF文件服务器">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linux文件管理</span>
+                        <span class="hidden-mobile">PTF文件服务器</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -525,8 +388,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/09/21/2025.9.21/" title="两数之和 - 从双重循环到哈希字典的优化">
-                        <span class="hidden-mobile">两数之和 - 从双重循环到哈希字典的优化</span>
+                      <a href="/2025/10/26/%E7%AE%A1%E9%81%93%E4%B8%8E%E9%87%8D%E5%AE%9A%E5%90%91/" title="管道与重定向">
+                        <span class="hidden-mobile">管道与重定向</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

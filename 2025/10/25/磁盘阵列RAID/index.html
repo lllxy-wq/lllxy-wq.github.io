@@ -19,21 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="初始shell用户直接输入命令，Linux是理解不了的，Shell就会在中间充当翻译官的角色，把用户的命令翻译给Linux内核，然后Linux内核会执行命令。 用户就可以使用Shell，对Linux系统进行大部分的管理。 使用Shell分为两种方式：1.交互式命令行，输入一行回车后执行一行的命令，适合量少的工作。2.Shell脚本，输入多行命令，然后保存为文件，然后执行文件，适合批量工作或重复性的">
+    <meta name="description" content="磁盘阵列磁盘阵列（RAID，Redundant Array of Independent Disks）是一种将多个物理硬盘组合在一起形成一个逻辑硬盘组的技术。通过 RAID，可以实现数据冗余、性能提升或两者兼具。RAID 在存储系统中广泛使用，尤其是在服务器和大数据存储环境中，用于提升数据可靠性和性能。 RAID 0（条带化，Striping） 特点: 将数据分块并在多个磁盘上并行存储，提升读写性">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux命令行">
-<meta property="og:url" content="http://example.com/2025/09/25/Linux%E5%91%BD%E4%BB%A4%E8%A1%8C/index.html">
+<meta property="og:title" content="磁盘整列RAID">
+<meta property="og:url" content="http://example.com/2025/10/25/%E7%A3%81%E7%9B%98%E9%98%B5%E5%88%97RAID/index.html">
 <meta property="og:site_name" content="我的博客">
-<meta property="og:description" content="初始shell用户直接输入命令，Linux是理解不了的，Shell就会在中间充当翻译官的角色，把用户的命令翻译给Linux内核，然后Linux内核会执行命令。 用户就可以使用Shell，对Linux系统进行大部分的管理。 使用Shell分为两种方式：1.交互式命令行，输入一行回车后执行一行的命令，适合量少的工作。2.Shell脚本，输入多行命令，然后保存为文件，然后执行文件，适合批量工作或重复性的">
+<meta property="og:description" content="磁盘阵列磁盘阵列（RAID，Redundant Array of Independent Disks）是一种将多个物理硬盘组合在一起形成一个逻辑硬盘组的技术。通过 RAID，可以实现数据冗余、性能提升或两者兼具。RAID 在存储系统中广泛使用，尤其是在服务器和大数据存储环境中，用于提升数据可靠性和性能。 RAID 0（条带化，Striping） 特点: 将数据分块并在多个磁盘上并行存储，提升读写性">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-09-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-26T07:13:46.744Z">
+<meta property="article:published_time" content="2025-10-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-25T02:16:44.485Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Linux命令行 - 我的博客</title>
+  <title>磁盘整列RAID - 我的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -187,7 +187,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Linux命令行"></span>
+            <span id="subtitle" data-typed-text="磁盘整列RAID"></span>
           
         </div>
 
@@ -198,8 +198,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-09-25 00:00" pubdate>
-          2025年9月25日 凌晨
+        <time datetime="2025-10-25 00:00" pubdate>
+          2025年10月25日 凌晨
         </time>
       </span>
     
@@ -210,7 +210,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k 字
+          1.9k 字
         
       </span>
     
@@ -221,7 +221,7 @@
         
         
         
-          12 分钟
+          16 分钟
         
       </span>
     
@@ -258,173 +258,168 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Linux命令行</h1>
+            <h1 id="seo-header">磁盘整列RAID</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="初始shell"><a href="#初始shell" class="headerlink" title="初始shell"></a>初始shell</h1><p>用户直接输入命令，Linux是理解不了的，Shell就会在中间充当翻译官的角色，把用户的命令翻译给Linux内核，然后Linux内核会执行命令。</p>
-<p>用户就可以使用Shell，对Linux系统进行大部分的管理。</p>
-<p>使用Shell分为两种方式：<br>1.交互式命令行，输入一行回车后执行一行的命令，适合量少的工作。<br>2.Shell脚本，输入多行命令，然后保存为文件，然后执行文件，适合批量工作或重复性的工作。</p>
-<h1 id="Bash-Shell提示符"><a href="#Bash-Shell提示符" class="headerlink" title="Bash Shell提示符"></a>Bash Shell提示符</h1><p>登录Linux系统后，默认进入交互式命令行模式，光标前面就会会看到提示符，提示符一般格式为:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]#<br>[用户名@主机名 目录名]权限标识<br></code></pre></td></tr></table></figure>
-<p>用户名：当前登录的用户名<br>主机名：当前登录的计算机名称，修改主机名：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">hostnametcl set-hostname 新主机名<br><span class="hljs-comment">#可能不会立即生效，Ctrl+D退出再登录新的主机名就会生效</span><br></code></pre></td></tr></table></figure>
-<p>目录名：当前光标所在的目录，用户家目录表示成~<br>权限标识：超级管理员权限就表示成#，普通用户权限就表示成$</p>
-<h1 id="常见的命令"><a href="#常见的命令" class="headerlink" title="常见的命令"></a>常见的命令</h1><h2 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h2><p>用于显示当前文件下所含的内容（文件即子目录）<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"> <span class="hljs-comment"># 查看当前目录下的文件</span><br>[root@localhost ~]# <span class="hljs-built_in">ls</span><br><br> <span class="hljs-comment"># 查看当前目录下的所有文件，包括隐藏文件即以.开头的文件</span><br>[root@localhost ~]# <span class="hljs-built_in">ls</span> -a<br><br> <span class="hljs-comment"># 查看当前目录下的文件详情，包括隐藏文件</span><br> [root@localhost ~]# <span class="hljs-built_in">ls</span> -hal<br><br> <span class="hljs-comment"># 查看/usr/sbin目录下的文件，并显示处目录文件程序的区别</span><br> <span class="hljs-comment"># 普通的文件只有文件名，可执行文件后面带*，文件夹后面带/</span><br> [root@localhost ~]# <span class="hljs-built_in">ls</span> -F /usr/sbin/<br></code></pre></td></tr></table></figure></p>
-<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><p> 选项的循序随便</p>
-<ul>
-<li>-a:显示所有的隐藏文件</li>
-<li>-l:显示文件的详细信息</li>
-<li>-h:显示文件大小为可读性即将显示出来的文件大小以合适的单位显示出来</li>
-<li>-F:显示文件类型，在文件名称后面加上文件类型标识符，例如可执行文档加*、目录加&#x2F;、链接加@</li>
-<li>-R:递归显示所有子目录下的文件，把目录下面的文件也列出来</li>
-<li>-t:按照文件创建的时间排序</li>
-<li>-r：将结果进行逆序排序</li>
+                <h1 id="磁盘阵列"><a href="#磁盘阵列" class="headerlink" title="磁盘阵列"></a>磁盘阵列</h1><p>磁盘阵列（RAID，Redundant Array of Independent Disks）是一种将多个物理硬盘组合在一起形成一个逻辑硬盘组的技术。通过 RAID，可以实现数据冗余、性能提升或两者兼具。RAID 在存储系统中广泛使用，尤其是在服务器和大数据存储环境中，用于提升数据可靠性和性能。</p>
+<h2 id="RAID-0（条带化，Striping）"><a href="#RAID-0（条带化，Striping）" class="headerlink" title="RAID 0（条带化，Striping）"></a>RAID 0（条带化，Striping）</h2><ul>
+<li>特点: 将数据分块并在多个磁盘上并行存储，提升读写性能。</li>
+<li>优点: 极大提高了读写速度，因为数据在多个磁盘上并行操作。</li>
+<li>缺点: 没有冗余，任何一个磁盘的损坏都会导致整个 RAID 失效，数据丢失。</li>
+<li>适用场景: 需要高性能、数据安全性需求不高的场景，比如视频编辑、临时数据存储等。</li>
 </ul>
-<h2 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h2><p> 当前用户所在的目录</p>
-<h2 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h2><p> 用于当前切换工作目录<br> Linux里面的所有目录都是以&#x2F;开头的<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 切换到/usr/bin目录</span><br>[root@localhost ~]# <span class="hljs-built_in">cd</span> /usr/bin<br><br><span class="hljs-comment"># 切换到上一级目录</span><br>[root@localhost bin]# <span class="hljs-built_in">cd</span> ..<br><br><span class="hljs-comment"># 切换到家目录</span><br>[root@localhost bin]# <span class="hljs-built_in">cd</span> ~<br><br><span class="hljs-comment"># 返回上一次所在目录</span><br>[root@localhost ~]# <span class="hljs-built_in">cd</span> -<br></code></pre></td></tr></table></figure></p>
-<h2 id="clear"><a href="#clear" class="headerlink" title="clear"></a>clear</h2><p> 清屏，快捷键Ctrl+L也可以</p>
-<h2 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h2><p> 用于字符串的输出<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"> <span class="hljs-comment"># 显示出hello world</span><br> [root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;hello world&quot;</span><br><span class="hljs-comment"># 用两行显示出hello world</span><br> [root@localhost ~]# <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;hello\nworld&quot;</span><br><span class="hljs-comment"># 输出hello world的时候让系统发出警报音</span><br> [root@localhost ~]# <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;hello\aworld&quot;</span><br></code></pre></td></tr></table></figure></p>
-<h3 id="选项-1"><a href="#选项-1" class="headerlink" title="选项"></a>选项</h3><ul>
-<li>-n:换行符，光标留在行尾</li>
-<li>-e:转义字符，允许对下列出的加反斜线的转移字符进行解释<br>– \a报警符<br>– \b退格符<br>– \f换页符<br>– \n换行符<br>– \r回车符<br>– \t水平制表符<br>– \v垂直制表符</li>
+<h2 id="RAID-1（镜像，Mirroring）"><a href="#RAID-1（镜像，Mirroring）" class="headerlink" title="RAID 1（镜像，Mirroring）"></a>RAID 1（镜像，Mirroring）</h2><ul>
+<li>特点: 将数据完全复制到另一块磁盘上，提供 1:1 的数据冗余。</li>
+<li>优点: 数据安全性高，任何一个磁盘损坏时，数据仍可以从镜像磁盘中恢复。</li>
+<li>缺点: 存储效率较低，实际可用存储空间为所有磁盘容量的一半。</li>
+<li>适用场景: 需要高数据可靠性和快速恢复的场合，比如数据库、操作系统磁盘等。</li>
 </ul>
-<h1 id="系统命令"><a href="#系统命令" class="headerlink" title="系统命令"></a>系统命令</h1><h2 id="poweroff"><a href="#poweroff" class="headerlink" title="poweroff"></a>poweroff</h2><p>关闭系统</p>
-<h2 id="reboot"><a href="#reboot" class="headerlink" title="reboot"></a>reboot</h2><p>重启系统</p>
-<h2 id="whoami"><a href="#whoami" class="headerlink" title="whoami"></a>whoami</h2><p>显示当前用户名</p>
-<h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><ul>
-<li>Ctrl+C:终止当前正在执行的命令</li>
-<li>Ctrl+D:退出当前用户，等价于exit</li>
-<li>Ctrl+L:清屏</li>
-<li>Ctrl+A:将光标移动到行首</li>
-<li>Ctrl+E:将光标移动到行尾</li>
-<li>Ctrl+K:删除从光标到行尾的所有字符</li>
-<li>Ctrl+U:删除从行首到光标之间的所有字符</li>
-<li>Ctrl+R:搜索历史命令，利用关键词</li>
+<h2 id="RAID-5（带奇偶校验的条带化，Striping-with-Parity）"><a href="#RAID-5（带奇偶校验的条带化，Striping-with-Parity）" class="headerlink" title="RAID 5（带奇偶校验的条带化，Striping with Parity）"></a>RAID 5（带奇偶校验的条带化，Striping with Parity）</h2><ul>
+<li>特点: 将数据和奇偶校验数据分布在所有磁盘上，提供冗余的同时提升性能。</li>
+<li>优点: 提供数据冗余，同时存储效率较高（磁盘数量越多，效率越好），能够在一个磁盘损坏的情况下恢复数据。</li>
+<li>缺点: 写入性能稍差，尤其是在发生设备故障时，重建过程较慢。</li>
+<li>适用场景: 需要兼顾性能和数据冗余的场景，如文件服务器和应用服务器。</li>
+<li>写性能1，读性能\（N-1）<br>RAID5的核心思想是使用奇偶校验信息来提供数据的冗余备份。当其中一个硬盘驱动器发生故障时，剩余的硬盘驱动器可以通过计算奇偶校验信息来恢复丢失的数据。这种方式既提供了数据冗余和容错能力，又降低了整体存储成本。实际存储空间时总盘数-1。</li>
 </ul>
-<h1 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h1><h2 id="history"><a href="#history" class="headerlink" title="history"></a>history</h2><p>查看历史输入的命令</p>
-<h3 id="选项-2"><a href="#选项-2" class="headerlink" title="选项"></a>选项</h3><ul>
-<li>-c:清除当前shell中所有历史命令</li>
-<li>-r:从历史文件中读取命令</li>
-<li>-w:将当前shell中的所有历史命令保存到历史文件中</li>
+<h2 id="RAID-10（RAID-1-0，镜像与条带化的组合）"><a href="#RAID-10（RAID-1-0，镜像与条带化的组合）" class="headerlink" title="RAID 10（RAID 1+0，镜像与条带化的组合）"></a>RAID 10（RAID 1+0，镜像与条带化的组合）</h2><ul>
+<li>特点: 将 RAID 1（镜像）和 RAID 0（条带化）结合使用，既提供数据冗余又提升了性能。</li>
+<li>优点: 既有 RAID 0 的高性能，又有 RAID 1 的高安全性。能够快速恢复数据。</li>
+<li>缺点: 存储效率较低，要求至少 4 块磁盘，实际可用空间为所有磁盘容量的一半。</li>
+<li>适用场景: 需要高性能和高冗余的关键应用场景，如数据库、虚拟化环境等。</li>
+<li>读写性能*N（N为RAID0的硬盘数，此例为2），不能同时坏数据块1a与2a</li>
 </ul>
-<p>使用！执行历史命令</p>
-<ul>
-<li>!n:执行历史命令第n条</li>
-<li>!string:从最近的命令中执行以string开头的命令</li>
-<li>!-n:执行历史命令倒数第n条</li>
-<li>！！:执行上一条命令</li>
+<h2 id="RAID-01"><a href="#RAID-01" class="headerlink" title="RAID 01"></a>RAID 01</h2><p>将 RAID 1（镜像）和 RAID 0（条带化）结合使用，既提供数据冗余又提升了性能。先构建RAID 1，再构建RAID 0</p>
+<h2 id="硬件磁盘阵列（Hardware-RAID）"><a href="#硬件磁盘阵列（Hardware-RAID）" class="headerlink" title="硬件磁盘阵列（Hardware RAID）"></a>硬件磁盘阵列（Hardware RAID）</h2><ul>
+<li>特点<br>– 专用硬件控制器：硬件 RAID 使用专门的 RAID 控制器卡（RAID Controller），通常是插入主板的 PCIe 扩展卡或者集成在服务器主板上的芯片。该控制器管理磁盘阵列的所有操作并执行 RAID 级别的计算。<br>– 独立于操作系统：硬件 RAID 完全独立于操作系统，RAID 控制器负责所有 RAID 相关操作，操作系统只看到一个逻辑磁盘。<br>– 硬件加速：硬件 RAID 卡通常带有专用处理器（ASIC 或 FPGA）和缓存，用来加速 RAID 操作，提高性能<br>阵列卡</li>
 </ul>
-<h2 id="help"><a href="#help" class="headerlink" title="help"></a>help</h2><p>查看命令的帮助信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看echo的帮助信息</span><br>[root@localhost ~]# <span class="hljs-built_in">help</span> <span class="hljs-built_in">echo</span><br></code></pre></td></tr></table></figure>
-
-<h2 id="man"><a href="#man" class="headerlink" title="man"></a>man</h2><p>查看命令的帮助手册<br>-快捷键</p>
-<table>
+<h2 id="软件磁盘阵列（Software-RAID）"><a href="#软件磁盘阵列（Software-RAID）" class="headerlink" title="软件磁盘阵列（Software RAID）"></a>软件磁盘阵列（Software RAID）</h2><ul>
+<li>特点<br>– 由操作系统实现：软件 RAID 通过操作系统内核或专门的 RAID 软件来管理和实现 RAID 功能。Linux 的 mdadm、Windows 的动态磁盘管理和 macOS 的磁盘工具等都支持软件 RAID。<br>– 没有专用硬件：软件 RAID 不需要专用的 RAID 控制器，所有 RAID 计算和管理工作都由主机的 CPU 执行。<br>– 灵活性高：软件 RAID 通常可以在不同的硬件平台之间迁移，因为 RAID 配置数据存储在磁盘上，而不是特定的控制器中。</li>
+</ul>
+<h2 id="硬件-RAID-和软件-RAID-的对比"><a href="#硬件-RAID-和软件-RAID-的对比" class="headerlink" title="硬件 RAID 和软件 RAID 的对比"></a>硬件 RAID 和软件 RAID 的对比</h2><table>
 <thead>
 <tr>
-<th>按键</th>
-<th>用途</th>
+<th>对比项</th>
+<th>硬件 RAID</th>
+<th>软件 RAID</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>空格键</td>
-<td>向下翻一页</td>
+<td>实现方式</td>
+<td>专用 RAID 控制器</td>
+<td>操作系统或软件实现</td>
 </tr>
 <tr>
-<td>PaGe down</td>
-<td>向下翻一页</td>
+<td>性能</td>
+<td>高，特别是在 RAID 5&#x2F;6 等级别中</td>
+<td>较低，占用主机 CPU 资源</td>
 </tr>
 <tr>
-<td>PaGe up</td>
-<td>向上翻一页</td>
+<td>磁盘管理</td>
+<td>独立于操作系统，系统只看到一个逻辑磁盘</td>
+<td>依赖于操作系统的磁盘管理</td>
 </tr>
 <tr>
-<td>home</td>
-<td>直接前往首页</td>
+<td>成本</td>
+<td>高，需购买 RAID 控制器</td>
+<td>低，无需额外硬件</td>
 </tr>
 <tr>
-<td>end</td>
-<td>直接前往尾页</td>
+<td>功能支持</td>
+<td>支持热备盘、硬盘监控、电池缓存等高级功能</td>
+<td>功能较少，依赖操作系统提供的功能</td>
 </tr>
 <tr>
-<td>&#x2F;</td>
-<td>从上至下搜索某个关键词，如“&#x2F;linux”</td>
+<td>灵活性	依赖特定硬件，不易迁移</td>
+<td>容易迁移，跨硬件平台使用</td>
+<td></td>
 </tr>
 <tr>
-<td>?</td>
-<td>从下至上搜索某个关键词，如“?linux”</td>
+<td>故障恢复</td>
+<td>控制器损坏可能需要相同型号的控制器</td>
+<td>可以在不同硬件上恢复</td>
 </tr>
 <tr>
-<td>n</td>
-<td>定位到下一个搜索到的关键词</td>
-</tr>
-<tr>
-<td>N</td>
-<td>定位到上一个搜索到的关键词</td>
-</tr>
-<tr>
-<td>q</td>
-<td>退出帮助文档</td>
+<td>适用场景</td>
+<td>企业级、大型存储系统，数据中心</td>
+<td>个人用户、小型服务器，开发测试环境</td>
 </tr>
 </tbody></table>
-<p>-手册的结构</p>
-<table>
+<h1 id="部署磁盘阵列"><a href="#部署磁盘阵列" class="headerlink" title="部署磁盘阵列"></a>部署磁盘阵列</h1><h2 id="mdadm磁盘整列"><a href="#mdadm磁盘整列" class="headerlink" title="mdadm磁盘整列"></a>mdadm磁盘整列</h2><p>对于Linux上通过软件的形式构建磁盘整列，我们常用的方式是通过mdadm这个工具来完成。当然对于部分Linux发行版本，mdadm可能没有内置安装好，所以我们需要手动安装一下。</p>
+<h2 id="安装mdadm工具"><a href="#安装mdadm工具" class="headerlink" title="安装mdadm工具"></a>安装mdadm工具</h2><p>[root@localhost ~]# yum -y install mdadm</p>
+<ul>
+<li>mdadm命令常用参数以及作用<table>
 <thead>
 <tr>
-<th>结构名称</th>
-<th>代表意义</th>
+<th>参数</th>
+<th>作用</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>NAME</td>
-<td>命令的名称</td>
+<td>-a</td>
+<td>检测设备名称</td>
 </tr>
 <tr>
-<td>SYNOPSIS</td>
-<td>参数的大致使用方法</td>
+<td>-n</td>
+<td>指定设备数量</td>
 </tr>
 <tr>
-<td>DESCRIPTION</td>
-<td>介绍说明</td>
+<td>-l</td>
+<td>指定RAID级别</td>
 </tr>
 <tr>
-<td>EXAMPLES</td>
-<td>演示（附带简单说明）</td>
+<td>-C</td>
+<td>创建</td>
 </tr>
 <tr>
-<td>OVERVIEW</td>
-<td>概述</td>
+<td>-v</td>
+<td>显示过程</td>
 </tr>
 <tr>
-<td>DEFAULTS</td>
-<td>默认的功能</td>
+<td>-f</td>
+<td>模拟设备损坏</td>
 </tr>
 <tr>
-<td>OPTIONS</td>
-<td>具体的可用选项（带介绍）</td>
+<td>-r</td>
+<td>移除设备</td>
 </tr>
 <tr>
-<td>ENVIRONMENT</td>
-<td>环境变量</td>
+<td>-Q</td>
+<td>查看摘要信息</td>
 </tr>
 <tr>
-<td>FILES</td>
-<td>用到的文件</td>
+<td>-D</td>
+<td>查看详细信息</td>
 </tr>
 <tr>
-<td>SEE ALSO</td>
-<td>相关的资料</td>
+<td>-S</td>
+<td>停止RAID磁盘阵列</td>
 </tr>
 <tr>
-<td>HISTORY</td>
-<td>维护历史与联系方式</td>
+<td>-x</td>
+<td>备份盘数量</td>
 </tr>
 </tbody></table>
-<h2 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h2><p>查看系统当前的别名</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 修改别名</span><br>[root@localhost ~]# <span class="hljs-built_in">alias</span> wl=<span class="hljs-string">&#x27;ip address&#x27;</span>（只在当前的环境生效，重登后就没用了）<br>[root@localhost ~]# wl<br><br><span class="hljs-comment"># 永久修改别名</span><br>[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;alias wl=&#x27;ip address&#x27;&quot;</span> &gt;&gt; /etc/bashrc<br></code></pre></td></tr></table></figure>
-
-<h1 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看系统当前的环境变量</span><br>[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-variable">$PATH</span><br><span class="hljs-comment"># 修改环境变量 临时生效</span><br>[root@localhost ~]# <span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$PATH</span>:/usr/local/bin<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>mdadm -D &#x2F;dev&#x2F;md0显示的部分字段解释：</p>
+<ul>
+<li><p>Number: 这个字段表示每个磁盘在 RAID 阵列中的编号（从 0 开始）。这是 RAID 阵列中每个设备的索引或设备号。</p>
+</li>
+<li><p>Major: 这是设备文件的主设备号（major number），它用于标识设备的类型。不同的主设备号通常对应不同的驱动程序或设备类别。</p>
+</li>
+<li><p>Minor: 这是设备文件的次设备号（minor number），用于标识同一类型设备中的不同实例。主设备号和次设备号共同唯一标识系统中的一个设备。</p>
+</li>
+<li><p>RaidDevice: 这是设备在 RAID 阵列中的逻辑设备编号。通常从 0 开始，表示该设备在 RAID 阵列中的顺序。</p>
+</li>
+<li><p>State: 表示 RAID 阵列中该设备的当前状态。常见状态如下：<br>– active sync: 表示该设备处于活动状态，并且与 RAID 阵列中的其他设备同步。<br>– faulty: 表示设备出现故障，不能正常工作。<br>– spare: 表示该设备是热备盘，当其他设备故障时可自动替换。</p>
+</li>
+<li><p>set-A &#x2F; set-B: 这可能是与 RAID 10 或其他多组 RAID 配置相关的信息，表示该磁盘属于某个 RAID 子组或镜像组。例如，set-A 和 set-B 可能表示 RAID 10 配置中的两个镜像组。</p>
+</li>
+<li><p>&#x2F;dev&#x2F;nvme0nX: 这是设备的名称，表示设备在系统中的路径。在这里，设备是 NVMe 协议的磁盘（例如，&#x2F;dev&#x2F;nvme0n2）。不同的数字后缀（例如 n2, n3 等）表示不同的 NVMe 设备。</p>
+</li>
+</ul>
 
                 
               </div>
@@ -470,8 +465,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Linux命令行</div>
-      <div>http://example.com/2025/09/25/Linux命令行/</div>
+      <div>磁盘整列RAID</div>
+      <div>http://example.com/2025/10/25/磁盘阵列RAID/</div>
     </div>
     <div class="license-meta">
       
@@ -483,7 +478,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年9月25日</div>
+          <div>2025年10月25日</div>
         </div>
       
       
@@ -515,9 +510,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/09/26/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="Linux文件管理">
+                      <a href="/2025/10/25/Linux%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/" title="Linux网络管理">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linux文件管理</span>
+                        <span class="hidden-mobile">Linux网络管理</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -525,8 +520,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/09/21/2025.9.21/" title="两数之和 - 从双重循环到哈希字典的优化">
-                        <span class="hidden-mobile">两数之和 - 从双重循环到哈希字典的优化</span>
+                      <a href="/2025/10/25/%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/" title="软件包管理">
+                        <span class="hidden-mobile">软件包管理</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

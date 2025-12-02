@@ -1,0 +1,1021 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/Cynthia.png">
+  <link rel="icon" href="/img/Cynthia.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="分区表MBR 管理的硬盘大小不能超过2T 有主分区和扩展分区两种，不管是哪种分区，总数不能超过4个分区 扩展分区内部可以逻辑上划分多个区域，但是在分区表中都算在一个分区内 如果作为系统盘，必须要设置一个激活分区，用于存放系统的引导文件  GPT 管理硬盘大小不能超过18EB，目前人类还没制造出单块这么大的硬盘 理论上支持无限分区，在win10系统上，最多可以分128个分区 如果作为系统盘，必须要创">
+<meta property="og:type" content="article">
+<meta property="og:title" content="磁盘管理">
+<meta property="og:url" content="http://example.com/2025/10/23/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="分区表MBR 管理的硬盘大小不能超过2T 有主分区和扩展分区两种，不管是哪种分区，总数不能超过4个分区 扩展分区内部可以逻辑上划分多个区域，但是在分区表中都算在一个分区内 如果作为系统盘，必须要设置一个激活分区，用于存放系统的引导文件  GPT 管理硬盘大小不能超过18EB，目前人类还没制造出单块这么大的硬盘 理论上支持无限分区，在win10系统上，最多可以分128个分区 如果作为系统盘，必须要创">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-24T09:55:18.815Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>磁盘管理 - 我的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="磁盘管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-23 00:00" pubdate>
+          2025年10月23日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">磁盘管理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="分区表"><a href="#分区表" class="headerlink" title="分区表"></a>分区表</h1><h2 id="MBR"><a href="#MBR" class="headerlink" title="MBR"></a>MBR</h2><ul>
+<li>管理的硬盘大小不能超过2T</li>
+<li>有主分区和扩展分区两种，不管是哪种分区，总数不能超过4个分区</li>
+<li>扩展分区内部可以逻辑上划分多个区域，但是在分区表中都算在一个分区内</li>
+<li>如果作为系统盘，必须要设置一个激活分区，用于存放系统的引导文件</li>
+</ul>
+<h2 id="GPT"><a href="#GPT" class="headerlink" title="GPT"></a>GPT</h2><ul>
+<li>管理硬盘大小不能超过18EB，目前人类还没制造出单块这么大的硬盘</li>
+<li>理论上支持无限分区，在win10系统上，最多可以分128个分区</li>
+<li>如果作为系统盘，必须要创建一个EFI分区，用于存放系统的引导文件建议ESP分区512M，对齐8扇区4096字节</li>
+</ul>
+<p>电脑启动的时候：<br>MBR分区表会找到激活分区，从里面加载系统启动；<br>GPT分区表会查找EFI分区，没有是开不了机的，所以GPT分区表情况下需要建立ESP，MSR分区。<br>MSR是微软保留的引导分区，分区一般不会坏因此一般不需要。<br>ESP建立512MB，对齐到扇区整数倍是指一次读写几个扇区（例如新建个txt只写一个字符，依旧占用4K，除非越写越大超过4K，占4K的整数倍），并不是越大越好也不是越小越好，根据实际需求，一般是4KB。</p>
+<h1 id="管理分区"><a href="#管理分区" class="headerlink" title="管理分区"></a>管理分区</h1><ul>
+<li><p>lsblk 查看磁盘情况</p>
+</li>
+<li><p>创建分区命令<br>– fdisk  管理MBR分区<br>– gdisk  管理GPT分区<br>– parted 高级分区操作</p>
+</li>
+<li><p>partprobe：重新设置内存中的内核分区表版本，在管理分区的命令没有生效的全的情况下，可以执行此命令，重新刷新一下，重新加载分区</p>
+</li>
+</ul>
+<h2 id="parted"><a href="#parted" class="headerlink" title="parted"></a>parted</h2><ul>
+<li><p>parted的操作都是实时生效的，小心使用</p>
+</li>
+<li><p>格式：parted [选项]… [设备 [命令 [参数]…]…]</p>
+</li>
+<li><p>操作命令：</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cp</span> [FROM-DEVICE] FROM-MINOR TO-MINOR           <span class="hljs-comment">#将文件系统复制到另一个分区 </span><br><span class="hljs-built_in">help</span> [COMMAND]                                 <span class="hljs-comment">#打印通用求助信息，或关于 COMMAND 的信息 </span><br>mklabel 标签类型                               <span class="hljs-comment">#创建新的磁盘标签 (分区表) </span><br>mkfs MINOR 文件系统类型                        <span class="hljs-comment">#在 MINOR 创建类型为“文件系统类型”的文件系统 </span><br>mkpart 分区类型 [文件系统类型] 起始点 终止点   <span class="hljs-comment">#创建一个分区 </span><br>mkpartfs 分区类型 文件系统类型 起始点 终止点   <span class="hljs-comment">#创建一个带有文件系统的分区 </span><br>move MINOR 起始点 终止点                       <span class="hljs-comment">#移动编号为 MINOR 的分区 </span><br>name MINOR 名称                                <span class="hljs-comment">#将编号为 MINOR 的分区命名为“名称” </span><br><span class="hljs-built_in">print</span> [MINOR]                                  <span class="hljs-comment">#打印分区表，或者分区 </span><br>quit                                           <span class="hljs-comment">#退出程序 </span><br>rescue 起始点 终止点                           <span class="hljs-comment">#挽救临近“起始点”、“终止点”的遗失的分区 </span><br>resize MINOR 起始点 终止点                     <span class="hljs-comment">#改变位于编号为 MINOR 的分区中文件系统的大小 </span><br><span class="hljs-built_in">rm</span> MINOR                                       <span class="hljs-comment">#删除编号为 MINOR 的分区 </span><br><span class="hljs-keyword">select</span> 设备                                    <span class="hljs-comment">#选择要编辑的设备 </span><br><span class="hljs-built_in">set</span> MINOR 标志 状态                            <span class="hljs-comment">#改变编号为 MINOR 的分区的标志</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查看分区情况</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">parted /dev/nvme0n1 <span class="hljs-built_in">print</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>设置磁盘的分区表</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# parted /dev/nvme0n2 mklabel gpt/msdos<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>对磁盘进行分区</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# parted /dev/nvme0n2 mkpart primary 1 1G<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>删除分区</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# parted /dev/nvme0n2 <span class="hljs-built_in">rm</span> 1<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>修改磁盘为mbr分区，注意会丢失所有数据</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# parted /dev/nvme0n2 mklabel msdos<br>警告: The existing disk label on /dev/nvme0n2 will be destroyed and all data on this disk will be lost. Do<br>you want to <span class="hljs-built_in">continue</span>?<br>是/Yes/否/No? <span class="hljs-built_in">yes</span><br>信息: You may need to update /etc/fstab.<br></code></pre></td></tr></table></figure>
+
+<h2 id="fdisk"><a href="#fdisk" class="headerlink" title="fdisk"></a>fdisk</h2><p>管理磁盘中MBR分区<br>fdisk [磁盘名称] ：指定要操作的磁盘名称,进入一个交互式的页面</p>
+<p>fdisk命令中的参数以及作用</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>m</td>
+<td>查看全部可用的参数</td>
+</tr>
+<tr>
+<td>n</td>
+<td>添加新的分区</td>
+</tr>
+<tr>
+<td>d</td>
+<td>删除某个分区信息</td>
+</tr>
+<tr>
+<td>l</td>
+<td>列出所有可用的分区类型</td>
+</tr>
+<tr>
+<td>t</td>
+<td>改变某个分区的类型</td>
+</tr>
+<tr>
+<td>p</td>
+<td>查看分区信息</td>
+</tr>
+<tr>
+<td>w</td>
+<td>保存并退出</td>
+</tr>
+<tr>
+<td>q</td>
+<td>不保存直接退出</td>
+</tr>
+</tbody></table>
+<h2 id="gdisk"><a href="#gdisk" class="headerlink" title="gdisk"></a>gdisk</h2><p>管理磁盘中的GPT分区<br>使用方式和选项与fdisk中几乎一致</p>
+<h1 id="磁盘结构与磁盘划分"><a href="#磁盘结构与磁盘划分" class="headerlink" title="磁盘结构与磁盘划分"></a>磁盘结构与磁盘划分</h1><p>Linux系统中常见的目录名称以及相应内容</p>
+<table>
+<thead>
+<tr>
+<th>目录名称</th>
+<th>应放置文件的内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;boot</td>
+<td>开机所需文件—内核、开机菜单以及所需配置文件等</td>
+</tr>
+<tr>
+<td>&#x2F;dev</td>
+<td>以文件形式存放任何设备与接口</td>
+</tr>
+<tr>
+<td>&#x2F;etc</td>
+<td>配置文件</td>
+</tr>
+<tr>
+<td>&#x2F;home</td>
+<td>用户家目录</td>
+</tr>
+<tr>
+<td>&#x2F;bin</td>
+<td>存放单用户模式下还可以操作的命令</td>
+</tr>
+<tr>
+<td>&#x2F;lib</td>
+<td>开机时用到的函数库，以及&#x2F;bin与&#x2F;sbin下面的命令要调用的函数</td>
+</tr>
+<tr>
+<td>&#x2F;sbin</td>
+<td>开机过程中需要的命令</td>
+</tr>
+<tr>
+<td>&#x2F;media</td>
+<td>用于挂载设备文件的目录</td>
+</tr>
+<tr>
+<td>&#x2F;opt</td>
+<td>放置第三方的软件</td>
+</tr>
+<tr>
+<td>&#x2F;root</td>
+<td>系统管理员的家目录</td>
+</tr>
+<tr>
+<td>&#x2F;srv</td>
+<td>一些网络服务的数据文件目录</td>
+</tr>
+<tr>
+<td>&#x2F;tmp</td>
+<td>任何人均可使用的“共享”临时目录</td>
+</tr>
+<tr>
+<td>&#x2F;proc</td>
+<td>虚拟文件系统，例如系统内核、进程、外部设备及网络状态等</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;local</td>
+<td>用户自行安装的软件</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;sbin</td>
+<td>Linux系统开机时不会使用到的软件&#x2F;命令&#x2F;脚本</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;share</td>
+<td>帮助与说明文件，也可放置共享文件</td>
+</tr>
+<tr>
+<td>&#x2F;var</td>
+<td>主要存放经常变化的文件，如日志文件、数据文件</td>
+</tr>
+<tr>
+<td>&#x2F;lost+found</td>
+<td>当文件系统发生错误时，将一些丢失的文件片段存放在这里</td>
+</tr>
+</tbody></table>
+<p>表示路径的方式：<br>绝对路径指的是从根目录（&#x2F;）开始写起的文件或目录名称<br>相对路径则指的是相对于当前路径的写法</p>
+<h1 id="物理设备的命令规则"><a href="#物理设备的命令规则" class="headerlink" title="物理设备的命令规则"></a>物理设备的命令规则</h1><p>常见的硬件设备及其文件名称</p>
+<table>
+<thead>
+<tr>
+<th>硬件设备</th>
+<th>文件名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IDE设备</td>
+<td>&#x2F;dev&#x2F;hd[a-d]</td>
+</tr>
+<tr>
+<td>SCSI&#x2F;SATA&#x2F;U盘</td>
+<td>&#x2F;dev&#x2F;sd[a-p]</td>
+</tr>
+<tr>
+<td>软驱</td>
+<td>&#x2F;dev&#x2F;fd[0-1]</td>
+</tr>
+<tr>
+<td>打印机</td>
+<td>&#x2F;dev&#x2F;lp[0-15]</td>
+</tr>
+<tr>
+<td>光驱</td>
+<td>&#x2F;dev&#x2F;cdrom</td>
+</tr>
+<tr>
+<td>鼠标</td>
+<td>&#x2F;dev&#x2F;mouse</td>
+</tr>
+<tr>
+<td>磁带机</td>
+<td>&#x2F;dev&#x2F;st0或&#x2F;dev&#x2F;ht0</td>
+</tr>
+</tbody></table>
+<h1 id="文件系统与数据资料"><a href="#文件系统与数据资料" class="headerlink" title="文件系统与数据资料"></a>文件系统与数据资料</h1><p>当我们对一块硬盘分区好了以后，接下来我们还要做一件事情，就是我们要对这个分区做一个规定。也可以理解为，当我们要在这个分区上面存放数据的时候，应该按照什么样的规律存放，或者是读取的时候，应该按照什么样的规律读取。</p>
+<p>这样对磁盘或者分区的规定，我们就称之为文件系统。</p>
+<p>文件系统的作用是合理规划硬盘，以保证用户正常的使用需求。Linux系统支持数十种的文件系统。但是从大的角度上来看，其实主要分为日志式文件系统和索引式文件系统两种。</p>
+<h2 id="日志式文件系统"><a href="#日志式文件系统" class="headerlink" title="日志式文件系统"></a>日志式文件系统</h2><p>通过inode表获取存储的位置，常见的日志式文件系统有ext4、xfs、ntfs等等。</p>
+<h2 id="索引式文件系统"><a href="#索引式文件系统" class="headerlink" title="索引式文件系统"></a>索引式文件系统</h2><p>通过索引表获取存储的位置，常见的索引式文件系统有fat12、fat16、fat32等等。</p>
+<h2 id="格式化后发生的事情"><a href="#格式化后发生的事情" class="headerlink" title="格式化后发生的事情"></a>格式化后发生的事情</h2><ul>
+<li>日志式文件系统先干掉inode表，索引式文件系统先干掉第一个索引，表示空间可用。</li>
+<li>Linux创建一个硬盘地图’superblock’，记录此filesystem 的整体信息，包括inode&#x2F;block的总量、使用量、剩余量， 以及文件系统的格式与相关信息等；</li>
+</ul>
+<p>– inode：记录文件的属性，一个文件占用一个inode，同时记录此文件的数据所在的block 号码，默认一个inode表格128字节，一个block记录消耗4B，记录满了后会新建inode用于扩展。<br>— 该文件的访问权限（read、write、execute）；<br>— 该文件的所有者与所属组（owner、group）；<br>— 该文件的大小（size）；<br>— 该文件的创建或内容修改时间（ctime）；<br>— 该文件的最后一次访问时间（atime）；<br>— 该文件的修改时间（mtime）；<br>— 文件的特殊权限（SUID、SGID、SBIT）；<br>— 该文件的真实数据地址（point）。<br>– block：用于存储数据</p>
+<h2 id="mkfs"><a href="#mkfs" class="headerlink" title="mkfs"></a>mkfs</h2><p>Linux mkfs（英文全拼：make file system）命令用于在特定的分区上建立 linux 文件系统。<br>mkfs<br>[-V] [-t fstype] [fs-options] filesys [blocks]</p>
+<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><ul>
+<li>device ： 预备检查的硬盘分区，例如：&#x2F;dev&#x2F;nvme0n1p1</li>
+<li>-V : 详细显示模式</li>
+<li>-c : 在制做档案系统前，检查该partition 是否有坏轨</li>
+<li>-l bad_blocks_file : 将有坏轨的block资料加到 bad_blocks_file 里面</li>
+<li>block : 给定 block 的大小</li>
+</ul>
+<h2 id="mount挂载"><a href="#mount挂载" class="headerlink" title="mount挂载"></a>mount挂载</h2><p>挂载文件系统mount 文件系统 挂载目录</p>
+<p>mount命令中的参数以及作用</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-a</td>
+<td>挂载所有在&#x2F;etc&#x2F;fstab中定义的文件系统</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>指定文件系统的类型</td>
+</tr>
+</tbody></table>
+<p>临时挂载文件系统<br>系统在重启后挂载就会失效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@node-1 ~]# <span class="hljs-built_in">mkdir</span> backup<br>[root@node-1 ~]# mount /dev/sda2 /root/backup<br></code></pre></td></tr></table></figure>
+
+<p>如果想让硬件设备和目录永久地进行自动关联，就必须把挂载信息按照指定的填写格式“设备文件 挂载目录 格式类型 权限选项 是否备份 是否自检”,写入到&#x2F;etc&#x2F;fstab文件中。<br>用于挂载信息的指定填写格式中，各字段所表示的意义:</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>设备文件</td>
+<td>一般为设备的路径+设备名称，也可以写唯一识别码（UUID，Universally Unique Identifier）</td>
+</tr>
+<tr>
+<td>挂载目录</td>
+<td>指定要挂载到的目录，需在挂载前创建好</td>
+</tr>
+<tr>
+<td>格式类型</td>
+<td>指定文件系统的格式，比如Ext3、Ext4、XFS、SWAP、iso9660（此为光盘设备）等</td>
+</tr>
+<tr>
+<td>权限选项</td>
+<td>若设置为defaults，则默认权限为：rw, suid, dev, exec, auto, nouser, async</td>
+</tr>
+<tr>
+<td>是否备份</td>
+<td>若为1则开机后使用dump进行磁盘备份，为0则不备份</td>
+</tr>
+<tr>
+<td>是否自检</td>
+<td>若为1则开机后自动进行磁盘自检，为0则不自检</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# <span class="hljs-built_in">mkdir</span> -p /mnt/volume1<br>[root@localhost ~]# mount /dev/sdb1 /mnt/volume1<br>[root@localhost ~]# <span class="hljs-built_in">df</span> -h<br>文件系统                 容量  已用  可用 已用% 挂载点<br>/dev/mapper/centos-root   47G  995M   46G    3% /<br>devtmpfs                 979M     0  979M    0% /dev<br>tmpfs                    991M     0  991M    0% /dev/shm<br>tmpfs                    991M  8.5M  982M    1% /run<br>tmpfs                    991M     0  991M    0% /sys/fs/cgroup<br>/dev/sda1               1014M  133M  882M   14% /boot<br>tmpfs                    199M     0  199M    0% /run/user/0<br>/dev/sdb1                9.1G   37M  8.6G    1% /mnt/volume1<br><span class="hljs-comment"># 先卸载sdb1</span><br>[root@localhost ~]# umount /dev/sdb1<br>[root@localhost ~]# vim /etc/fstab<br><span class="hljs-comment"># 最后一行加上</span><br>/dev/sdb1 /mnt/volume1 ext4 defaults 0 0<br><br>[root@localhost ~]# mount -a<br><span class="hljs-comment"># 测试是否正确配置，fstab上的设备挂一遍试试看，万一错了重启系统会失败。</span><br>[root@localhost ~]# <span class="hljs-built_in">df</span> -h<br>文件系统                 容量  已用  可用 已用% 挂载点<br>/dev/mapper/centos-root   47G  995M   46G    3% /<br>devtmpfs                 979M     0  979M    0% /dev<br>tmpfs                    991M     0  991M    0% /dev/shm<br>tmpfs                    991M  8.5M  982M    1% /run<br>tmpfs                    991M     0  991M    0% /sys/fs/cgroup<br>/dev/sda1               1014M  133M  882M   14% /boot<br>tmpfs                    199M     0  199M    0% /run/user/0<br>/dev/sdb1                9.1G   37M  8.6G    1% /mnt/volume1<br></code></pre></td></tr></table></figure>
+
+<h2 id="umount"><a href="#umount" class="headerlink" title="umount"></a>umount</h2><p>撤销已经挂载的设备文件umount [挂载点&#x2F;设备文件]</p>
+<p>挂载实验：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#进行了格式化后</span><br><span class="hljs-comment">#[root@localhost ~]# mkfs.ext4 /dev/sdb1</span><br><span class="hljs-comment">#未挂载sdb1前，此时file0创建在sda1上</span><br>[root@localhost ~]# <span class="hljs-built_in">mkdir</span> /mnt/disk1<br>[root@localhost ~]# <span class="hljs-built_in">touch</span> /mnt/disk1/file0<br>[root@localhost ~]# ll /mnt/disk1/<br>-rw-r--r--  1 root root 0 6月   9 19:44 file0<br><span class="hljs-comment">#挂载sdb1,file0消失</span><br>[root@localhost ~]# mount /dev/sdb1 /mnt/disk1/<br>[root@localhost ~]# ll /mnt/disk1/<br>drwx------ 2 root root 16384 6月   9 19:42 lost+found<br><span class="hljs-comment">#此时file0创建在sda1</span><br>[root@localhost ~]# <span class="hljs-built_in">touch</span> /mnt/disk1/file1<br>[root@localhost ~]# ll /mnt/disk1/<br>-rw-r--r-- 1 root root     0 6月   9 19:48 file1<br>drwx------ 2 root root 16384 6月   9 19:42 lost+found<br><span class="hljs-comment">#卸载sdb1,file1消失，file0出现</span><br>[root@localhost ~]# umount /dev/sdb1<br>[root@localhost ~]# ll /mnt/disk1/<br>-rw-r--r--  1 root root 0 6月   9 19:44 file0<br></code></pre></td></tr></table></figure>
+
+<h2 id="df"><a href="#df" class="headerlink" title="df"></a>df</h2><p>用于显示文件系统的磁盘空间使用情况</p>
+<p>常用选项</p>
+<ul>
+<li>-h：以人类可读的格式显示磁盘空间，使用K、M、G等单位。</li>
+<li>-T：显示文件系统类型。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# <span class="hljs-built_in">df</span> -h<br>文件系统                 容量  已用  可用 已用% 挂载点<br>/dev/mapper/centos-root   47G  995M   46G    3% /<br>devtmpfs                 979M     0  979M    0% /dev<br>tmpfs                    991M     0  991M    0% /dev/shm<br>tmpfs                    991M  8.5M  982M    1% /run<br>tmpfs                    991M     0  991M    0% /sys/fs/cgroup<br>/dev/sda1               1014M  133M  882M   14% /boot<br>tmpfs                    199M     0  199M    0% /run/user/0<br>/dev/sdb1                9.1G   37M  8.6G    1% /mnt/volume1<br></code></pre></td></tr></table></figure>
+
+<h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><p>查看某个目录下文件数据的占用量</p>
+<p>du [选项] [文件]</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# <span class="hljs-built_in">du</span> -sh /etc<br>23M     /etc<br></code></pre></td></tr></table></figure>
+
+<h2 id="添加交换分区"><a href="#添加交换分区" class="headerlink" title="添加交换分区"></a>添加交换分区</h2><p>SWAP（交换）分区是一种通过在硬盘中预先划分一定的空间，然后将把内存中暂时不常用的数据临时存放到硬盘中，以便腾出物理内存空间让更活跃的程序服务来使用的技术</p>
+<p>在生产环境中，交换分区的大小一般为真实物理内存的1.5～2倍</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# mkswap /dev/nvme0n2p1<br>Setting up swapspace version 1, size = 1024 MiB (1073737728 bytes)<br>no label, UUID=9d5158b3-9a30-4a0a-8167-7ee1bc9ce4f8<br>[root@localhost ~]# free -h<br>               total        used        free      shared  buff/cache   available<br>Mem:           1.7Gi       448Mi       1.2Gi       6.0Mi       201Mi       1.3Gi<br>Swap:          2.0Gi          0B       2.0Gi<br>[root@localhost ~]# swapon /dev/nvme0n2p1        <span class="hljs-comment"># 挂载swap交换分区</span><br>[root@localhost ~]# vim /etc/fstab                <span class="hljs-comment"># 写入fstab文件中永久挂载</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># /etc/fstab</span><br><span class="hljs-comment"># Created by anaconda on Sat Nov  9 02:51:16 2024</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Accessible filesystems, by reference, are maintained under &#x27;/dev/disk/&#x27;.</span><br><span class="hljs-comment"># See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># After editing this file, run &#x27;systemctl daemon-reload&#x27; to update systemd</span><br><span class="hljs-comment"># units generated from this file.</span><br><span class="hljs-comment">#</span><br>/dev/mapper/rl-root     /                       xfs     defaults        0 0<br>UUID=12fcea99-d1db-4f0a-ad86-f03129024fdb /boot                   xfs     defaults        0 0<br>/dev/mapper/rl-swap     none                    swap    defaults        0 0<br>/dev/nvme0n2p1          swap                    swap    defaults        0 0<br><br>[root@localhost ~]# free -h<br>               total        used        free      shared  buff/cache   available<br>Mem:           1.7Gi       451Mi       1.2Gi       6.0Mi       205Mi       1.3Gi<br>Swap:          3.0Gi          0B       3.0Gi<br></code></pre></td></tr></table></figure>
+
+<h1 id="磁盘容量配额"><a href="#磁盘容量配额" class="headerlink" title="磁盘容量配额"></a>磁盘容量配额</h1><p>简单理解就是可以通过磁盘配额限制某个用户能够使用多大的空间</p>
+<h2 id="quota"><a href="#quota" class="headerlink" title="quota"></a>quota</h2><h3 id="确保文件系统支持"><a href="#确保文件系统支持" class="headerlink" title="确保文件系统支持"></a>确保文件系统支持</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#检查挂载点是否支持quota配置</span><br>[root@localhost ~]# mount | grep mountpoint<br>/dev/nvme0n2p1 on /mnt/mountpoint <span class="hljs-built_in">type</span> ext4 (rw,relatime,seclabel)<br><span class="hljs-comment">#重新挂载，让文件系统支持quota配置</span><br>[root@localhost ~]# mount -o remount,usrquota,grpquota /mnt/mountpoint/<br>[root@localhost ~]# mount | grep mountpoint<br>/dev/nvme0n2p1 on /mnt/mountpoint <span class="hljs-built_in">type</span> ext4 (rw,relatime,seclabel,quota,usrquota,grpquota)<br></code></pre></td></tr></table></figure>
+
+<h3 id="安装-quota"><a href="#安装-quota" class="headerlink" title="安装 quota"></a>安装 quota</h3><p>[root@atopos ~]# yum install -y quota</p>
+<ul>
+<li>软限制：当达到软限制时会提示用户，但仍允许用户在限定的额度内继续使用。</li>
+<li>硬限制：当达到硬限制时会提示用户，且强制终止用户的操作。</li>
+</ul>
+<p>quotacheck主要参数</p>
+<ul>
+<li>-a：扫描所有在&#x2F;etc&#x2F;mtab内含有quota参数的文件系统</li>
+<li>-u：针对用户扫描文件与目录的使用情况，会新建一个aquota.user文件</li>
+<li>-g：针对用户组扫描文件与目录的使用情况，会新增一个aquota.group文件</li>
+<li>-v：显示扫描过程的信息</li>
+</ul>
+<h3 id="开启-quota"><a href="#开启-quota" class="headerlink" title="开启 quota"></a>开启 quota</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# quotacheck -avug<br>quotacheck: Your kernel probably supports ext4 quota feature but you are using external quota files. Please switch your filesystem to use ext4 quota feature as external quota files on ext4 are deprecated.<br>quotacheck: Scanning /dev/nvme0n2p1 [/mnt/mountpoint] <span class="hljs-keyword">done</span><br>quotacheck: Cannot <span class="hljs-built_in">stat</span> old user quota file /mnt/mountpoint/aquota.user: No such file or directory. Usage will not be subtracted.<br>quotacheck: Cannot <span class="hljs-built_in">stat</span> old group quota file /mnt/mountpoint/aquota.group: No such file or directory. Usage will not be subtracted.<br>quotacheck: Cannot <span class="hljs-built_in">stat</span> old user quota file /mnt/mountpoint/aquota.user: No such file or directory. Usage will not be subtracted.<br>quotacheck: Cannot <span class="hljs-built_in">stat</span> old group quota file /mnt/mountpoint/aquota.group: No such file or directory. Usage will not be subtracted.<br>quotacheck: Checked 8 directories and 15 files<br>quotacheck: Old file not found.<br>quotacheck: Old file not found.<br>[root@localhost ~]# quotaon -avug<br>quotaon: Your kernel probably supports ext4 quota feature but you are using external quota files. Please switch your filesystem to use ext4 quota feature as external quota files on ext4 are deprecated.<br>/dev/nvme0n2p1 [/mnt/mountpoint]: group quotas turned on<br>/dev/nvme0n2p1 [/mnt/mountpoint]: user quotas turned on<br></code></pre></td></tr></table></figure>
+
+<h3 id="编辑配额配置"><a href="#编辑配额配置" class="headerlink" title="编辑配额配置"></a>编辑配额配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# edquota -u user1<br><span class="hljs-comment">#可以将针对user1的限制复制给user2</span><br>[root@localhost ~]# edquota -p user1 -u user2<br><span class="hljs-comment">#查看限制情况</span><br>[root@localhost ~]# repquota -as<br>*** Report <span class="hljs-keyword">for</span> user quotas on device /dev/nvme0n2p1<br>Block grace <span class="hljs-keyword">time</span>: 7days; Inode grace <span class="hljs-keyword">time</span>: 7days<br>                        Space limits                File limits<br>User            used    soft    hard  grace    used  soft  hard  grace<br>----------------------------------------------------------------------<br>root      --     20K      0K      0K              2     0     0<br>user1     --     16K    245M    293M              4     0     0<br>user2     --     16K    245M    293M              4     0     0<br>user3     --     16K      0K      0K              4     0     0<br>user4     --     16K      0K      0K              4     0     0<br>user5     --     16K      0K      0K   <br></code></pre></td></tr></table></figure>
+<pre><code class="hljs">       4     0     0
+</code></pre>
+<p>blocks：当前用户&#x2F;组使用的磁盘空间（以1KB为单位，或者取决于文件系统的块大小）。此字段是只读的，由系统直接计算，无需手动修改。<br>soft：磁盘空间的软限制。用户&#x2F;组可以临时超过此限制，但必须在宽限期内（默认为7天）将使用率下降到软限制以下，否则会被禁止进一步使用空间。<br>hard：磁盘空间的硬限制。用户&#x2F;绝对不能超过此限制，尝试超过时会报错。<br>inodes：当前用户&#x2F;组使用的文件&#x2F;目录数。此字段是只读的，由系统直接计算，无需手动修改。<br>soft：文件数软限制。用户&#x2F;组可以临时超过此限制，但必须在宽限期内减少文件数量。<br>hard：文件数硬限制。用户&#x2F;组不能超过此限制，尝试超过时会报错。<br>如果某个字段设置为0表示没有磁盘限制</p>
+<p>测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># user1用户测试</span><br>[root@localhost ~]# su - user1<br>[user1@localhost ~]$ <span class="hljs-built_in">dd</span> <span class="hljs-keyword">if</span>=/dev/zero of=bigfile bs=10M count=50<br>nvme0n2p1: warning, user block quota exceeded.<br>nvme0n2p1: write failed, user block <span class="hljs-built_in">limit</span> reached.<br><span class="hljs-built_in">dd</span>: error writing <span class="hljs-string">&#x27;bigfile&#x27;</span>: Disk quota exceeded<br>30+0 records <span class="hljs-keyword">in</span><br>29+0 records out<br>307179520 bytes (307 MB, 293 MiB) copied, 1.1834 s, 260 MB/s<br>[user1@localhost ~]$ <span class="hljs-built_in">du</span> -sh<br>293M    .<br><br><span class="hljs-comment"># user2用户测试</span><br>[root@localhost ~]# su - user2<br>[user2@localhost ~]$ <span class="hljs-built_in">dd</span> <span class="hljs-keyword">if</span>=/dev/zero of=bigfile bs=10M count=50<br>nvme0n2p1: warning, user block quota exceeded.<br>nvme0n2p1: write failed, user block <span class="hljs-built_in">limit</span> reached.<br><span class="hljs-built_in">dd</span>: error writing <span class="hljs-string">&#x27;bigfile&#x27;</span>: Disk quota exceeded<br>30+0 records <span class="hljs-keyword">in</span><br>29+0 records out<br>307183616 bytes (307 MB, 293 MiB) copied, 1.43269 s, 214 MB/s<br>[user2@localhost ~]$ <span class="hljs-built_in">du</span> -sh<br>293M    .<br></code></pre></td></tr></table></figure>
+
+<h3 id="quota-命令"><a href="#quota-命令" class="headerlink" title="quota 命令"></a>quota 命令</h3><p>Linux quota命令用于显示磁盘已使用的空间与限制。<br>执行quota指令，可查询磁盘空间的限制，并得知已使用多少空间</p>
+<p>选项：</p>
+<ul>
+<li>-g 列出群组的磁盘空间限制。</li>
+<li>-q 简明列表，只列出超过限制的部分。</li>
+<li>-u 列出用户的磁盘空间限制。</li>
+<li>-v 显示该用户或群组，在所有挂入系统的存储设备的空间限制。</li>
+<li>-V 显示版本信息。</li>
+</ul>
+<h2 id="xfs-quota"><a href="#xfs-quota" class="headerlink" title="xfs_quota"></a>xfs_quota</h2><p>专门针对XFS文件系统来管理quota磁盘容量配额服务</p>
+<p>xfs_quota [参数] 配额 文件系统</p>
+<ul>
+<li>-c参数用于以参数的形式设置要执行的命令</li>
+<li>-x参数是专家模式</li>
+</ul>
+<h1 id="软硬方式链接"><a href="#软硬方式链接" class="headerlink" title="软硬方式链接"></a>软硬方式链接</h1><p>在Linux系统中存在硬链接和软连接两种文件。</p>
+<ul>
+<li>硬链接（hard link）：<br>可以将它理解为一个“指向原始文件inode的指针”，系统不为它分配独立的inode和文件。所以，硬链接文件与原始文件其实是同一个文件，只是名字不同。我们每添加一个硬链接，该文件的inode连接数就会增加1；而且只有当该文件的inode连接数为0时，才算彻底将它删除。换言之，由于硬链接实际上是指向原文件inode的指针，因此即便原始文件被删除，依然可以通过硬链接文件来访问。需要注意的是，由于技术的局限性，我们不能跨分区对目录文件进行链接。</li>
+<li>软链接（也称为符号链接[symbolic link]）：<br>仅仅包含所链接文件的路径名，因此能链接目录文件，也可以跨越文件系统进行链接。但是，当原始文件被删除后，链接文件也将失效，从这一点上来说与Windows系统中的“快捷方式”具有一样的性质。<br>软链接文件和硬链接文件的区别是：</li>
+<li>当原文件发生修改时，软连接文件和硬连接文件都会被修改。</li>
+<li>当软连接文件和硬链接文件发生修改时，原文件也会被修改。</li>
+<li>当软连接文件和硬链接文件被删除时，原文件不受影响。</li>
+<li>原文件删除时，软连接失效，硬链接正常使用。</li>
+<li>软链接文件可以跨分区跨文件系统创建，硬链接文件不可以。</li>
+</ul>
+<h2 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h2><p>用于创建链接文件</p>
+<p>ln [选项] 目标</p>
+<p>ln命令中可用的参数以及作用</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-s</td>
+<td>创建“符号链接”（如果不带-s参数，则默认创建硬链接）</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>强制创建文件或目录的链接</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>覆盖前先询问</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>显示创建链接的过程</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;hello linux&quot;</span> &gt; testfile<br>[root@localhost ~]# <span class="hljs-built_in">ln</span> -s testfile linkfile            <span class="hljs-comment"># 创建软连接</span><br>[root@localhost ~]# ll<br>total 8<br>-rw-------. 1 root root 905 Nov  9 10:57 anaconda-ks.cfg<br>lrwxrwxrwx. 1 root root   8 Nov 15 20:41 linkfile -&gt; testfile<br>-rw-r--r--. 1 root root  12 Nov 15 20:40 testfile<br>[root@localhost ~]# <span class="hljs-built_in">cat</span> linkfile<br>hello linux<br>[root@localhost ~]# <span class="hljs-built_in">ls</span> -l linkfile<br>lrwxrwxrwx. 1 root root 8 Nov 15 20:41 linkfile -&gt; testfile<br>[root@localhost ~]# <span class="hljs-built_in">rm</span> -f testfile<br>[root@localhost ~]# <span class="hljs-built_in">cat</span> linkfile<br><span class="hljs-built_in">cat</span>: linkfile: No such file or directory<br>硬链接演示<br>[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;hello linux&quot;</span> &gt; testfile<br>[root@localhost ~]# <span class="hljs-built_in">ln</span> testfile linkfile<br>[root@localhost ~]# <span class="hljs-built_in">cat</span> linkfile<br>hello linux<br>[root@localhost ~]# <span class="hljs-built_in">ls</span> -l linkfile<br>-rw-r--r--. 2 root root 12 Nov 15 20:42 linkfile<br>[root@localhost ~]# <span class="hljs-built_in">rm</span> -f testfile<br>[root@localhost ~]# <span class="hljs-built_in">cat</span> linkfile<br>hello linux<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Linux/Linux%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="category-chain-item">Linux基础部分</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>磁盘管理</div>
+      <div>http://example.com/2025/10/23/磁盘管理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年10月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/10/25/%E9%98%B2%E7%81%AB%E5%A2%99%E4%B8%8Eselinux/" title="防火墙与selinux">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">防火墙与selinux</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/21/%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" title="文件权限管理">
+                        <span class="hidden-mobile">文件权限管理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

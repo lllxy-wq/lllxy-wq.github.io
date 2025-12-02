@@ -19,19 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
-<meta property="og:title" content="两数之和 - 从双重循环到哈希字典的优化">
-<meta property="og:url" content="http://example.com/2025/09/23/2025.9.23/index.html">
+    <meta name="description" content="I&#x2F;O重定向I&#x2F;O对应系统中的输入(input)和输出(output) 其中输入可以是键盘输入，鼠标输入等等。同样输出也可以输出到终端中或者文件中 对于Linux系统，我们常见的输入输出的类型有：  标准输入 0 标准正确输出 1 标准错误输出 2  File Descriptors(FD，文件描述符 )   Number Channel name Description De">
+<meta property="og:type" content="article">
+<meta property="og:title" content="管道与重定向">
+<meta property="og:url" content="http://example.com/2025/10/26/%E7%AE%A1%E9%81%93%E4%B8%8E%E9%87%8D%E5%AE%9A%E5%90%91/index.html">
 <meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="I&#x2F;O重定向I&#x2F;O对应系统中的输入(input)和输出(output) 其中输入可以是键盘输入，鼠标输入等等。同样输出也可以输出到终端中或者文件中 对于Linux系统，我们常见的输入输出的类型有：  标准输入 0 标准正确输出 1 标准错误输出 2  File Descriptors(FD，文件描述符 )   Number Channel name Description De">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-09-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-23T13:31:27.700Z">
+<meta property="article:published_time" content="2025-10-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-26T07:47:09.124Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>两数之和 - 从双重循环到哈希字典的优化 - 我的博客</title>
+  <title>管道与重定向 - 我的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -185,7 +187,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="两数之和 - 从双重循环到哈希字典的优化"></span>
+            <span id="subtitle" data-typed-text="管道与重定向"></span>
           
         </div>
 
@@ -196,8 +198,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-09-23 00:00" pubdate>
-          2025年9月23日 凌晨
+        <time datetime="2025-10-26 00:00" pubdate>
+          2025年10月26日 凌晨
         </time>
       </span>
     
@@ -208,7 +210,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          455 字
         
       </span>
     
@@ -219,7 +221,7 @@
         
         
         
-          1 分钟
+          4 分钟
         
       </span>
     
@@ -256,12 +258,84 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">两数之和 - 从双重循环到哈希字典的优化</h1>
+            <h1 id="seo-header">管道与重定向</h1>
             
             
               <div class="markdown-body">
                 
-                
+                <h1 id="I-O重定向"><a href="#I-O重定向" class="headerlink" title="I&#x2F;O重定向"></a>I&#x2F;O重定向</h1><p>I&#x2F;O对应系统中的输入(input)和输出(output)</p>
+<p>其中输入可以是键盘输入，鼠标输入等等。同样输出也可以输出到终端中或者文件中</p>
+<p>对于Linux系统，我们常见的输入输出的类型有：</p>
+<ul>
+<li>标准输入 0</li>
+<li>标准正确输出 1</li>
+<li>标准错误输出 2</li>
+</ul>
+<h2 id="File-Descriptors-FD，文件描述符"><a href="#File-Descriptors-FD，文件描述符" class="headerlink" title="File Descriptors(FD，文件描述符 )"></a>File Descriptors(FD，文件描述符 )</h2><table>
+<thead>
+<tr>
+<th>Number</th>
+<th>Channel name</th>
+<th>Description</th>
+<th>Default connection</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>stdin</td>
+<td>标准输入</td>
+<td>键盘</td>
+<td>只读</td>
+</tr>
+<tr>
+<td>1</td>
+<td>stdout</td>
+<td>标准输出</td>
+<td>命令行</td>
+<td>只写</td>
+</tr>
+<tr>
+<td>2</td>
+<td>stderr</td>
+<td>标准错误</td>
+<td>命令行</td>
+<td>只写</td>
+</tr>
+<tr>
+<td>3+</td>
+<td>filename</td>
+<td>其他文件</td>
+<td>none</td>
+<td>读and&#x2F;or写</td>
+</tr>
+</tbody></table>
+<p>文件描述符是操作系统内部用于管理和跟踪打开的文件和I&#x2F;O资源。比如当我们打开一个文件的时候，操作系统会分配一个文件描述符给这个文件，我们可以通过这个文件描述符来对文件进行读写等操作。</p>
+<p>每个进程默认打开三个文件描述符：</p>
+<ul>
+<li>0：标准输入（stdin）</li>
+<li>1：标准输出（stdout）</li>
+<li>2：标准错误输出（stderr）</li>
+</ul>
+<h1 id="输出重定向-覆盖-追加"><a href="#输出重定向-覆盖-追加" class="headerlink" title="输出重定向(覆盖,追加)"></a>输出重定向(覆盖,追加)</h1><ul>
+<li><blockquote>
+<p>：覆盖重定向</p>
+</blockquote>
+</li>
+<li><blockquote>
+<blockquote>
+<p>：追加重定向</p>
+</blockquote>
+</blockquote>
+</li>
+<li>1&gt;：覆盖重定向正确的输出数据流</li>
+<li>1&gt;&gt;：追加重定向正确的输出数据流</li>
+<li>2&gt;：覆盖重定向错误输出数据流</li>
+<li>2&gt;&gt;：追加重定向错误输出数据流</li>
+</ul>
+<h1 id="输入重定向"><a href="#输入重定向" class="headerlink" title="输入重定向"></a>输入重定向</h1><p>标准输入：&lt; 等价 0&lt;</p>
+<h1 id="进程管道"><a href="#进程管道" class="headerlink" title="进程管道"></a>进程管道</h1><p>用法：command1 | command2 | command3 | ….</p>
+<h1 id="tee管道"><a href="#tee管道" class="headerlink" title="tee管道"></a>tee管道</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# <span class="hljs-built_in">du</span> -h . | <span class="hljs-built_in">sort</span> -hr | <span class="hljs-built_in">tee</span> file_sizes.txt<br>44K     .<br>0       ./dir1<br>0       ./dir<br><span class="hljs-comment">#使用 du 命令列出当前目录下的文件大小,然后通过管道传递给 sort 命令进行降序排序。最后使用 tee 命令将排序结果同时输出到终端和 file_sizes.txt 文件中。这样既可以在终端查看结果,也可以保存一份供后续分析使用</span><br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -284,7 +358,7 @@
   
     <span>></span>
     
-  <a href="/categories/Linux/Linux%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86%EF%BC%8C%E5%88%9D%E5%A7%8Bshell/" class="category-chain-item">Linux基础部分，初始shell</a>
+  <a href="/categories/Linux/Linux%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="category-chain-item">Linux基础部分</a>
   
   
 
@@ -306,8 +380,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>两数之和 - 从双重循环到哈希字典的优化</div>
-      <div>http://example.com/2025/09/23/2025.9.23/</div>
+      <div>管道与重定向</div>
+      <div>http://example.com/2025/10/26/管道与重定向/</div>
     </div>
     <div class="license-meta">
       
@@ -319,7 +393,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年9月23日</div>
+          <div>2025年10月26日</div>
         </div>
       
       
@@ -351,9 +425,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/09/25/Linux%E5%91%BD%E4%BB%A4%E8%A1%8C/" title="Linux命令行">
+                      <a href="/2025/10/28/Samba%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB/" title="Samba文件共享">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linux命令行</span>
+                        <span class="hidden-mobile">Samba文件共享</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -361,8 +435,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/09/21/2025.9.21/" title="两数之和 - 从双重循环到哈希字典的优化">
-                        <span class="hidden-mobile">两数之和 - 从双重循环到哈希字典的优化</span>
+                      <a href="/2025/10/26/%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%97%A5%E5%BF%97/" title="计划任务与日志">
+                        <span class="hidden-mobile">计划任务与日志</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

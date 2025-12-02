@@ -1,0 +1,1086 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/Cynthia.png">
+  <link rel="icon" href="/img/Cynthia.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="防火墙相关概念主要作用：保护内部的网络、主机、服务的安全等我们常听到的防火墙有很多不同的类型，从大的角度来看，主要是分为硬件防火墙和软件防火墙。 软件防火墙：软件防火墙就是通过软件来对数据包，流量请求进行过滤等，属于从软件层面保护系统的安全。如我们熟知的360，金山毒霸，火绒安全等等。当然防火墙除了软件及硬件的分类，也可以对数据封包的取得方式来分类，可分为代理服务器（Proxy）及封包过滤机制（I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="防火墙与selinux">
+<meta property="og:url" content="http://example.com/2025/10/25/%E9%98%B2%E7%81%AB%E5%A2%99%E4%B8%8Eselinux/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="防火墙相关概念主要作用：保护内部的网络、主机、服务的安全等我们常听到的防火墙有很多不同的类型，从大的角度来看，主要是分为硬件防火墙和软件防火墙。 软件防火墙：软件防火墙就是通过软件来对数据包，流量请求进行过滤等，属于从软件层面保护系统的安全。如我们熟知的360，金山毒霸，火绒安全等等。当然防火墙除了软件及硬件的分类，也可以对数据封包的取得方式来分类，可分为代理服务器（Proxy）及封包过滤机制（I">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-26T06:26:22.719Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>防火墙与selinux - 我的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="防火墙与selinux"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-25 00:00" pubdate>
+          2025年10月25日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          66 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">防火墙与selinux</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="防火墙相关概念"><a href="#防火墙相关概念" class="headerlink" title="防火墙相关概念"></a>防火墙相关概念</h1><p>主要作用：保护内部的网络、主机、服务的安全等<br>我们常听到的防火墙有很多不同的类型，从大的角度来看，主要是分为硬件防火墙和软件防火墙。</p>
+<p>软件防火墙：<br>软件防火墙就是通过软件来对数据包，流量请求进行过滤等，属于从软件层面保护系统的安全。如我们熟知的360，金山毒霸，火绒安全等等。<br>当然防火墙除了软件及硬件的分类，也可以对数据封包的取得方式来分类，可分为代理服务器（Proxy）及封包过滤机制（IP Filter）。</p>
+<ul>
+<li>代理服务<br>– 是一种网络服务，通常就架设在路由上面，可完整的掌控局域网的对外连接。</li>
+<li>IP Filter<br>– 这种方式可以直接分析最底层的封包表头数据来进行过滤，所以包括 MAC地址, IP, TCP, UDP, ICMP 等封包的信息都可以进行过滤分析的功能，用途非常广泛。</li>
+</ul>
+<p>相较于企业内网，外部的公网环境更加恶劣，罪恶丛生。在公网与企业内网之间充当保护屏障的防火墙虽然有软件或硬件之分，但主要功能都是依据策略对穿越防火墙自身的流量进行过滤。防火墙策略可以基于流量的源目地址、端口号、协议、应用等信息来定制，然后防火墙使用预先定制的策略规则监控出入的流量，若流量与某一条策略规则相匹配，则执行相应的处理，反之则丢弃。这样一来，就可以保证仅有合法的流量在企业内网和外部公网之间流动了</p>
+<h1 id="RHEL-Centos系统"><a href="#RHEL-Centos系统" class="headerlink" title="RHEL&#x2F;Centos系统"></a>RHEL&#x2F;Centos系统</h1><p>对于RHEL、Centos等红帽系Linux操作系统，我们常用到的防火墙软件主要有iptables和firewalld</p>
+<ul>
+<li><p>iptables:<br>– iptables 是 Linux 默认的防火墙管理工具,它是基于命令行的。<br>– iptables 使用规则表(tables)和规则链(chains)的方式来控制网络数据包的流向和处理。<br>– iptables 提供了强大的灵活性和细粒度的控制,可以根据数据包的各种属性进行复杂的过滤和转发操作。<br>– iptables 的配置相对比较复杂,需要对防火墙的工作原理有一定的了解。</p>
+</li>
+<li><p>firewalld:<br>– firewalld 是 RHEL&#x2F;CentOS 7 及以后版本中引入的动态防火墙管理工具。<br>– firewalld 采用区域(zones)和服务(services)的概念来管理防火墙规则,相比 iptables 更加简单和易用。<br>– firewalld 支持动态更新防火墙规则,无需重启服务即可生效,这对于需要经常调整防火墙的场景很有帮助。<br>– firewalld 提供了图形化的管理界面,方便管理员进行配置和管理。</p>
+</li>
+</ul>
+<p>不过，对于Linux而言，其实Iptables和firewalld服务不是真正的防火墙，只是用来定义防火墙规则功能的”防火墙管理工具”，将定义好的规则交由内核中的netfilter即网络过滤器来读取，从而真正实现防火墙功能。</p>
+<h1 id="iptables"><a href="#iptables" class="headerlink" title="iptables"></a>iptables</h1><p>iptables过滤数据包的方式：</p>
+<ul>
+<li>允许&#x2F;拒绝让 Internet 的封包进入 Linux 主机的某些 port</li>
+<li>允许&#x2F;拒绝让某些来源 IP 的封包进入</li>
+<li>允许&#x2F;拒绝让带有某些特殊标志( flag )的封包进入</li>
+<li>分析硬件地址(MAC)来提供服务</li>
+</ul>
+<h2 id="五链"><a href="#五链" class="headerlink" title="五链"></a>五链</h2><p>iptables命令中设置数据过滤或处理数据包的策略叫做规则，将多个规则合成一个链，叫规则链。规则链则依据处理数据包的位置不同分类：</p>
+<ul>
+<li>PREROUTING 在进行路由判断之前所要进行的规则(DNAT&#x2F;REDIRECT)</li>
+<li>INPUT 处理入站的数据包</li>
+<li>OUTPUT 处理出站的数据包</li>
+<li>FORWARD 处理转发的数据包</li>
+<li>POSTROUTING 在进行路由判断之后所要进行的规则(SNAT&#x2F;MASQUERADE)</li>
+</ul>
+<h2 id="四表"><a href="#四表" class="headerlink" title="四表"></a>四表</h2><p>iptables中的规则表是用于容纳规则链，规则表默认是允许状态的，那么规则链就是设置被禁止的规则，而反之如果规则表是禁止状态的，那么规则链就是设置被允许的规则。</p>
+<ul>
+<li>raw表 确定是否对该数据包进行状态跟踪</li>
+<li>mangle表 为数据包设置标记（较少使用）</li>
+<li>nat表 修改数据包中的源、目标IP地址或端口</li>
+<li>filter表 确定是否放行该数据包（过滤）</li>
+</ul>
+<p>规则链的先后顺序:</p>
+<ul>
+<li>入站顺序<br>PREROUTING→INPUT<br>-出站顺序<br>OUTPUT→POSTROUTING</li>
+<li>转发顺序<br>PREROUTING→FORWARD→POSTROUTING</li>
+</ul>
+<p>基本选项和用法<br>选项</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-P</td>
+<td>设置默认策略:iptables -P INPUT (DROP\	ACCEPT)类似于黑白名单</td>
+</tr>
+<tr>
+<td>-F</td>
+<td>清空规则链</td>
+</tr>
+<tr>
+<td>-L</td>
+<td>查看规则链</td>
+</tr>
+<tr>
+<td>-A</td>
+<td>在规则链的末尾加入新规则</td>
+</tr>
+<tr>
+<td>-I num</td>
+<td>在规则链的头部加入新规则</td>
+</tr>
+<tr>
+<td>-D num</td>
+<td>删除某一条规则</td>
+</tr>
+<tr>
+<td>-j</td>
+<td>指定动作</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>匹配来源地址IP&#x2F;MASK，加叹号”!”表示除这个IP外。</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>匹配目标地址</td>
+</tr>
+<tr>
+<td>-i 网卡名称</td>
+<td>匹配从这块网卡流入的数据</td>
+</tr>
+<tr>
+<td>-o 网卡名称</td>
+<td>匹配从这块网卡流出的数据</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>匹配协议,如tcp,udp,icmp</td>
+</tr>
+<tr>
+<td>–dports num</td>
+<td>匹配目标端口号</td>
+</tr>
+<tr>
+<td>–sports num</td>
+<td>匹配来源端口号</td>
+</tr>
+<tr>
+<td>为了防止firewalld与iptables的冲突，建议在学习iptables的时候，先关闭firewalld</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="iptables规则说明"><a href="#iptables规则说明" class="headerlink" title="iptables规则说明"></a>iptables规则说明</h2><p>规则：根据指定的匹配条件来尝试匹配每个经流“关卡”的报文，一旦匹配成功，则由规则后面指定的处理动作进行处理</p>
+<ul>
+<li><p>匹配条件<br>– 基本匹配条件：sip、dip<br>– 扩展匹配条件：sport、dport<br>– 扩展条件也是条件的一部分，只不过使用的时候需要用-m参数声明对应的模块</p>
+</li>
+<li><p>处理动作-j<br>– accept：接受<br>– drop：丢弃<br>– reject：拒绝<br>– snat：源地址转换，解决内网用户同一个公网地址上上网的问题<br>– masquerade：是snat的一种特殊形式，使用动态的、临时会变的ip上<br>– dnat：目标地址转换<br>– redirect：在本机作端口映射<br>– log：记录日志，&#x2F;var&#x2F;log&#x2F;messages文件记录日志信息，然后将数据包传递给下一条规则</p>
+</li>
+</ul>
+<h2 id="iptables高级用法"><a href="#iptables高级用法" class="headerlink" title="iptables高级用法"></a>iptables高级用法</h2><ul>
+<li>-t table指定表<br>– raw<br>– mangle<br>– nat<br>– filter 默认</li>
+<li>-A：添加规则，后面更上你要添加到哪个链上</li>
+<li>-j：设置处理策略<br>– accept：接受<br>– drop：丢弃<br>– reject：拒绝</li>
+<li>-s：指定数据包的来源地址</li>
+<li>-p：指定数据包协议类型<br>– tcp<br>– udp<br>– icmp<br>……</li>
+</ul>
+<h3 id="增加规则"><a href="#增加规则" class="headerlink" title="增加规则"></a>增加规则</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在虚拟机上屏蔽来自我们物理机的ping包，注意物理机的IP的地址为：192.168.xxx.1</span><br><span class="hljs-comment"># ping命令是基于icmp协议的，所以这里对类型为icmp协议的数据包进行丢弃</span><br>[root@localhost ~]# iptables -A INPUT -s 192.168.88.1 -p icmp -j DROP<br><br>`其他用法`<br>[root@localhost ~]# iptables -A INPUT -s 192.168.88.100 -j ACCEPT<br><span class="hljs-comment"># 目标来自 192.168.88.100 这个 IP 的封包都予以接受</span><br>[root@localhost ~]# iptables -A INPUT -s 192.168.88.0/24 -j ACCEPT<br>[root@localhost ~]# iptables -A INPUT -s 192.168.88.10 -j DROP<br><span class="hljs-comment"># 192.168.88.0/24 可接受，但 192.168.88.10 丢弃</span><br></code></pre></td></tr></table></figure>
+<p>INPUT 链：处理目标是本机的数据包。<br>OUTPUT 链：处理从本机发出的数据包。<br>要阻止一个通信，您需要想清楚是要阻断请求还是回复，然后选择正确的链。<br>匹配规则是从上往下匹配的</p>
+<p>屏蔽Linux系统中的远程链接服务（sshd），使得我们无法通过MobaXterm连接到虚拟机上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# iptables -A INPUT -p tcp --dport 22 -j REJECT<br><span class="hljs-comment"># ssh服务所用的协议类型为tcp协议，端口号为22</span><br><span class="hljs-comment"># 所以我们将来自22端口上的tcp协议数据包给拒绝</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="查看规则"><a href="#查看规则" class="headerlink" title="查看规则"></a>查看规则</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# iptables [-t tables] [-L] [-nv]<br>参数：<br>-t    后面接table,例如nat或filter，如果省略，默认显示filter<br>-L    列出目前的table的规则<br>-n    不进行IP与主机名的反查，显示信息的速度会快很多<br>-v    列出更多的信息，包括封包数，相关网络接口等<br>--line-numbers 显示规则的序号<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>查看具体每个表的规则:<br>– policy：当前链的默认策略，当所有规则都没有匹配成功时执行的策略<br>– packets：当前链默认策略匹配到的包的数量<br>– bytes：当前链默认策略匹配到的包的大小<br>– pkts：对应规则匹配到的包数量<br>– bytes：对应规则匹配到的包大小<br>– target：对应规则执行的动作<br>– prot：对应的协议，是否针对某些协议应用此规则<br>– opt：规则对应的选项<br>– in：数据包由哪个接口流入<br>– out：数据包由哪个接口流出<br>– source：源ip地址<br>– distination：目的ip地址</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# iptables -nvL INPUT --line-numbers<br><span class="hljs-comment">#查看INPUT链的规则</span><br>[root@localhost ~]# iptables -vnL INPUT -t filter --line-numbers<br>[root@localhost ~]# iptables -nL -t nat<br>[root@localhost ~]# iptables -nL -t mangle<br>[root@localhost ~]# iptables -nL -t raw<br></code></pre></td></tr></table></figure>
+
+<h3 id="删除规则"><a href="#删除规则" class="headerlink" title="删除规则"></a>删除规则</h3><p>通过上面学习的查看规则的方法，先查找到你想要删除的规则</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 举例</span><br><span class="hljs-comment"># 查看nat表上所有链的规则</span><br>[root@localhost ~]# iptables -t nat -nL --line-numbers<br><span class="hljs-comment"># 查看filter（默认表）上所有链的规则</span><br>[root@localhost ~]# iptables -nL --line-numbers<br></code></pre></td></tr></table></figure>
+<ul>
+<li>通过num序号进行删除</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#删除input链上num为1的规则</span><br>[root@localhost ~]# iptables -D INPUT 1<br></code></pre></td></tr></table></figure>
+<ul>
+<li>通过规则匹配删除</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# iptables -D INPUT -p tcp --dport 80 -j DROP<br></code></pre></td></tr></table></figure>
+<ul>
+<li>清空所有的规则</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# iptables -F<br></code></pre></td></tr></table></figure>
+
+<h3 id="修改规则"><a href="#修改规则" class="headerlink" title="修改规则"></a>修改规则</h3><ul>
+<li>方案一：通过iptables -D删除原有的规则后添加新的规则</li>
+<li>方案二：通过iptables -R可以对具体某一个num的规则进行修改</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 修改端口的为8080</span><br>[root@localhost ~]# iptables -R INPUT 1 -p tcp --dport 8080 -j ACCEPT<br><br><span class="hljs-comment"># 针对具体的某一个表和链进行修改</span><br><span class="hljs-comment"># 将8080修改回80</span><br>[root@localhost ~]# iptables -t filter -R INPUT 1 -p tcp --dport 80 -j ACCEPT<br></code></pre></td></tr></table></figure>
+
+<h2 id="自定义链"><a href="#自定义链" class="headerlink" title="自定义链"></a>自定义链</h2><p>iptables中除了系统自带的五个链之外，还可以自定义链，来实现将规则进行分组，重复调用的目的<br>具体方法见如下案例：</p>
+<ul>
+<li>案例一：我们自定义一个WEB_CHAIN链，专门管理跟web网站相关的规则策略</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 1. 先查看我们现有的系统链</span><br>[root@localhost ~]# iptables -L<br>Chain INPUT (policy ACCEPT)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br>Chain FORWARD (policy ACCEPT)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br>Chain OUTPUT (policy ACCEPT)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br><br><span class="hljs-comment"># 2. 添加WEB_CHAIN自定义链，并且查看</span><br>[root@localhost ~]# iptables -t filter -N web_chain<br>[root@localhost ~]# iptables -L<br>..........<br>Chain web_chain (0 references)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br><br><span class="hljs-comment"># 3. 可以通过-E参数修改自定义链</span><br>[root@localhost ~]# iptables -t filter -E web_chain WEB_CHAIN<br>[root@localhost ~]# iptables -L<br>.........<br>Chain WEB_CHAIN (0 references)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br><span class="hljs-comment"># 可以看到名字已经发生变化了</span><br><br><span class="hljs-comment"># 4. 向我们创建的自定义链中添加规则，开放80端口上的服务</span><br>[root@localhost ~]# iptables -t filter -A WEB_CHAIN -p tcp -m multiport --dports 80,443 -j ACCEPT<br><br><span class="hljs-comment"># 5. 将自定义链关联到系统链上才能使用</span><br><span class="hljs-comment"># 因为数据包只会经过上面讲过的五个系统链，不会经过我们的自定义链，所以需要把自定义链关联到某个系统链上</span><br><br><span class="hljs-comment"># 我们允许来自IP：192.168.88.1的访问，随后拒绝其他所有的访问，这样，只有192.168.88.1的主机可以访问这个网站</span><br>[root@localhost ~]# iptables -t filter -A INPUT -s 192.168.88.1 -j WEB_CHAIN<br>[root@localhost ~]# iptables -t filter -A INPUT -p tcp -m multiport --dports 80,443 -j DROP<br>[root@localhost ~]# iptables -L<br>Chain INPUT (policy ACCEPT)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br>WEB_CHAIN  all  --  192.168.88.1         anywhere<br>Chain FORWARD (policy ACCEPT)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br>Chain OUTPUT (policy ACCEPT)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br>Chain WEB_CHAIN (1 references)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br>ACCEPT     tcp  --  anywhere             anywhere             tcp dpt:http<br><br>- 删除自定义链<br><span class="hljs-comment"># 先清空自定义链上的规则</span><br>[root@localhost ~]# iptables -t filter -F WEB_CHAIN<br><span class="hljs-comment"># 然后通过-X选项删除自定义链</span><br>[root@localhost ~]# iptables -t filter -X WEB_CHAIN<br></code></pre></td></tr></table></figure>
+
+<h2 id="其他用法（模块）"><a href="#其他用法（模块）" class="headerlink" title="其他用法（模块）"></a>其他用法（模块）</h2><ul>
+<li>tcp&#x2F;udp<br>– –dport：指定目的端口<br>– –sport：指定源端口</li>
+<li>iprange：匹配报文的源&#x2F;目的地址所在范围<br>– –src-range<br>– –dst-range</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# iptables -A INPUT -d 172.16.1.100 -p tcp --dport 80 -m iprange --src-range 172.16.1.5-172.16.1.10 -j DROP<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>string：指定匹配报文中的字符串<br>– –algo：指定匹配算法，可以是bm&#x2F;kmp<br>— bm：Boyer-Moore<br>— kmp：Knuth-Pratt-Morris<br>– –string：指定需要匹配的字符串<br>– –from offset：开始偏移<br>– –to offset：结束偏移</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# iptables -A OUTPUT -p tcp --sport 80 -m string --algo bm --from 62  --string <span class="hljs-string">&quot;google&quot;</span> -j REJECT<br></code></pre></td></tr></table></figure>
+<p>案例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# yum -y install httpd<br>[root@localhost ~]# systemctl start httpd<br>[root@localhost ~]# systemctl <span class="hljs-built_in">enable</span> httpd<br>[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;h1&gt;hello world&lt;/h1&gt;&quot;</span> &gt; /var/www/html/index.html<br>[root@localhost ~]# iptables -A OUTPUT -p tcp --sport 80 -m string --algo bm --string <span class="hljs-string">&quot;world&quot;</span> -j REJECT<br><span class="hljs-comment">#用浏览器刷新页面发现打不开</span><br>[root@localhost ~]# iptables -nL<br>Chain INPUT (policy ACCEPT)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br>Chain FORWARD (policy ACCEPT)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br>Chain OUTPUT (policy ACCEPT)<br>target     prot opt <span class="hljs-built_in">source</span>               destination<br>REJECT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp spt:80 STRING match  <span class="hljs-string">&quot;world&quot;</span> ALGO name bm TO 65535 reject-with icmp-port-unreachable<br><br>[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;h1&gt;hello XHZ&lt;/h1&gt;&quot;</span> &gt; /var/www/html/index.html<br><span class="hljs-comment"># 此时浏览器打开成功</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>time：指定匹配报文的时间<br>– –timestart<br>– –timestop<br>– –weekdays<br>– –monthdays<br>– –datestart<br>– –datestop</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# iptables -A INPUT -s 172.16.0.0/16 -d 172.16.100.10 -p tcp --dport 80 -m <span class="hljs-keyword">time</span> --timestart 14:30 --timestop 18:30 --weekdays Sat,Sun  -j DROP<br><br>-m <span class="hljs-keyword">time</span> --timestart 14:30 --timestop 18:30 --weekdays Sat,Sun：在指定的时间范围内生效，即从周六到周日的14:30到18:30之间。这表示该规则只在这个时间段内生效<br><br>- 该规则的作用是在指定时间范围内，阻止来自172.16.0.0/16网段源IP地址、目标IP地址为172.16.100.10、目标端口为80的TCP数据包进入系统<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>connlimit：限制每个ip连接到server端的数量，不需要指定ip默认就是针对每个ip地址,可防止Dos(Denial of Service，拒绝服务)攻击<br>– –connlimit-above：最大连接数</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# iptables -A INPUT -d 172.16.100.10 -p tcp --dport 22 -m connlimit --connlimit-above 2 -j REJECT<br><br>-m connlimit --connlimit-above 2：使用连接限制模块，限制连接数超过2的数据包。这表示如果同一源IP地址的连接数超过2个，将匹配到该规则<br><br>- 该规则的作用是限制目标IP地址为172.16.100.10、目标端口为22的数据包，如果同一源IP地址的连接数超过2个，则拒绝回复该数据包。这个规则可以用于防止对SSH服务的暴力破解攻击，限制来自同一IP地址的并发连接数<br></code></pre></td></tr></table></figure>
+<p>案例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# iptables -A INPUT -s 192.168.88.0/24 -p tcp --dport 22 -m connlimit --connlimit-above 2 -j REJECT<br><br><span class="hljs-comment">#此时登第三个终端，会登不上</span><br>[root@localhost ~]# iptables -nL --line-numbers<br>Chain INPUT (policy ACCEPT)<br>num  target     prot opt <span class="hljs-built_in">source</span>               destination<br>1    DROP       tcp  --  172.16.0.0/16        172.16.100.10        tcp dpt:80 TIME from 14:30:00 to 18:30:00 on Sat,Sun UTC<br>2    REJECT     tcp  --  192.168.88.0/24      0.0.0.0/0            tcp dpt:22 <span class="hljs-comment">#conn src/32 &gt; 2 reject-with icmp-port-unreachable</span><br><br>[root@Centos7-VM-1 ~]# iptables -D INPUT 2<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>limit：对报文到达的速率继续限制，限制包数量<br>– 10&#x2F;second<br>– 10&#x2F;minute<br>– 10&#x2F;hour<br>– 10&#x2F;day<br>– –limit-burst：空闲时可放行的包数量，默认为5，前多少个包不限制</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">iptables -A INPUT -p icmp -m <span class="hljs-built_in">limit</span> --limit-burst 10 --<span class="hljs-built_in">limit</span> 20/minute -j ACCEPT<br>iptables -A INPUT -p icmp  -j REJECT<br><br>--limit-burst 10：设置允许的初始突发量为10个数据包。<br>--<span class="hljs-built_in">limit</span> 20/minute：设置平均速率为20个数据包/分钟，即每分钟允许通过的ICMP数据包数量为20个。<br><br>- 该规则的作用是限制ICMP数据包的速率，允许初始突发量为10个数据包，以后每分钟最多允许通过20个ICMP数据包。匹配到的ICMP数据包将被接受，其他超出限制的数据包将被丢弃。这个规则可以用于控制对系统的ICMP流量，以避免过多的ICMP请求对系统造成负载过大的影响<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>指定TCP匹配扩展</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">使用 --tcp-flags 选项可以根据tcp包的标志位进行过滤。<br>[root@localhost ~]# iptables -A INPUT -p tcp --tcp-flags SYN,FIN,ACK SYN<br>[root@localhost ~]# iptables -A FROWARD -p tcp --tcp-flags ALL SYN,ACK<br>上实例中第一个表示SYN、ACK、FIN的标志都检查，但是只有SYN匹配。第二个表示ALL（SYN，ACK，FIN，RST，URG，PSH）的标志都检查，但是只有设置了SYN和ACK的匹配。<br>[root@localhost ~]# iptables -A FORWARD -p tcp --syn<br>选项--syn相当于<span class="hljs-string">&quot;--tcp-flags SYN,RST,ACK SYN&quot;</span>的简写。<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>state模块：用于针对tcp连接进行限制，较耗资源</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# iptables -A INPUT -m 模块名 --state 状态<br>参数：<br>-m    iptables的模块<br>        state: 状态检查<br>        mac:网卡硬件地址<br>--state     连接追踪中的状态：<br>        NEW: 新建立一个会话<br>        ESTABLISHED：已建立的连接<br>        RELATED: 有关联关系的连接<br>        INVALID: 无法识别的连接<br>[root@localhost ~]# iptables -A INPUT -p tcp --dport 22 -m state --state NEW -j ACCEPT    <br>-m state --state NEW：使用状态模块，匹配数据包的连接状态为NEW，即新建的连接。<br>- 该规则的作用是允许进入系统的TCP数据包，目标端口为22（SSH服务），且连接状态为NEW（新建的连接）。这个规则用于允许建立新的SSH连接，而拒绝已经建立的或结束的连接<br><br>[root@localhost ~]# iptables -A INPUT -m mac --mac-source 00:0C:29:56:A6:A2 -j ACCEPT<br>-m mac --mac-source 00:0C:29:56:A6:A2：使用MAC模块，匹配源MAC地址为00:0C:29:56:A6:A2的数据包<br>- 该规则的作用是允许源MAC地址为00:0C:29:56:A6:A2的数据包进入系统。这个规则可以用于根据MAC地址限制网络访问，只允许特定的MAC地址通过防火墙进入系统<br></code></pre></td></tr></table></figure>
+
+<h2 id="规则的保存与恢复"><a href="#规则的保存与恢复" class="headerlink" title="规则的保存与恢复"></a>规则的保存与恢复</h2><p>用规则文件保存各规则，开机后导入该规则文件中的规则</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 保存到文件中</span><br>[root@localhost ~]# iptables-save &gt; /etc/sysconfig/iptables-config<br><span class="hljs-comment"># 从文件中导入规则</span><br>[root@localhost ~]# iptables-restore &lt; /etc/sysconfig/iptables-config<br></code></pre></td></tr></table></figure>
+<p>安装iptables-services，在centos7和centos8上，通过该服务来帮助我们自动管理iptables规则。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# yum -y install iptables-services<br>[root@localhost ~]# systemctl start iptables.service<br>[root@localhost ~]# systemctl <span class="hljs-built_in">enable</span> iptables.service<br></code></pre></td></tr></table></figure>
+
+<h2 id="NAT（地址转换协议）"><a href="#NAT（地址转换协议）" class="headerlink" title="NAT（地址转换协议）"></a>NAT（地址转换协议）</h2><p>​网络地址转换 NAT（Network Address Translation），被广泛应用于各种类型 Internet 接入方式和各种类型的网络中。原因很简单，NAT 不仅完美地解决了 IP 地址不足的问题，而且还能够有效地避免来自网络外部的攻击，隐藏并保护网络内部的计算机。默认情况下，内部 IP 地址是无法被路由到外网的，内部主机 10.1.1.1 要与外部 Internet通信，IP 包到达 NAT 路由器时，IP 包头的源地址 10.1.1.1 被替换成一个合法的外网 IP，并在 NAT 转发表中保存这条记录。当外部主机发送一个应答到内网时，NAT 路由器收到后，查看当前 NAT 转换表，用 10.1.1.1 替换掉这个外网地址。NAT 将网络划分为内部网络和外部网络两部分，局域网主机利用 NAT 访问网络时，是将局域网内部的本地地址转换为全局地址（互联网合法的 IP 地址）后转发数据包</p>
+<h1 id="firewalld"><a href="#firewalld" class="headerlink" title="firewalld"></a>firewalld</h1><p>firewalld是CentOS 7.0新推出的管理netfilter的用户空间软件工具<br>并且支持划分区域zone,每个zone可以设置独立的防火墙规则</p>
+<ul>
+<li>流量的规则匹配顺序<br>– 先根据数据包中源地址，将其纳为某个zone<br>– 纳为网络接口所属zone<br>– 纳入默认zone，默认为public zone,管理员可以改为其它zone</li>
+<li>firewalld中常用的区域名称及策略规则<table>
+<thead>
+<tr>
+<th>区域</th>
+<th>默认策略规则</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public</td>
+<td>默认区域,对应普通网络环境。允许选定的连接,拒绝其他连接</td>
+<td>普通网络环境</td>
+</tr>
+<tr>
+<td>drop</td>
+<td>所有传入的网络包都会被直接丢弃,不会发送任何响应</td>
+<td>最高安全级别，不响应任何传入请求</td>
+</tr>
+<tr>
+<td>block</td>
+<td>所有传入的网络包会被拒绝,并发送拒绝信息</td>
+<td>高安全级别，但会告知对方连接被拒绝</td>
+</tr>
+<tr>
+<td>external</td>
+<td>用于路由&#x2F;NAT流量的外部网络环境。与public类似,更适用于网关、路由器等处理外部网络流量的设备</td>
+<td>网关、路由器等处理外部网络流量的设备</td>
+</tr>
+<tr>
+<td>dmz</td>
+<td>隔离区域,只允许选定的连接，适用于部署公开服务的网络区域,可以最大限度地降低内部网络的风险</td>
+<td>部署公开服务的网络区域，如Web服务器</td>
+</tr>
+<tr>
+<td>work</td>
+<td>适用于工作环境，开放更多服务,如远程桌面、文件共享等。比public区域更加信任</td>
+<td>工作环境，需要更多服务访问</td>
+</tr>
+<tr>
+<td>home</td>
+<td>适用于家庭环境，开放更多服务，比如默认情况下会开放一些如:3074端口(Xbox)、媒体、游戏数据等待</td>
+<td>家庭环境，需要多媒体、游戏等服务</td>
+</tr>
+<tr>
+<td>trusted</td>
+<td>信任区域,允许所有连接</td>
+<td>完全信任的网络环境</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="管理工具-firewall-cmd"><a href="#管理工具-firewall-cmd" class="headerlink" title="管理工具-firewall-cmd"></a>管理工具-firewall-cmd</h2><ul>
+<li>firewall-cmd命令常用的选项<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--get-default-zone</code></td>
+<td>查询默认的区域名称</td>
+</tr>
+<tr>
+<td><code>--set-default-zone=&lt;区域名称&gt;</code></td>
+<td>设置默认的区域，使其永久生效</td>
+</tr>
+<tr>
+<td><code>--get-zones</code></td>
+<td>显示可用的区域</td>
+</tr>
+<tr>
+<td><code>--get-services</code></td>
+<td>显示预先定义的服务</td>
+</tr>
+<tr>
+<td><code>--get-active-zones</code></td>
+<td>显示当前正在使用的区域与网卡名称</td>
+</tr>
+<tr>
+<td><code>--add-source=</code></td>
+<td>将源自此IP或子网的流量导向指定的区域</td>
+</tr>
+<tr>
+<td><code>--remove-source=</code></td>
+<td>不再将源自此IP或子网的流量导向某个指定区域</td>
+</tr>
+<tr>
+<td><code>--add-interface=&lt;网卡名称&gt;</code></td>
+<td>将源自该网卡的所有流量都导向某个指定区域</td>
+</tr>
+<tr>
+<td><code>--change-interface=&lt;网卡名称&gt;</code></td>
+<td>将某个网卡与区域进行关联</td>
+</tr>
+<tr>
+<td><code>--list-all</code></td>
+<td>显示当前区域的网卡配置参数、资源、端口以及服务等信息</td>
+</tr>
+<tr>
+<td><code>--list-all-zones</code></td>
+<td>显示所有区域的网卡配置参数、资源、端口以及服务等信息</td>
+</tr>
+<tr>
+<td><code>--add-service=&lt;服务名&gt;</code></td>
+<td>设置默认区域允许该服务的流量</td>
+</tr>
+<tr>
+<td><code>--add-port=&lt;端口号/协议&gt;</code></td>
+<td>设置默认区域允许该端口的流量</td>
+</tr>
+<tr>
+<td><code>--remove-service=&lt;服务名&gt;</code></td>
+<td>设置默认区域不再允许该服务的流量</td>
+</tr>
+<tr>
+<td><code>--remove-port=&lt;端口号/协议&gt;</code></td>
+<td>设置默认区域不再允许该端口的流量</td>
+</tr>
+<tr>
+<td><code>--reload</code></td>
+<td>让”永久生效”的配置规则立即生效，并覆盖当前的配置规则</td>
+</tr>
+<tr>
+<td><code>--panic-on</code></td>
+<td>开启应急状况模式</td>
+</tr>
+<tr>
+<td><code>--panic-off</code></td>
+<td>关闭应急状况模式</td>
+</tr>
+<tr>
+<td><code>--permanent</code></td>
+<td>设定的当前规则保存到本地，下次重启生效</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="简单用法（初体验）"><a href="#简单用法（初体验）" class="headerlink" title="简单用法（初体验）"></a>简单用法（初体验）</h2><p>通过web服务部署一个网站,然后访问测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# yum -y install httpd<br>[root@localhost ~]# systemctl start httpd<br>在浏览器中输入192.168.88.136访问测试发现，我们无法访问此网站，这是因为默认情况下，firewalld是出于开启的状态，并且默认区域为public。在public区域中，除了部分系统服务，其他服务的流量一律是禁止的。<br><br><br><span class="hljs-comment"># 查看当前所在的区域</span><br>[root@localhost ~]# firewall-cmd --get-default-zone<br>public<br><span class="hljs-comment"># 查看当前网卡所在的区域</span><br>[root@localhost ~]# firewall-cmd --get-zone-of-interface=ens160<br>public<br><br><span class="hljs-comment"># 查询public区域是否允许请求SSH或者HTTP协议的流量</span><br>[root@localhost ~]# firewall-cmd --zone=public --query-service=ssh<br><span class="hljs-built_in">yes</span><br>[root@localhost ~]# firewall-cmd --zone=public --query-service=http<br>no<br>`可以看出，在public区域中，默认是禁止来自http协议的请求数据包的`<br><br><span class="hljs-comment">#修改firewalld策略,使得我们可以访问到刚刚部署的网站</span><br>- 方法一：针对服务协议类型进行放行<br><span class="hljs-comment"># 临时放行</span><br>[root@localhost ~]# firewall-cmd --zone=public --add-service=http<br><span class="hljs-comment"># 可以加上--permanent实现永久放行</span><br>[root@localhost ~]# firewall-cmd --permanent --zone=public --add-service=http<br><br>- 方法二：针对服务具体访问请求的端口号进行放行<br>[root@localhost ~]# firewall-cmd --zone=public --add-port=80/tcp<br>success<br><span class="hljs-comment"># 同样也可以加上--permanent实现永久放行</span><br><br><span class="hljs-comment">#取消放行</span><br>[root@localhost ~]# firewall-cmd --zone=public --remove-service=http --permanent<br>success<br></code></pre></td></tr></table></figure>
+
+<h2 id="其他用法"><a href="#其他用法" class="headerlink" title="其他用法"></a>其他用法</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#把firewalld服务的当前默认区域设置为public</span><br>[root@localhost ~]# firewall-cmd --set-default-zone=public<br><br><span class="hljs-comment">#查看某个区域的详细配置</span><br>[root@localhost ~]# firewall-cmd --zone=public --list-all<br><br><span class="hljs-comment">#将firewalld 切换到紧急模式(panic mode)。这种模式下,firewalld 会采取一种非常严格的防护策略:所有传入的网络连接都会被拒绝,除了 ssh 和 ICMP 回送(ping)请求。所有区域的防火墙规则都会被重置为默认的严格策略。所有区域的默认策略都会被设置为 DROP</span><br>[root@localhost ~]# firewall-cmd --panic-on<br><span class="hljs-comment"># 取消紧急模式</span><br>[root@localhost ~]# firewall-cmd --panic-off<br><br><span class="hljs-comment"># 临时生效</span><br>[root@localhost ~]# firewall-cmd --zone=public --add-service=http<br>success<br><span class="hljs-comment"># 永久生效，加了--permanent所进行的更改，会被写入到配置文件中，下次开机任然生效</span><br>[root@localhost ~]# firewall-cmd --permanent --zone=public --add-service=http<br>success<br><span class="hljs-comment"># 使得最近对防火墙规则变更或者所作的修改生效</span><br>[root@localhost ~]# firewall-cmd --reload<br>success<br>[root@localhost ~]# firewall-cmd --zone=public --query-service=http<br><span class="hljs-built_in">yes</span><br><br>-配置文件路径<br>/etc/firewalld/zones/public.xml<br>/etc/firewalld/direct.xml<br>/etc/firewalld/firewalld.conf<br><br><span class="hljs-comment">#把firewalld服务中请求HTTPS协议的流量设置为永久拒绝，并立即生效</span><br>[root@localhost ~]# firewall-cmd --zone=public --remove-service=https --permanent<br>success<br>[root@localhost ~]# firewall-cmd --reload<br>success<br><br><span class="hljs-comment">#把在firewalld服务中访问8080和8081端口的流量策略设置为允许，当前生效</span><br><span class="hljs-comment"># 可以指定要开放端口的范围</span><br>[root@localhost ~]# firewall-cmd --zone=public --add-port=8080-8081/tcp<br>success<br>[root@localhost ~]# firewall-cmd --zone=public --list-ports<br>8080-8081/tcp<br></code></pre></td></tr></table></figure>
+
+<h2 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#通过firewalld，将用户访问服务器上6666端口的流量转发到22端口上，实现本地端口映射。我们就可以使用6666端口来远程连接到服务器</span><br>[root@localhost ~]# firewall-cmd --permanent --add-forward-port=port=6666:proto=tcp:toport=22<br>success<br>[root@localhost ~]# firewall-cmd --reload<br></code></pre></td></tr></table></figure>
+
+<h2 id="firewalld富规则"><a href="#firewalld富规则" class="headerlink" title="firewalld富规则"></a>firewalld富规则</h2><p>富规则是 firewalld 提供的一种灵活且强大的防火墙规则配置方式。与简单的端口和服务规则不同,富规则支持更复杂的匹配条件和操作。</p>
+<p>使用富规则,可以实现复杂的防火墙策略,例如:</p>
+<ul>
+<li>允许特定 IP 地址访问某个端口</li>
+<li>拒绝特定 IP 地址访问某个服务</li>
+<li>限制某个网段的连接频率</li>
+<li>转发某个端口到另一个端口</li>
+</ul>
+<p>富规则的配置方法：<br>firewall-cmd –permanent –add-rich-rule&#x3D;’<rich_rule_definition>‘</p>
+<p>需要注意的是,富规则的语法比较复杂,使用时务必仔细检查,以免引入安全隐患。同时,在修改完成后记得执行 firewall-cmd –reload 命令,让更改生效</p>
+<p>其中rule部分的语法如下：<br>rule [family&#x3D;”<family>“] [source address&#x3D;”<address>“][source port&#x3D;”<port>“] [destination address&#x3D;”<address>“][destination port&#x3D;”<port>“] [protocol value&#x3D;”<protocol>“] [icmp-block-inversion][forward-port port&#x3D;”<port>“ protocol&#x3D;”<protocol>“ to-port&#x3D;”<port>“][masquerade][log [prefix&#x3D;”<prefix>“] [level&#x3D;”<level>“] [limit value&#x3D;”<value>“] [accept][reject][drop]</p>
+<p>其中各个选项的含义如下:</p>
+<ul>
+<li>family: 指定地址族,可以是 ipv4 或 ipv6</li>
+<li>source&#x2F;destination: 指定源&#x2F;目标地址</li>
+<li>port: 指定端口号</li>
+<li>protocol: 指定协议,如 tcp、udp 等</li>
+<li>icmp-block-inversion: 反转 ICMP 阻止规则</li>
+<li>forward-port: 端口转发规则</li>
+<li>masquerade: 启用地址伪装</li>
+<li>log: 日志记录规则,可指定前缀、日志级别、限速</li>
+<li>accept&#x2F;reject&#x2F;drop: 动作,分别表示允许、拒绝、丢弃<br>由于firewalld中的富规则比较复杂，我们从以下几个案例中来简单学习富规则的一些用法即可</li>
+</ul>
+<p>注意：富规则的语法比较复杂,但是可以让您更精细地控制防火墙规则。通过组合不同的条件,您可以实现更复杂的防火墙策略。使用富规则时,请务必仔细检查语法和规则是否符合您的需求,以免引入安全隐患</p>
+<h1 id="服务访问控制-TCP-Wrappers"><a href="#服务访问控制-TCP-Wrappers" class="headerlink" title="服务访问控制 TCP Wrappers"></a>服务访问控制 TCP Wrappers</h1><p>TCP Wrappers是一种用于网络服务访问控制的工具，它使用配置文件中的规则来决定是否允许或拒绝对特定网络服务的访问。控制列表由两个主要文件组成：&#x2F;etc&#x2F;hosts.allow和&#x2F;etc&#x2F;hosts.deny。这些文件包含服务和客户端的规则，用于控制服务的访问权限</p>
+<p>TCP Wrapperes在最新的RockyLinux 9系统中默认已经不适用。通过上述讲到的iptables和firewalld来进行服务访问控制即可。</p>
+<p>TCP Wrappers服务的控制列表文件中常用的参数</p>
+<table>
+<thead>
+<tr>
+<th>客户端类型</th>
+<th>示例</th>
+<th>满足示例的客户端列表</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单一主机</td>
+<td>192.168.10.10</td>
+<td>IP地址为192.168.10.10的主机</td>
+</tr>
+<tr>
+<td>指定网段</td>
+<td>192.168.10.</td>
+<td>IP段为192.168.10.0&#x2F;24的主机</td>
+</tr>
+<tr>
+<td>指定网段</td>
+<td>192.168.10.0&#x2F;255.255.255.0</td>
+<td>IP段为192.168.10.0&#x2F;24的主机</td>
+</tr>
+<tr>
+<td>指定主机名称</td>
+<td><a target="_blank" rel="noopener" href="http://www.eagleslab.com/">www.eagleslab.com</a></td>
+<td>主机名称为<a target="_blank" rel="noopener" href="http://www.eagleslab.com的主机/">www.eagleslab.com的主机</a></td>
+</tr>
+<tr>
+<td>指定所有客户端</td>
+<td>ALL，*</td>
+<td>所有主机全部包括在内</td>
+</tr>
+</tbody></table>
+<p>在配置TCP Wrappers服务时需要遵循两个原则：</p>
+<ul>
+<li>编写拒绝策略规则时，填写的是服务名称，而非协议名称；</li>
+<li>建议先编写拒绝策略规则，再编写允许策略规则，以便直观地看到相应的效果。</li>
+</ul>
+<p>&#x2F;etc&#x2F;hosts.deny：该文件包含拒绝访问网络服务的规则。如果没有在hosts.allow文件中找到允许访问的规则，TCP Wrappers将检查hosts.deny文件以确定是否拒绝访问。以下规则拒绝所有客户端访问SSH服务：<br>&#x2F;etc&#x2F;hosts.allow：该文件包含允许访问网络服务的规则。每个规则占据一行，有两个主要部分：服务和允许访问的客户端。例如，以下规则允许192.168.88.0&#x2F;24网段访问SSH服务：</p>
+<h1 id="SELinux安全子系统"><a href="#SELinux安全子系统" class="headerlink" title="SELinux安全子系统"></a>SELinux安全子系统</h1><p>SELinux 是一个强大的访问控制机制,它建立在 Linux 内核之上,为系统提供了更细粒度的安全策略控制。与传统的基于用户&#x2F;组的访问控制不同,SELinux 采用基于角色(role)和类型(type)的强制访问控制(Mandatory Access Control, MAC)。简单来讲，SELinux 主要作用就是最大限度地减小系统中服务进程可访问的资源（最小权限原则）</p>
+<p>SELinux 的主要特点包括:</p>
+<ul>
+<li>基于策略的安全访问控制:SELinux 通过预先定义的安全策略来控制系统进程和资源的访问权限,而不是依赖于用户&#x2F;组的身份</li>
+<li>最小特权原则:SELinux 遵循”最小特权”的安全原则,即只授予程序运行所需的最小权限,大大降低了系统被攻击者利用的风险</li>
+<li>灵活的策略配置:SELinux 提供了丰富的策略配置选项,可以根据系统的具体需求进行定制和调整</li>
+<li>审计能力:SELinux 内置了强大的审计日志记录功能,可以帮助管理员快速发现和分析系统安全事件</li>
+</ul>
+<p>SELinux 的主要工作模式包括:</p>
+<ul>
+<li>Enforcing 模式:完全执行 SELinux 策略,阻止任何未经授权的访问行为</li>
+<li>Permissive 模式:只记录违反 SELinux 策略的行为,但不会阻止它们</li>
+<li>Disabled 模式:完全关闭 SELinux 功能</li>
+</ul>
+<h2 id="调整SELinux的模式"><a href="#调整SELinux的模式" class="headerlink" title="调整SELinux的模式"></a>调整SELinux的模式</h2><p>临时调整：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看当前SELinux的模式</span><br>[root@localhost ~]# getenforce<br>Enforcing<br><br><span class="hljs-comment"># 临时调整为Permissive</span><br>[root@localhost ~]# setenforce 0<br>[root@localhost ~]# getenforce<br>Permissive<br>[0]为Permissive模式，只记录行为，不阻止<br>[1]为Enforcing模式<br></code></pre></td></tr></table></figure>
+<p>临时调整只在当前状态有效，如果系统重启，将会恢复为默认的Enforcing模式</p>
+<p>永久调整：<br>通过编辑配置文件&#x2F;etc&#x2F;selinux&#x2F;config中的SELINUX字段来更改SELinux的模式</p>
+<h2 id="自主访问控制（DAC）"><a href="#自主访问控制（DAC）" class="headerlink" title="自主访问控制（DAC）"></a>自主访问控制（DAC）</h2><p>在没有使用 SELinux 的操作系统中，决定一个资源是否能被访问的因素是：某个资源是否拥有对应用户的权限（读、写、执行）<br>只要访问这个资源的进程符合以上的条件就可以被访问<br>而最致命问题是，root 用户不受任何管制，系统上任何资源都可以无限制地访问<br>这种权限管理机制的主体是用户，也称为自主访问控制（DAC）</p>
+<h2 id="强制访问控制（MAC）"><a href="#强制访问控制（MAC）" class="headerlink" title="强制访问控制（MAC）"></a>强制访问控制（MAC）</h2><p>在使用了 SELinux 的操作系统中，决定一个资源是否能被访问的因素除了上述因素之外，还需要判断每一类进程是否拥有对某一类资源的访问权限<br>这样一来，即使进程是以 root 身份运行的，也需要判断这个进程的类型以及允许访问的资源类型才能决定是否允许访问某个资源。进程的活动空间也可以被压缩到最小<br>即使是以 root 身份运行的服务进程，一般也只能访问到它所需要的资源。即使程序出了漏洞，影响范围也只有在其允许访问的资源范围内。安全性大大增加<br>这种权限管理机制的主体是进程，也称为强制访问控制（MAC）</p>
+<h2 id="semanage-选项-文件"><a href="#semanage-选项-文件" class="headerlink" title="semanage [选项] [文件]"></a>semanage [选项] [文件]</h2><p>基本选项：</p>
+<ul>
+<li>-l：参数用于查询；</li>
+<li>-a：参数用于添加；</li>
+<li>-m：参数用于修改；</li>
+<li>-d：参数用于删除。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Linux/Linux%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="category-chain-item">Linux基础部分</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>防火墙与selinux</div>
+      <div>http://example.com/2025/10/25/防火墙与selinux/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年10月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/10/25/%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86/" title="软件包管理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">软件包管理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/23/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/" title="磁盘管理">
+                        <span class="hidden-mobile">磁盘管理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

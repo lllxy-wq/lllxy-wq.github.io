@@ -1,0 +1,732 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/Cynthia.png">
+  <link rel="icon" href="/img/Cynthia.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="HTTP协议介绍HTTP（HyperText Transfer Protocol，超文本传输协议）是用于在客户端（通常是浏览器）和服务器之间传输超文本（如HTML）的应用层协议。它是无状态的、面向请求-响应的协议，基于TCP&#x2F;IP传输。 HTTP有不同版本号，不同版本号区别如下  HTTP0.9：仅支持GET方法，仅能访问HTML格式的资源 HTTP1.0：增加POST和HEAD方法，M">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP协议">
+<meta property="og:url" content="http://example.com/2025/10/28/HTTP%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="HTTP协议介绍HTTP（HyperText Transfer Protocol，超文本传输协议）是用于在客户端（通常是浏览器）和服务器之间传输超文本（如HTML）的应用层协议。它是无状态的、面向请求-响应的协议，基于TCP&#x2F;IP传输。 HTTP有不同版本号，不同版本号区别如下  HTTP0.9：仅支持GET方法，仅能访问HTML格式的资源 HTTP1.0：增加POST和HEAD方法，M">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-28T12:57:22.164Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>HTTP协议 - 我的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HTTP协议"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-28 00:00" pubdate>
+          2025年10月28日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">HTTP协议</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="HTTP协议介绍"><a href="#HTTP协议介绍" class="headerlink" title="HTTP协议介绍"></a>HTTP协议介绍</h1><p>HTTP（HyperText Transfer Protocol，超文本传输协议）是用于在客户端（通常是浏览器）和服务器之间传输超文本（如HTML）的应用层协议。它是无状态的、面向请求-响应的协议，基于TCP&#x2F;IP传输。</p>
+<p>HTTP有不同版本号，不同版本号区别如下</p>
+<ul>
+<li>HTTP0.9：仅支持GET方法，仅能访问HTML格式的资源</li>
+<li>HTTP1.0：增加POST和HEAD方法，MIME支持多种数据格式，开始支持Cache，支持tcp短连接</li>
+<li>HTTP1.1：支持持久连接（长连接），一个TCP连接允许多个请求，新增PUT、PATCH、DELETE等</li>
+<li>HTTP2.0：性能大幅提升，新的二进制格式，多路复用，header压缩，服务端推送。</li>
+</ul>
+<h1 id="HTTP工作原理"><a href="#HTTP工作原理" class="headerlink" title="HTTP工作原理"></a>HTTP工作原理</h1><p>HTTP的工作过程可以总结为以下几个步骤：</p>
+<ul>
+<li>建立连接： 客户端（如浏览器）与服务器之间通过TCP三次握手建立连接。</li>
+<li>发送请求： 客户端向服务器(Apache、Nginx、IIS服务器)发送HTTP请求报文，请求资源或操作。</li>
+<li>服务器处理请求： HTTP服务器接收到请求后，处理请求并生成响应。</li>
+<li>返回响应： 服务器将响应报文返回给客户端。</li>
+<li>断开连接： 通常在响应完成后关闭TCP连接（HTTP&#x2F;1.0默认短连接，HTTP&#x2F;1.1支持长连接）。</li>
+</ul>
+<h1 id="URL与URI"><a href="#URL与URI" class="headerlink" title="URL与URI"></a>URL与URI</h1><h2 id="URI（Uniform-Resource-Identifier）"><a href="#URI（Uniform-Resource-Identifier）" class="headerlink" title="URI（Uniform Resource Identifier）"></a>URI（Uniform Resource Identifier）</h2><p>URI是统一资源标识符，用于标识互联网上的资源。URI分为两种</p>
+<ul>
+<li>URL（Uniform Resource Locator）： 统一资源定位符，用于描述资源的地址。</li>
+<li>URN（Uniform Resource Name）： 统一资源名称，用于标识资源的名称，不依赖物理位置</li>
+</ul>
+<h2 id="URL（Uniform-Resource-Locator"><a href="#URL（Uniform-Resource-Locator" class="headerlink" title="URL（Uniform Resource Locator"></a>URL（Uniform Resource Locator</h2><p>HTTP使用统一资源标识符（Uniform Resource Identifiers, URI）来传输数据和建立连接。URL是一种特殊类型的URI，包含了用于查找某个资源的足够的信息<br>URL,全称是UniformResourceLocator, 中文叫统一资源定位符,是互联网上用来标识某一处资源的地址。以下面这个URL为例，介绍下普通URL的各部分组成：<br><a target="_blank" rel="noopener" href="http://iproute.cn/news/search?keyword=123&enc=utf8#name=321">http://iproute.cn:80/news/search?keyword=123&amp;enc=utf8#name=321</a></p>
+<p>从上面的URL可以看出，一个完整的URL包括以下几部分：</p>
+<ul>
+<li>协议部分：该URL的协议部分为“http：”，这代表网页使用的是HTTP协议。在Internet中可以使用多种协议，如HTTP，FTP等等本例中使用的是HTTP协议。在”HTTP”后面的“&#x2F;&#x2F;”为分隔符</li>
+<li>域名(主机)部分：该URL的域名部分为“iproute.cn”。一个URL中，也可以使用IP地址作为域名使用</li>
+<li>端口部分：跟在域名后面的是端口，域名和端口之间使用“:”作为分隔符。端口不是一个URL必须的部分，如果省略端口部分，将采用默认端口</li>
+<li>虚拟目录部分：从域名后的第一个“&#x2F;”开始到最后一个“&#x2F;”为止，是虚拟目录部分。虚拟目录也不是一个URL必须的部分。本例中的虚拟目录是“&#x2F;news&#x2F;”</li>
+<li>文件名部分：从域名后的最后一个“&#x2F;”开始到“？”为止，是文件名部分，如果没有“?”,则是从域名后的最后一个“&#x2F;”开始到“#”为止，是文件部分，如果没有“？”和“#”，那么从域名后的最后一个“&#x2F;”开始到结束，都是文件名部分。本例中的文件名是“search”。文件名部分也不是一个URL必须的部分，如果省略该部分，则使用默认的文件名</li>
+<li>参数部分：从“？”开始到“#”为止之间的部分为参数部分，又称搜索部分、查询部分。本例中的参数部分为“keyword&#x3D;123&amp;enc&#x3D;utf8”。参数可以允许有多个参数，参数与参数之间用“&amp;”作为分隔符。</li>
+<li>锚部分：从“#”开始到最后，都是锚部分。本例中的锚部分是“name”。锚部分也不是一个URL必须的部分</li>
+</ul>
+<h1 id="HTTP注意事项"><a href="#HTTP注意事项" class="headerlink" title="HTTP注意事项"></a>HTTP注意事项</h1><ul>
+<li>HTTP是无连接：无连接的含义是限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接。采用这种方式可以节省传输时间。</li>
+<li>HTTP是媒体独立的：这意味着，只要客户端和服务器知道如何处理的数据内容，任何类型的数据都可以通过HTTP发送。客户端以及服务器指定使用适合的MIME-type内容类型。</li>
+<li>HTTP是无状态：HTTP协议是无状态协议。无状态是指协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就较快。</li>
+</ul>
+<h1 id="HTTP-消息结构"><a href="#HTTP-消息结构" class="headerlink" title="HTTP 消息结构"></a>HTTP 消息结构</h1><ul>
+<li>HTTP是基于客户端&#x2F;服务端（C&#x2F;S）的架构模型，通过一个可靠的链接来交换信息，是一个无状态的请求&#x2F;响应协议。</li>
+<li>一个HTTP”客户端”是一个应用程序（Web浏览器或其他任何客户端），通过连接到服务器达到向服务器发送一个或多个HTTP的请求的目的。</li>
+<li>一个HTTP”服务器”同样也是一个应用程序（通常是一个Web服务，如Apache Web服务器或IIS服务器等），通过接收客户端的请求并向客户端发送HTTP响应数据。</li>
+<li>HTTP使用统一资源标识符（Uniform Resource Identifiers, URI）来传输数据和建立连接。</li>
+<li>HTTP响应也由四个部分组成，分别是：状态行、消息报头、空行和响应正文。</li>
+</ul>
+<h2 id="常见http请求报文头部属性"><a href="#常见http请求报文头部属性" class="headerlink" title="常见http请求报文头部属性"></a>常见http请求报文头部属性</h2><ul>
+<li>Accpet<br>– 告诉服务端,客户端接收什么类型的响应</li>
+<li>Referer<br>– 表示这是请求是从哪个URL进来的,比如想在网上购物,但是不知道选择哪家电商平台,你就去问百度,说哪家电商的东西便宜啊,然后一堆东西弹出在你面前,第一给就是某宝,当你从这里进入某宝的时候,这个请求报文的Referer就是<a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a></li>
+<li>Cache-Control<br>– 对缓存进行控制,如一个请求希望响应的内容在客户端缓存一年,或不被缓可以通过这个报文头设置</li>
+<li>Accept-Encoding<br>– 这个属性是用来告诉服务器能接受什么编码格式,包括字符编码,压缩形式(一般都是压缩形式)<br>– 例如:Accept-Encoding:gzip, deflate(这两种都是压缩格式)</li>
+<li>Host<br>– 指定要请求的资源所在的主机和端口</li>
+<li>User-Agent<br>– 告诉服务器，客户端使用的操作系统、浏览器版本和名称</li>
+<li>更多的头部属性可以参见脚本之家提供的http请求头部大全<br>– <a target="_blank" rel="noopener" href="http://tools.jb51.net/table/http_header">http://tools.jb51.net/table/http_header</a></li>
+</ul>
+<h2 id="POST和GET请求方法区别"><a href="#POST和GET请求方法区别" class="headerlink" title="POST和GET请求方法区别"></a>POST和GET请求方法区别</h2><ul>
+<li>提交的过程<br>– GET提交，请求的数据会附在URL之后（就是把数据放置在HTTP协议头中），以?分割URL和传输数据，多个参数用&amp;连接<br>– POST提交：把提交的数据放置在是HTTP包的包体中</li>
+<li>传输数据的大小<br>– 首先声明：HTTP协议没有对传输的数据大小进行限制，HTTP协议规范也没有对URL长度进行限制<br>– GET提交，特定浏览器和服务器对URL长度有限制<br>– POST提交，由于不是通过URL传值，理论上数据不受限</li>
+<li>安全性<br>– POST的安全性要比GET的安全性高<br>– 登录页面有可能被浏览器缓存，而缓存的是URL<br>– 其他人查看浏览器的历史纪录，那么别人就可以拿到你的账号和密码了<br>– 使用GET提交数据还可能会造成Cross-site request forgery攻击</li>
+</ul>
+<h2 id="常见http响应报文头部属性"><a href="#常见http响应报文头部属性" class="headerlink" title="常见http响应报文头部属性"></a>常见http响应报文头部属性</h2><ul>
+<li>Cache-Control<br>– 响应输出到客户端后,服务端通过该属性告诉客户端该怎么控制响应内容的缓存</li>
+<li>ETag<br>– 表示你请求资源的版本,如果该资源发生啦变化,那么这个属性也会跟着变</li>
+<li>Location<br>– 在重定向中或者创建新资源时使用</li>
+<li>Set-Cookie<br>– 服务端可以设置客户端的cookie</li>
+<li>更多的头部属性可以参见脚本之家提供的http请求头部大全<br>– <a target="_blank" rel="noopener" href="http://tools.jb51.net/table/http_header">http://tools.jb51.net/table/http_header</a></li>
+</ul>
+<h1 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a>HTTP状态码</h1><ul>
+<li><p>状态代码有三位数字组成，第一个数字定义了响应的类别，共分五种类别:<br>– 1xx：指示信息–表示请求已接收，继续处理<br>– 2xx：成功–表示请求已被成功接收、理解、接受<br>– 3xx：重定向–要完成请求必须进行更进一步的操作<br>– 4xx：客户端错误–请求有语法错误或请求无法实现<br>– 5xx：服务器端错误–服务器未能实现合法的请求</p>
+</li>
+<li><p>常见状态码</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">200 OK                        //客户端请求成功<br>400 Bad Request               //客户端请求有语法错误，不能被服务器所理解<br>401 Unauthorized              //请求未经授权，这个状态代码必须和WWW-Authenticate报头域一起使用 <br>403 Forbidden                 //服务器收到请求，但是拒绝提供服务<br>404 Not Found                 //请求资源不存在，eg：输入了错误的URL<br>500 Internal Server Error     //服务器发生不可预期的错误<br>503 Server Unavailable        //服务器当前不能处理客户端的请求，一段时间后可能恢复正常<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>更多状态码属性可以参见脚本之家提供的状态码大全<br>– <a target="_blank" rel="noopener" href="http://tools.jb51.net/table/http_status_code">http://tools.jb51.net/table/http_status_code</a></li>
+</ul>
+<h1 id="HTTP请求方法"><a href="#HTTP请求方法" class="headerlink" title="HTTP请求方法"></a>HTTP请求方法</h1><p>根据HTTP标准，HTTP请求可以使用多种请求方法。<br>HTTP1.0定义了三种请求方法： GET, POST 和 HEAD方法。<br>HTTP1.1新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方法。</p>
+<ul>
+<li>GET 请求指定的页面信息，并返回实体主体。</li>
+<li>HEAD 类似于get请求，只不过返回的响应中没有具体的内容，用于获取报头</li>
+<li>POST 向指定资源提交数据进行处理请求（例如提交表单或者上传文件）。数据被包含在请求体中。POST请求可能会导致新的资源的建立和&#x2F;或已有资源的修改。</li>
+<li>PUT 从客户端向服务器传送的数据取代指定的文档的内容。</li>
+<li>DELETE 请求服务器删除指定的页面。</li>
+<li>CONNECT HTTP&#x2F;1.1协议中预留给能够将连接改为管道方式的代理服务器。</li>
+<li>OPTIONS 允许客户端查看服务器的性能。</li>
+<li>TRACE 回显服务器收到的请求，主要用于测试或诊断。</li>
+<li>更多http请求方法可以参见脚本之家提供的http请求方法大全<br>– <a target="_blank" rel="noopener" href="http://tools.jb51.net/table/http_request_method">http://tools.jb51.net/table/http_request_method</a></li>
+</ul>
+<h1 id="HTTP工作原理-1"><a href="#HTTP工作原理-1" class="headerlink" title="HTTP工作原理"></a>HTTP工作原理</h1><p>在浏览器地址栏键入URL，按下回车之后会经历以下流程：</p>
+<ul>
+<li>浏览器向 DNS 服务器请求解析该 URL 中的域名所对应的 IP 地址;</li>
+<li>解析出 IP 地址后，根据该 IP 地址和默认端口 80，和服务器建立TCP连接;</li>
+<li>浏览器发出读取文件(URL 中域名后面部分对应的文件)的HTTP 请求，该请求报文作为 TCP 三次握手的第三个报文的数据发送给服务器;</li>
+<li>服务器对浏览器请求作出响应，并把对应的 html 文本发送给浏览器;</li>
+<li>释放 TCP连接;</li>
+<li>浏览器将该 html 文本并显示内容;</li>
+</ul>
+<h1 id="长连接与短连接"><a href="#长连接与短连接" class="headerlink" title="长连接与短连接"></a>长连接与短连接</h1><p>HTTP1.1规定了默认保持长连接（HTTP persistent connection ，也有翻译为持久连接），数据传输完成了保持TCP连接不断开（不发RST包、不四次握手），等待在同域名下继续用这个通道传输数据；相反的就是短连接。<br>在实际使用中，HTTP头部有了Keep-Alive这个值并不代表一定会使用长连接，客户端和服务器端都可以无视这个值，也就是不按标准来。毕竟TCP是一个双向连接的协议，双方都可以决定是不是主动断开。<br>客户端的长连接不可能无限期的拿着，会有一个超时时间，服务器有时候会告诉客户端超时时间。下图中的Keep-Alive: timeout&#x3D;20，表示这个TCP通道可以保持20秒</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Linux/Linux%E4%BC%81%E4%B8%9A%E6%9C%8D%E5%8A%A1/" class="category-chain-item">Linux企业服务</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>HTTP协议</div>
+      <div>http://example.com/2025/10/28/HTTP协议/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年10月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/10/28/Apache/" title="Apache">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Apache</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/28/NFS%E7%BD%91%E7%BB%9C%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB/" title="NFS网络文件共享">
+                        <span class="hidden-mobile">NFS网络文件共享</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

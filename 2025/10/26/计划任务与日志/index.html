@@ -1,0 +1,879 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/Cynthia.png">
+  <link rel="icon" href="/img/Cynthia.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="计划任务计划任务主要是做一些周期性的任务，可以让某个任务按照我们的预期的时间或计划去执行。 单次调度执行at安装at软件包：yum install -y at 启动at服务： 12[root@localhost ~]# systemctl start atd[root@localhost ~]# systemctl enable atd        # 开机自启动  语法结构at [option">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计划任务与日志">
+<meta property="og:url" content="http://example.com/2025/10/26/%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%97%A5%E5%BF%97/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="计划任务计划任务主要是做一些周期性的任务，可以让某个任务按照我们的预期的时间或计划去执行。 单次调度执行at安装at软件包：yum install -y at 启动at服务： 12[root@localhost ~]# systemctl start atd[root@localhost ~]# systemctl enable atd        # 开机自启动  语法结构at [option">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-26T07:25:02.350Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>计划任务与日志 - 我的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计划任务与日志"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-26 00:00" pubdate>
+          2025年10月26日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">计划任务与日志</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="计划任务"><a href="#计划任务" class="headerlink" title="计划任务"></a>计划任务</h1><p>计划任务主要是做一些周期性的任务，可以让某个任务按照我们的预期的时间或计划去执行。</p>
+<h2 id="单次调度执行at"><a href="#单次调度执行at" class="headerlink" title="单次调度执行at"></a>单次调度执行at</h2><p>安装at软件包：<br>yum install -y at</p>
+<p>启动at服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# systemctl start atd<br>[root@localhost ~]# systemctl <span class="hljs-built_in">enable</span> atd        <span class="hljs-comment"># 开机自启动</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="语法结构"><a href="#语法结构" class="headerlink" title="语法结构"></a>语法结构</h3><p>at [options] time</p>
+<h4 id="选项："><a href="#选项：" class="headerlink" title="选项："></a>选项：</h4><ul>
+<li>-f：指定包含具体指令的任务文件</li>
+<li>-q：指定新任务的队列名称</li>
+<li>-l：显示待执行任务的列表</li>
+<li>-d：删除指定的待执行任务</li>
+<li>-c：根据序号查看具体任务的内容</li>
+</ul>
+<p>或者也可以使用一下命令查看和删除</p>
+<ul>
+<li>atq：查看待执行的任务</li>
+<li>atrm：通过序号删除任务</li>
+</ul>
+<h4 id="timespec"><a href="#timespec" class="headerlink" title="timespec"></a>timespec</h4><p>at now +5min            # 从现在开始5分钟后<br>at teatime tomorrow  # 明天的下午16：00<br>at noon +4 days        # 4天后的中午<br>at 11:20 AM            # 早上11：20<br>  …..</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#5分钟后创建一个文件</span><br>[root@localhost ~]# at now +5min<br>at&gt; <span class="hljs-built_in">touch</span> /root/file2<br>at&gt; &lt;EOT&gt;            <span class="hljs-comment"># ctrl+D 结束任务编辑</span><br>job 1 at Fri May 31 21:03:00 2024<br>[root@localhost ~]# at -l        <span class="hljs-comment"># 查看任务</span><br>1       Fri May 31 21:03:00 2024 a root<br><br><span class="hljs-comment">#通过文件指定任务</span><br>[root@localhost ~]# vim at.jobs<br>useradd testuser<br>[root@localhost ~]# at -l<br>[root@localhost ~]# at now +5min -f at.jobs<br>job 2 at Fri May 31 21:03:00 2024<br>[root@localhost ~]# at -l<br>2       Fri May 31 21:03:00 2024 a root<br></code></pre></td></tr></table></figure>
+
+<h2 id="循环调度执行cron"><a href="#循环调度执行cron" class="headerlink" title="循环调度执行cron"></a>循环调度执行cron</h2><p>计划任务（Cron）是一种强大的工具，可以自动执行预定的任务。它非常适合定期运行脚本、备份数据、清理临时文件等一系列重复性任务。</p>
+<p>crontab：是cron服务提供的管理工具</p>
+<p>cron计划任务主要分为用户的任务和系统任务，用户任务是又具体某个用户编写的任务，而系统任务则在系统启动时始终生效</p>
+<h3 id="cron的基本语法"><a href="#cron的基本语法" class="headerlink" title="cron的基本语法"></a>cron的基本语法</h3><p>cron命令的基本语法如下：<br>crontab [-l | -r | -e | -n | -m]</p>
+<h4 id="选项：-1"><a href="#选项：-1" class="headerlink" title="选项："></a>选项：</h4><ul>
+<li>-l：列出当前用户的定时任务。</li>
+<li>-r：删除当前用户的定时任务。</li>
+<li>-e：编辑当前用户的定时任务。</li>
+<li>-n：检查定时任务是否可用。</li>
+<li>-m：发送类似于电子邮件的消息，用于通知定时任务执行的结果。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# crontab -l        <span class="hljs-comment"># 列出当前用户所有计划任务</span><br>[root@localhost ~]# crontab -r        <span class="hljs-comment"># 删除当前用户计划任务</span><br>[root@localhost ~]# crontab -e        <span class="hljs-comment"># 编辑当前用户计划任务</span><br>管理员可以使用 -u username,去管理其他用户的计划任务<br>[root@localhost ~]# vi /etc/cron.deny    <span class="hljs-comment"># 这个文件中加入的用户名无法使用cron</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="cron任务的配置"><a href="#cron任务的配置" class="headerlink" title="cron任务的配置"></a>cron任务的配置</h4><p>每个用户可以通过crontab命令来编辑自己的任务计划。要编辑cron任务，可以使用crontab -e命令。</p>
+<h4 id="编辑cron任务"><a href="#编辑cron任务" class="headerlink" title="编辑cron任务"></a>编辑cron任务</h4><p>要编辑cron任务计划，可以使用以下命令打开cron编辑器：<br>crontab -e</p>
+<h4 id="配置cron任务的格式"><a href="#配置cron任务的格式" class="headerlink" title="配置cron任务的格式"></a>配置cron任务的格式</h4><p>cron任务的格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash">分 时 日 月 星期 命令<br>* 表示任何数字都符合<br>0 2 * * * <span class="hljs-built_in">date</span> &gt;&gt; date.txt        <span class="hljs-comment"># 每天的2点</span><br>0 2 14 * * <span class="hljs-built_in">date</span> &gt;&gt; date.txt        <span class="hljs-comment"># 每月14号2点</span><br>0 2 14 2 * <span class="hljs-built_in">date</span> &gt;&gt; date.txt        <span class="hljs-comment"># 每年2月14号2点</span><br>0 2 * * 5 <span class="hljs-built_in">date</span> &gt;&gt; date.txt        <span class="hljs-comment"># 每个星期5的2点</span><br>0 2 * 6 5 <span class="hljs-built_in">date</span> &gt;&gt; date.txt        <span class="hljs-comment"># 每年6月份的星期5的2点</span><br>0 2 2 * 5 <span class="hljs-built_in">date</span> &gt;&gt; date.txt        <span class="hljs-comment"># 每月2号或者星期5的2点   星期和日同时存在，那么就是或的关系</span><br>0 2 2 6 5 <span class="hljs-built_in">date</span> &gt;&gt; date.txt        <span class="hljs-comment"># 每年6月2号或者星期5的2点</span><br><br>*/5 * * * * <span class="hljs-built_in">date</span> &gt;&gt; date.txt    <span class="hljs-comment"># 每隔5分钟执行一次</span><br>0 2 1,4,6 * * <span class="hljs-built_in">date</span> &gt;&gt; date.txt    <span class="hljs-comment"># 每月1号，4号，6号的2点</span><br>0 2 5-9 * * <span class="hljs-built_in">date</span> &gt;&gt; date.txt        <span class="hljs-comment"># 每月5-9号的2点</span><br><br>* * * * * <span class="hljs-built_in">date</span> &gt;&gt; date.txt        <span class="hljs-comment"># 每分钟</span><br>0 * * * * <span class="hljs-built_in">date</span> &gt;&gt; date.txt        <span class="hljs-comment"># 每整点</span><br>* * 2 * * <span class="hljs-built_in">date</span> &gt;&gt; date.txt        <span class="hljs-comment"># 每月2号的每分钟</span><br></code></pre></td></tr></table></figure>
+<p>其中，第一个字段表示分钟（0-59），第二个字段表示小时（0-23），第三个字段表示天（1-31），第四个字段表示月份（1-12），第五个字段表示星期（0-7）。第六个字段是要执行的命令或脚本。</p>
+<p>例如，要每天上午10点重启系统，可以配置如下：0 10 * * * reboot</p>
+<p>在线crontab测试网站： <a target="_blank" rel="noopener" href="https://crontab.guru/#0">https://crontab.guru/#0</a><em>*</em><em>_</em>_*</p>
+<h4 id="查看任务存放位置"><a href="#查看任务存放位置" class="headerlink" title="查看任务存放位置"></a>查看任务存放位置</h4><p>[root@localhost ~]# cat &#x2F;var&#x2F;spool&#x2F;cron&#x2F;root</p>
+<ul>
+<li><ul>
+<li><ul>
+<li><ul>
+<li><ul>
+<li>date &gt;&gt; file.txt</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>这里列举几个常见的cron任务的示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#每天凌晨3点备份文件：</span><br>0 3 * * * /path/to/backup.sh<br><br><span class="hljs-comment">#每周一上午8点清理临时文件：</span><br>0 8 * * 1 /path/to/cleanup.sh<br><br><span class="hljs-comment">#每隔10分钟检查服务器状态：</span><br>*/10 * * * * /path/to/check_status.sh<br></code></pre></td></tr></table></figure>
+
+<h3 id="cron系统任务"><a href="#cron系统任务" class="headerlink" title="cron系统任务"></a>cron系统任务</h3><ul>
+<li>临时文件的清理&#x2F;tmp &#x2F;var&#x2F;tmp</li>
+<li>系统信息的采集 sar</li>
+<li>日志的轮转(切割) lgrotate</li>
+<li>通常不是由用户定义</li>
+<li>文件的位置</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# vim /etc/crontab    <span class="hljs-comment"># 默认没有定义任何计划任务</span><br>[root@localhost ~]# <span class="hljs-built_in">ls</span> /etc/cron.d        <span class="hljs-comment"># 定义的计划任务每个小时会执行</span><br>0hourly  sysstat<br>[root@localhost ~]# <span class="hljs-built_in">cat</span> /etc/cron.d/0hourly <br><span class="hljs-comment"># Run the hourly jobs</span><br>SHELL=/bin/bash<br>PATH=/sbin:/bin:/usr/sbin:/usr/bin<br>MAILTO=root<br>01 * * * * root run-parts /etc/cron.hourly        <span class="hljs-comment"># 每小时01分以root身份执行/etc/cron.hourly/目录下的所有脚本</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>crond仅仅会执行每小时定义的脚本 &#x2F;etc&#x2F;cron.hourly</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# <span class="hljs-built_in">ls</span> /etc/cron.hourly/<br>[root@localhost ~]# <span class="hljs-built_in">cat</span> /etc/cron.hourly/0anacron<br>/usr/sbin/anacron -s        <span class="hljs-comment"># anacron是用来检查是否有错过的计划任务需要被执行</span><br>[root@localhost ~]# vi /etc/anacrontab<br>1 5 cron.daily <span class="hljs-built_in">nice</span> run-parts /etc/cron.daily<br><span class="hljs-comment">#每天开机 5 分钟后就检查 /etc/cron.daily 目录内的文件是否被执行，如果今天没有被执行，那就执行</span><br>7 25 cron.weekly <span class="hljs-built_in">nice</span> run-parts /etc/cron.weekly<br><span class="hljs-comment">#每隔 7 天开机后 25 分钟检查 /etc/cron.weekly 目录内的文件是否被执行，如果一周内没有被执行，就会执行</span><br>©monthly 45 cron.monthly <span class="hljs-built_in">nice</span> run-parts /etc/cron.monthly<br><span class="hljs-comment">#每隔一个月开机后 45 分钟检查 /etc/cron.monthly 目录内的文件是否被执行，如果一个月内没有被执行，那就执行</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="日志管理"><a href="#日志管理" class="headerlink" title="日志管理"></a>日志管理</h1><p>Linux系统和许多程序会产生各种错误信息、告警信息和其他的提示信息，这些各种信息都应该记录到日志文件中。Linux系统日志对管理员来说，是了解系统运行的主要途径，因此需要对Linux日志系统有详细的了解。</p>
+<h2 id="常见的日志文件"><a href="#常见的日志文件" class="headerlink" title="常见的日志文件"></a>常见的日志文件</h2><table>
+<thead>
+<tr>
+<th>日志文件</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;var&#x2F;log&#x2F;messages</td>
+<td>系统主日志文件</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;secure</td>
+<td>记录认证、安全的日志</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;maillog</td>
+<td>跟邮件postfix相关</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;cron</td>
+<td>crond、at进程产生的日志</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;dmesg</td>
+<td>记录系统启动时加载的硬件相关信息日志</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;yum.log</td>
+<td>yum的日志</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;mysqld.log</td>
+<td>MySQL日志</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;xferlog</td>
+<td>和访问FTP服务器相关</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;boot.log</td>
+<td>系统启动过程日志记录存放</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;wtmp</td>
+<td>当前登录的用户(可以直接在命令行输入w查看)</td>
+</tr>
+<tr>
+<td>&#x2F;var&#x2F;log&#x2F;lastlog</td>
+<td>所有用户的登录情况(可以直接在命令行输入lastlog查看)</td>
+</tr>
+</tbody></table>
+<h2 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h2><p>有多种方法可以查看日志，可以通过cat、tail等命令来查看<br>但是往往日志文件中内容都是非常多的，所以对于初学者通过cat查看不是很直观。这个时候我们可以配合一些其他过滤工具来过滤日志里面的内容。如：grep，awk等等。</p>
+<h2 id="日志系统-rsyslogd"><a href="#日志系统-rsyslogd" class="headerlink" title="日志系统-rsyslogd"></a>日志系统-rsyslogd</h2><h3 id="处理日志的进程"><a href="#处理日志的进程" class="headerlink" title="处理日志的进程"></a>处理日志的进程</h3><p>rsyslogd：绝大部分日志记录，和系统操作有关，安全，认证sshd,su，计划任务at,cron</p>
+<p>httpd&#x2F;nginx&#x2F;mysql等等应用可以以自己的方式记录日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# ps aux |grep rsyslogd<br>root       6808  0.0  0.2 216408  5016 ?        Ssl  09:32   0:00 /usr/sbin/rsyslogd -n<br>root       7724  0.0  0.0 112724   988 pts/0    S+   10:39   0:00 grep --color=auto rsyslogd<br></code></pre></td></tr></table></figure>
+<p>日志可以存放在本地<br>日志可以存放在远程服务器</p>
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# rpm -qc rsyslog<br>/etc/logrotate.d/syslog        <span class="hljs-comment"># 日志轮转(切割)相关</span><br>/etc/rsyslog.conf            <span class="hljs-comment"># rsyslogd的主配置文件</span><br>/etc/sysconfig/rsyslog        <span class="hljs-comment"># rsyslogd相关文件</span><br>[root@localhost ~]# vim /etc/rsyslog.conf<br><span class="hljs-comment"># 告诉rsyslogd进程 哪个设备(facility)，关于哪个级别的信息，以及如何处理</span><br>authpriv.*                       /var/log/secure<br>mail.*                           /var/log/maillog<br>cron.*                           /var/log/cron<br>*.emerg                          :omusrmsg:*<br>authpriv.*                       *                    <span class="hljs-comment"># 所有终端</span><br>authpriv.*                       @192.168.1.123        <span class="hljs-comment"># UDP</span><br>authpriv.*                       @@192.168.1.123        <span class="hljs-comment"># TCP</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="日志类型-facility"><a href="#日志类型-facility" class="headerlink" title="日志类型(facility)"></a>日志类型(facility)</h3><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>Facility</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>kern(kernel)</td>
+<td>Linux内核产生的信息，大部分是硬件检测和内核功能的启用</td>
+</tr>
+<tr>
+<td>1</td>
+<td>user</td>
+<td>用户层级产生的信息</td>
+</tr>
+<tr>
+<td>2</td>
+<td>mail</td>
+<td>所有邮件收发的相关信息</td>
+</tr>
+<tr>
+<td>3</td>
+<td>daemon</td>
+<td>系统服务产生的信息</td>
+</tr>
+<tr>
+<td>4</td>
+<td>auth</td>
+<td>与认证、授权相关的信息，如login、ssh、su等产生的信息</td>
+</tr>
+<tr>
+<td>5</td>
+<td>syslog</td>
+<td>syslogd服务产生的信息</td>
+</tr>
+<tr>
+<td>6</td>
+<td>lpr</td>
+<td>打印相关的信息</td>
+</tr>
+<tr>
+<td>7</td>
+<td>news</td>
+<td>新闻群组相关的信息</td>
+</tr>
+<tr>
+<td>8</td>
+<td>uucp</td>
+<td>Unix to Unix Copy Protocol 早期Unix系统间的数据交换协议</td>
+</tr>
+<tr>
+<td>9</td>
+<td>cron</td>
+<td>周期性计划任务程序，如cron、at等产生的信息</td>
+</tr>
+<tr>
+<td>10</td>
+<td>authpriv</td>
+<td>与auth类似，但记录的多为帐号相关的信息，如pam模块的调用等</td>
+</tr>
+<tr>
+<td>16~23</td>
+<td>local0~local7</td>
+<td>保留给本地用户使用的日志类型，通常与终端交互相关</td>
+</tr>
+</tbody></table>
+<p>日志级别</p>
+<table>
+<thead>
+<tr>
+<th>级别(日志重要级别)</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LOG_EMERG</td>
+<td>紧急，致命，服务无法继续运行，如配置文件丢失</td>
+</tr>
+<tr>
+<td>LOG_ALERT</td>
+<td>报警，需要立即处理，如磁盘空间使用95%</td>
+</tr>
+<tr>
+<td>LOG_CRIT</td>
+<td>致命行为</td>
+</tr>
+<tr>
+<td>LOG_ERR(error)</td>
+<td>错误行为</td>
+</tr>
+<tr>
+<td>LOG_WARNING</td>
+<td>警告信息</td>
+</tr>
+<tr>
+<td>LOG_NOTICE</td>
+<td>普通</td>
+</tr>
+<tr>
+<td>LOG_INFO</td>
+<td>标准信息</td>
+</tr>
+<tr>
+<td>LOG_DEBUG</td>
+<td>调试信息，排错才开，一般不建议使用</td>
+</tr>
+</tbody></table>
+<h2 id="日志文件归档"><a href="#日志文件归档" class="headerlink" title="日志文件归档"></a>日志文件归档</h2><p>如果我们不管理系统产生的上述各种日志文件，那么久而久之日志就会变成“屎山”。日志文件及内容越堆越多，不仅难以查阅，还会因为单一文件过大而影响新的内容写入的效率<br>logrotate就是一个不错的日志处理程序，准确的说是对日志进行“归档”之类的工作</p>
+<h2 id="logrotate-日志轮转"><a href="#logrotate-日志轮转" class="headerlink" title="logrotate(日志轮转)"></a>logrotate(日志轮转)</h2><p>如果没有日志轮转，日志文件会越来越大<br>将丢弃系统中最旧的日志文件，以节省空间<br>事实上logrotate是挂在cron配置目录cron.daily下面的，所以会被cron每天执行一次：</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Linux/Linux%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="category-chain-item">Linux基础部分</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计划任务与日志</div>
+      <div>http://example.com/2025/10/26/计划任务与日志/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年10月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/10/26/%E7%AE%A1%E9%81%93%E4%B8%8E%E9%87%8D%E5%AE%9A%E5%90%91/" title="管道与重定向">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">管道与重定向</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/25/LVM%E9%80%BB%E8%BE%91%E5%8D%B7%E7%AE%A1%E7%90%86%E5%99%A8/" title="LVM逻辑卷管理器">
+                        <span class="hidden-mobile">LVM逻辑卷管理器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

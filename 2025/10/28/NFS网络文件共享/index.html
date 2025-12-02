@@ -19,21 +19,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="初始shell用户直接输入命令，Linux是理解不了的，Shell就会在中间充当翻译官的角色，把用户的命令翻译给Linux内核，然后Linux内核会执行命令。 用户就可以使用Shell，对Linux系统进行大部分的管理。 使用Shell分为两种方式：1.交互式命令行，输入一行回车后执行一行的命令，适合量少的工作。2.Shell脚本，输入多行命令，然后保存为文件，然后执行文件，适合批量工作或重复性的">
+    <meta name="description" content="NFS网络文件共享NFS（Network File System）是一种分布式文件系统协议，最初由Sun Microsystems在1984年开发。NFS允许计算机在网络上共享文件和目录，就像这些文件和目录位于本地计算机上一样。它广泛应用于UNIX和类UNIX系统中，但也可以在其他操作系统上使用，如Windows和macOS。 NFS简介与RPC简介NFS服务介绍NFS是一种网络协议，NFS依赖R">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux命令行">
-<meta property="og:url" content="http://example.com/2025/09/25/Linux%E5%91%BD%E4%BB%A4%E8%A1%8C/index.html">
+<meta property="og:title" content="NFS网络文件共享">
+<meta property="og:url" content="http://example.com/2025/10/28/NFS%E7%BD%91%E7%BB%9C%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB/index.html">
 <meta property="og:site_name" content="我的博客">
-<meta property="og:description" content="初始shell用户直接输入命令，Linux是理解不了的，Shell就会在中间充当翻译官的角色，把用户的命令翻译给Linux内核，然后Linux内核会执行命令。 用户就可以使用Shell，对Linux系统进行大部分的管理。 使用Shell分为两种方式：1.交互式命令行，输入一行回车后执行一行的命令，适合量少的工作。2.Shell脚本，输入多行命令，然后保存为文件，然后执行文件，适合批量工作或重复性的">
+<meta property="og:description" content="NFS网络文件共享NFS（Network File System）是一种分布式文件系统协议，最初由Sun Microsystems在1984年开发。NFS允许计算机在网络上共享文件和目录，就像这些文件和目录位于本地计算机上一样。它广泛应用于UNIX和类UNIX系统中，但也可以在其他操作系统上使用，如Windows和macOS。 NFS简介与RPC简介NFS服务介绍NFS是一种网络协议，NFS依赖R">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-09-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-26T07:13:46.744Z">
+<meta property="article:published_time" content="2025-10-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-28T07:25:23.814Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Linux命令行 - 我的博客</title>
+  <title>NFS网络文件共享 - 我的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -187,7 +187,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Linux命令行"></span>
+            <span id="subtitle" data-typed-text="NFS网络文件共享"></span>
           
         </div>
 
@@ -198,8 +198,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-09-25 00:00" pubdate>
-          2025年9月25日 凌晨
+        <time datetime="2025-10-28 00:00" pubdate>
+          2025年10月28日 凌晨
         </time>
       </span>
     
@@ -210,7 +210,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k 字
+          1.1k 字
         
       </span>
     
@@ -221,7 +221,7 @@
         
         
         
-          12 分钟
+          10 分钟
         
       </span>
     
@@ -258,173 +258,36 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Linux命令行</h1>
+            <h1 id="seo-header">NFS网络文件共享</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="初始shell"><a href="#初始shell" class="headerlink" title="初始shell"></a>初始shell</h1><p>用户直接输入命令，Linux是理解不了的，Shell就会在中间充当翻译官的角色，把用户的命令翻译给Linux内核，然后Linux内核会执行命令。</p>
-<p>用户就可以使用Shell，对Linux系统进行大部分的管理。</p>
-<p>使用Shell分为两种方式：<br>1.交互式命令行，输入一行回车后执行一行的命令，适合量少的工作。<br>2.Shell脚本，输入多行命令，然后保存为文件，然后执行文件，适合批量工作或重复性的工作。</p>
-<h1 id="Bash-Shell提示符"><a href="#Bash-Shell提示符" class="headerlink" title="Bash Shell提示符"></a>Bash Shell提示符</h1><p>登录Linux系统后，默认进入交互式命令行模式，光标前面就会会看到提示符，提示符一般格式为:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]#<br>[用户名@主机名 目录名]权限标识<br></code></pre></td></tr></table></figure>
-<p>用户名：当前登录的用户名<br>主机名：当前登录的计算机名称，修改主机名：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">hostnametcl set-hostname 新主机名<br><span class="hljs-comment">#可能不会立即生效，Ctrl+D退出再登录新的主机名就会生效</span><br></code></pre></td></tr></table></figure>
-<p>目录名：当前光标所在的目录，用户家目录表示成~<br>权限标识：超级管理员权限就表示成#，普通用户权限就表示成$</p>
-<h1 id="常见的命令"><a href="#常见的命令" class="headerlink" title="常见的命令"></a>常见的命令</h1><h2 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h2><p>用于显示当前文件下所含的内容（文件即子目录）<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"> <span class="hljs-comment"># 查看当前目录下的文件</span><br>[root@localhost ~]# <span class="hljs-built_in">ls</span><br><br> <span class="hljs-comment"># 查看当前目录下的所有文件，包括隐藏文件即以.开头的文件</span><br>[root@localhost ~]# <span class="hljs-built_in">ls</span> -a<br><br> <span class="hljs-comment"># 查看当前目录下的文件详情，包括隐藏文件</span><br> [root@localhost ~]# <span class="hljs-built_in">ls</span> -hal<br><br> <span class="hljs-comment"># 查看/usr/sbin目录下的文件，并显示处目录文件程序的区别</span><br> <span class="hljs-comment"># 普通的文件只有文件名，可执行文件后面带*，文件夹后面带/</span><br> [root@localhost ~]# <span class="hljs-built_in">ls</span> -F /usr/sbin/<br></code></pre></td></tr></table></figure></p>
-<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><p> 选项的循序随便</p>
-<ul>
-<li>-a:显示所有的隐藏文件</li>
-<li>-l:显示文件的详细信息</li>
-<li>-h:显示文件大小为可读性即将显示出来的文件大小以合适的单位显示出来</li>
-<li>-F:显示文件类型，在文件名称后面加上文件类型标识符，例如可执行文档加*、目录加&#x2F;、链接加@</li>
-<li>-R:递归显示所有子目录下的文件，把目录下面的文件也列出来</li>
-<li>-t:按照文件创建的时间排序</li>
-<li>-r：将结果进行逆序排序</li>
+                <h1 id="NFS网络文件共享"><a href="#NFS网络文件共享" class="headerlink" title="NFS网络文件共享"></a>NFS网络文件共享</h1><p>NFS（Network File System）是一种分布式文件系统协议，最初由Sun Microsystems在1984年开发。NFS允许计算机在网络上共享文件和目录，就像这些文件和目录位于本地计算机上一样。它广泛应用于UNIX和类UNIX系统中，但也可以在其他操作系统上使用，如Windows和macOS。</p>
+<h2 id="NFS简介与RPC简介"><a href="#NFS简介与RPC简介" class="headerlink" title="NFS简介与RPC简介"></a>NFS简介与RPC简介</h2><h3 id="NFS服务介绍"><a href="#NFS服务介绍" class="headerlink" title="NFS服务介绍"></a>NFS服务介绍</h3><p>NFS是一种网络协议，NFS依赖RPC才能工作。<br>NFS 的基本原则是“容许不同的客户端及服务端通过一组RPC分享相同的文件系统”，它是独立于操作系统，容许不同硬件及操作系统的系统共同进行文件的分享。可以理解为把一个电脑上的硬盘挂载到另一个电脑上使用，另一个电脑能够像使用自己本地硬盘使用挂载的硬盘。<br>NFS在文件传送或信息传送过程中依赖于RPC协议。RPC，远程过程调用 (Remote Procedure Call) 是能使客户端执行其他系统中程序的一种机制。NFS本身是没有提供信息传输的协议和功能的，但NFS却能让我们通过网络进行资料的分享，这是因为NFS使用了一些其它的传输协议。而这些传输协议用到这个RPC功能的。可以这么理解RPC和NFS的关系：NFS是一个文件系统，而RPC是负责信息的传输。</p>
+<h3 id="RPC协议介绍"><a href="#RPC协议介绍" class="headerlink" title="RPC协议介绍"></a>RPC协议介绍</h3><p>RPC（Remote Procedure Call）远程过程调用，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。其工作在TCP&#x2F;UDP的111端口。建立在Socket之上的，主要是简化编程的工作在底层提供网络之间的通信。<br>RPC采用客户机&#x2F;服务器模式。请求程序就是一个客户机，而服务提供程序就是一个服务器。首先，客户机调用进程发送一个有进程参数的调用信息到服务进程，然后等待应答信息。在服务器端，进程保持睡眠状态直到调用信息的到达为止。当一个调用信息到达，服务器获得进程参数，计算结果，发送答复信息，然后等待下一个调用信息，最后，客户端调用进程接收答复信息，获得进程结果，然后调用执行继续进行。</p>
+<h4 id="RPC-远程过程调度"><a href="#RPC-远程过程调度" class="headerlink" title="RPC 远程过程调度"></a>RPC 远程过程调度</h4><ul>
+<li>NFS 协议本身并没有网络传输功能，而是基于远程过程调用协议实现的</li>
+<li>提供一个面向过程的远程服务的接口</li>
+<li>可以通过网络从远程主机程序上请求服务，而不需要了解底层网络技术的协议</li>
+<li>工作在 OSI 模型的会话层，它可以为遵从 RPC 协议应用层协议提供端口注册功能</li>
+<li>事实上，有很多服务（NFS 和 NIS 等）都可以向 RPC 注册端口</li>
+<li>RPC 使用网络端口 111 来监听客户端的请求</li>
 </ul>
-<h2 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h2><p> 当前用户所在的目录</p>
-<h2 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h2><p> 用于当前切换工作目录<br> Linux里面的所有目录都是以&#x2F;开头的<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 切换到/usr/bin目录</span><br>[root@localhost ~]# <span class="hljs-built_in">cd</span> /usr/bin<br><br><span class="hljs-comment"># 切换到上一级目录</span><br>[root@localhost bin]# <span class="hljs-built_in">cd</span> ..<br><br><span class="hljs-comment"># 切换到家目录</span><br>[root@localhost bin]# <span class="hljs-built_in">cd</span> ~<br><br><span class="hljs-comment"># 返回上一次所在目录</span><br>[root@localhost ~]# <span class="hljs-built_in">cd</span> -<br></code></pre></td></tr></table></figure></p>
-<h2 id="clear"><a href="#clear" class="headerlink" title="clear"></a>clear</h2><p> 清屏，快捷键Ctrl+L也可以</p>
-<h2 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h2><p> 用于字符串的输出<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"> <span class="hljs-comment"># 显示出hello world</span><br> [root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;hello world&quot;</span><br><span class="hljs-comment"># 用两行显示出hello world</span><br> [root@localhost ~]# <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;hello\nworld&quot;</span><br><span class="hljs-comment"># 输出hello world的时候让系统发出警报音</span><br> [root@localhost ~]# <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;hello\aworld&quot;</span><br></code></pre></td></tr></table></figure></p>
-<h3 id="选项-1"><a href="#选项-1" class="headerlink" title="选项"></a>选项</h3><ul>
-<li>-n:换行符，光标留在行尾</li>
-<li>-e:转义字符，允许对下列出的加反斜线的转移字符进行解释<br>– \a报警符<br>– \b退格符<br>– \f换页符<br>– \n换行符<br>– \r回车符<br>– \t水平制表符<br>– \v垂直制表符</li>
+<h4 id="RPC-协议模型"><a href="#RPC-协议模型" class="headerlink" title="RPC 协议模型"></a>RPC 协议模型</h4><ul>
+<li>基于 rpc 的服务（此处是指 nfs 服务，在别处有可能是代表其他服务）在启动时向 portmapper 注册端口</li>
+<li>基于 rpc 的客户端联系服务端 portmapper 询问服务的端口号<br>p- ortmapper 告知客户端基于 rpc 服务使用的端口号</li>
+<li>基于 rpc 的客户端访问被告知单某基于 rpc 服务的端口</li>
+<li>基于 rpc 的服务响应客户端的请求</li>
 </ul>
-<h1 id="系统命令"><a href="#系统命令" class="headerlink" title="系统命令"></a>系统命令</h1><h2 id="poweroff"><a href="#poweroff" class="headerlink" title="poweroff"></a>poweroff</h2><p>关闭系统</p>
-<h2 id="reboot"><a href="#reboot" class="headerlink" title="reboot"></a>reboot</h2><p>重启系统</p>
-<h2 id="whoami"><a href="#whoami" class="headerlink" title="whoami"></a>whoami</h2><p>显示当前用户名</p>
-<h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><ul>
-<li>Ctrl+C:终止当前正在执行的命令</li>
-<li>Ctrl+D:退出当前用户，等价于exit</li>
-<li>Ctrl+L:清屏</li>
-<li>Ctrl+A:将光标移动到行首</li>
-<li>Ctrl+E:将光标移动到行尾</li>
-<li>Ctrl+K:删除从光标到行尾的所有字符</li>
-<li>Ctrl+U:删除从行首到光标之间的所有字符</li>
-<li>Ctrl+R:搜索历史命令，利用关键词</li>
+<h3 id="NFS工作流程"><a href="#NFS工作流程" class="headerlink" title="NFS工作流程"></a>NFS工作流程</h3><ul>
+<li>首先服务器端启动RPC服务，并开启111端口</li>
+<li>然后还需要服务器端启动NFS服务，并向RPC注册端口信息</li>
+<li>客户端启动RPC（portmap服务），向服务端的RPC(portmap)服务请求服务端的NFS端口</li>
+<li>服务端的RPC(portmap)服务反馈NFS端口信息给客户端。</li>
+<li>客户端通过获取的NFS端口来建立和服务端的NFS连接并进行数据的传输。</li>
 </ul>
-<h1 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h1><h2 id="history"><a href="#history" class="headerlink" title="history"></a>history</h2><p>查看历史输入的命令</p>
-<h3 id="选项-2"><a href="#选项-2" class="headerlink" title="选项"></a>选项</h3><ul>
-<li>-c:清除当前shell中所有历史命令</li>
-<li>-r:从历史文件中读取命令</li>
-<li>-w:将当前shell中的所有历史命令保存到历史文件中</li>
-</ul>
-<p>使用！执行历史命令</p>
-<ul>
-<li>!n:执行历史命令第n条</li>
-<li>!string:从最近的命令中执行以string开头的命令</li>
-<li>!-n:执行历史命令倒数第n条</li>
-<li>！！:执行上一条命令</li>
-</ul>
-<h2 id="help"><a href="#help" class="headerlink" title="help"></a>help</h2><p>查看命令的帮助信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看echo的帮助信息</span><br>[root@localhost ~]# <span class="hljs-built_in">help</span> <span class="hljs-built_in">echo</span><br></code></pre></td></tr></table></figure>
-
-<h2 id="man"><a href="#man" class="headerlink" title="man"></a>man</h2><p>查看命令的帮助手册<br>-快捷键</p>
-<table>
-<thead>
-<tr>
-<th>按键</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>空格键</td>
-<td>向下翻一页</td>
-</tr>
-<tr>
-<td>PaGe down</td>
-<td>向下翻一页</td>
-</tr>
-<tr>
-<td>PaGe up</td>
-<td>向上翻一页</td>
-</tr>
-<tr>
-<td>home</td>
-<td>直接前往首页</td>
-</tr>
-<tr>
-<td>end</td>
-<td>直接前往尾页</td>
-</tr>
-<tr>
-<td>&#x2F;</td>
-<td>从上至下搜索某个关键词，如“&#x2F;linux”</td>
-</tr>
-<tr>
-<td>?</td>
-<td>从下至上搜索某个关键词，如“?linux”</td>
-</tr>
-<tr>
-<td>n</td>
-<td>定位到下一个搜索到的关键词</td>
-</tr>
-<tr>
-<td>N</td>
-<td>定位到上一个搜索到的关键词</td>
-</tr>
-<tr>
-<td>q</td>
-<td>退出帮助文档</td>
-</tr>
-</tbody></table>
-<p>-手册的结构</p>
-<table>
-<thead>
-<tr>
-<th>结构名称</th>
-<th>代表意义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>NAME</td>
-<td>命令的名称</td>
-</tr>
-<tr>
-<td>SYNOPSIS</td>
-<td>参数的大致使用方法</td>
-</tr>
-<tr>
-<td>DESCRIPTION</td>
-<td>介绍说明</td>
-</tr>
-<tr>
-<td>EXAMPLES</td>
-<td>演示（附带简单说明）</td>
-</tr>
-<tr>
-<td>OVERVIEW</td>
-<td>概述</td>
-</tr>
-<tr>
-<td>DEFAULTS</td>
-<td>默认的功能</td>
-</tr>
-<tr>
-<td>OPTIONS</td>
-<td>具体的可用选项（带介绍）</td>
-</tr>
-<tr>
-<td>ENVIRONMENT</td>
-<td>环境变量</td>
-</tr>
-<tr>
-<td>FILES</td>
-<td>用到的文件</td>
-</tr>
-<tr>
-<td>SEE ALSO</td>
-<td>相关的资料</td>
-</tr>
-<tr>
-<td>HISTORY</td>
-<td>维护历史与联系方式</td>
-</tr>
-</tbody></table>
-<h2 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h2><p>查看系统当前的别名</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 修改别名</span><br>[root@localhost ~]# <span class="hljs-built_in">alias</span> wl=<span class="hljs-string">&#x27;ip address&#x27;</span>（只在当前的环境生效，重登后就没用了）<br>[root@localhost ~]# wl<br><br><span class="hljs-comment"># 永久修改别名</span><br>[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;alias wl=&#x27;ip address&#x27;&quot;</span> &gt;&gt; /etc/bashrc<br></code></pre></td></tr></table></figure>
-
-<h1 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看系统当前的环境变量</span><br>[root@localhost ~]# <span class="hljs-built_in">echo</span> <span class="hljs-variable">$PATH</span><br><span class="hljs-comment"># 修改环境变量 临时生效</span><br>[root@localhost ~]# <span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$PATH</span>:/usr/local/bin<br></code></pre></td></tr></table></figure>
+<h3 id="挂载原理-过程"><a href="#挂载原理-过程" class="headerlink" title="挂载原理&#x2F;过程"></a>挂载原理&#x2F;过程</h3><p>当我们在NFS服务器设置好一个共享目录&#x2F;opt 后，其他人是有权访问&#x2F;opt这个共享目录的，NFS客户端就可以将这个目录挂载到自己文件系统的某个挂载点（这个挂载点可以自己定义），路径不同也可以；如下图客户端A与客户端B挂载的目录就不相同。并且挂载好后我们在本地能够看到服务端&#x2F;opt下的所有数据。</p>
 
                 
               </div>
@@ -448,7 +311,7 @@
   
     <span>></span>
     
-  <a href="/categories/Linux/Linux%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="category-chain-item">Linux基础部分</a>
+  <a href="/categories/Linux/Linux%E4%BC%81%E4%B8%9A%E6%9C%8D%E5%8A%A1/" class="category-chain-item">Linux企业服务</a>
   
   
 
@@ -470,8 +333,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Linux命令行</div>
-      <div>http://example.com/2025/09/25/Linux命令行/</div>
+      <div>NFS网络文件共享</div>
+      <div>http://example.com/2025/10/28/NFS网络文件共享/</div>
     </div>
     <div class="license-meta">
       
@@ -483,7 +346,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年9月25日</div>
+          <div>2025年10月28日</div>
         </div>
       
       
@@ -515,9 +378,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/09/26/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="Linux文件管理">
+                      <a href="/2025/10/28/HTTP%E5%8D%8F%E8%AE%AE/" title="HTTP协议">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linux文件管理</span>
+                        <span class="hidden-mobile">HTTP协议</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -525,8 +388,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/09/21/2025.9.21/" title="两数之和 - 从双重循环到哈希字典的优化">
-                        <span class="hidden-mobile">两数之和 - 从双重循环到哈希字典的优化</span>
+                      <a href="/2025/10/28/SSH%E8%BF%9C%E7%A8%8B%E7%AE%A1%E7%90%86%E5%8D%8F%E8%AE%AE/" title="SSH远程管理协议">
+                        <span class="hidden-mobile">SSH远程管理协议</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

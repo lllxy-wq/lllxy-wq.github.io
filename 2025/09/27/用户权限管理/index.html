@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/Cynthia.png">
+  <link rel="icon" href="/img/Cynthia.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Linux系统是一个多用户多任务的分时操作系统，任何一个要使用系统资源的用户，都必须首先向系统管理员申请一个账号，然后以这个账号的身份进入系统。 为了更加方便的管理多个用户，就出现了用户组的概念，关于用户和用户组：  系统上的每个进程(运行的程序)都是作为特定用户运行 每个文件是由一个特定的用户拥有 访问文件和目录受到用户的限制 与正在运行的进程相关联的用户确定该进程可访问的文件和目录  用户和用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用户权限管理">
+<meta property="og:url" content="http://example.com/2025/09/27/%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="Linux系统是一个多用户多任务的分时操作系统，任何一个要使用系统资源的用户，都必须首先向系统管理员申请一个账号，然后以这个账号的身份进入系统。 为了更加方便的管理多个用户，就出现了用户组的概念，关于用户和用户组：  系统上的每个进程(运行的程序)都是作为特定用户运行 每个文件是由一个特定的用户拥有 访问文件和目录受到用户的限制 与正在运行的进程相关联的用户确定该进程可访问的文件和目录  用户和用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-27T06:18:09.195Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>用户权限管理 - 我的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="用户权限管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-27 00:00" pubdate>
+          2025年9月27日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">用户权限管理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Linux系统是一个多用户多任务的分时操作系统，任何一个要使用系统资源的用户，都必须首先向系统管理员申请一个账号，然后以这个账号的身份进入系统。</p>
+<p>为了更加方便的管理多个用户，就出现了用户组的概念，关于用户和用户组：</p>
+<ul>
+<li>系统上的每个进程(运行的程序)都是作为特定用户运行</li>
+<li>每个文件是由一个特定的用户拥有</li>
+<li>访问文件和目录受到用户的限制</li>
+<li>与正在运行的进程相关联的用户确定该进程可访问的文件和目录</li>
+</ul>
+<h1 id="用户和用户组的查看"><a href="#用户和用户组的查看" class="headerlink" title="用户和用户组的查看"></a>用户和用户组的查看</h1><h2 id="id"><a href="#id" class="headerlink" title="id"></a>id</h2><p>用于显示用户的id和所属群组的id</p>
+<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><ul>
+<li>-g：显示用户所属群组的ID</li>
+<li>-G：显示用户所属附加群组的ID</li>
+<li>-n: 显示用户所属群组或附加群组的名称</li>
+<li>-r: 显示用户真实ID，用户真实的uid</li>
+<li>-u：显示用户有效ID</li>
+</ul>
+<h3 id="uid约定"><a href="#uid约定" class="headerlink" title="uid约定"></a>uid约定</h3><p>Linux操作系统会依据用户的uid数值来判定这个用户的角色，分别如下：</p>
+<ul>
+<li>0：超级管理员，也就是root，在linux系统中拥有所有权力</li>
+<li>1~999：系统用户，系统用户往往是用来约束系统中的服务的</li>
+<li>1000+：普通用户，可以用来登陆和使用Linux操作系统</li>
+</ul>
+<p>关于root用户：uid是0，拥有操作系统所有权力，该用户有权力覆盖文件系统上的普通权限，安装或删除软件并管理系统文件和目录，大多数设备只能由root控制。</p>
+<p>查看运行进程的用户名：[root@localhost ~]# ps aux</p>
+<h2 id="相关的文件"><a href="#相关的文件" class="headerlink" title="相关的文件"></a>相关的文件</h2><h3 id="passwd文件"><a href="#passwd文件" class="headerlink" title="passwd文件"></a>passwd文件</h3><p>用于保存用户的信息，一般第一行是root用户，下面都是其他用户<br>位置：&#x2F;etc&#x2F;passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# <span class="hljs-built_in">head</span> -n 1 /etc/passwd<br>root:x:0:0:root:/root:/bin/bash<br><span class="hljs-comment"># 这个格式为用户名:密码:uid:gid:描述:家目录:登陆后执行的命令</span><br><span class="hljs-comment">#家目录就是登录这个用户之后，所在文件的位置</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="shadow文件"><a href="#shadow文件" class="headerlink" title="shadow文件"></a>shadow文件</h3><p>格式中密码占位置太长了，所以使用x来替代，Linux系统会到shadow中查找x部分的的密码内容<br>位置：&#x2F;etc&#x2F;shawdow</p>
+<h3 id="group文件"><a href="#group文件" class="headerlink" title="group文件"></a>group文件</h3><p>用户和组的对应关系会保存在group文件中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# <span class="hljs-built_in">head</span> -n 1 /etc/group<br>root:x:0:<br><span class="hljs-comment"># 这个格式是组名:口令:组标识号:组内用户列表</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="用户组管理"><a href="#用户组管理" class="headerlink" title="用户组管理"></a>用户组管理</h1><h2 id="添加用户组：groupadd"><a href="#添加用户组：groupadd" class="headerlink" title="添加用户组：groupadd"></a>添加用户组：groupadd</h2><p> groupadd 命令用于创建一个新的工作组，新工作组的信息将被添加到系统文件中</p>
+<h3 id="选项-1"><a href="#选项-1" class="headerlink" title="选项"></a>选项</h3><ul>
+<li>-g：指定新建工作组的 id；</li>
+<li>-r：创建系统工作组，系统工作组的组ID小于500；</li>
+<li>-K：覆盖配置文件&#x2F;etc&#x2F;login.defs</li>
+<li>-o：允许添加组 ID 号不唯一的工作组。</li>
+<li>-f：如果指定的组已经存在，此选项将失明了仅以成功状态退出。当与 -g 一起使用，并且指定的GID_MIN已经存在时，选择另一个唯一的GID（即-g关闭）。</li>
+</ul>
+<h2 id="修改用户组：groupmod"><a href="#修改用户组：groupmod" class="headerlink" title="修改用户组：groupmod"></a>修改用户组：groupmod</h2><p>groupmod命令用于更改群组识别码或名称</p>
+<h3 id="选项-2"><a href="#选项-2" class="headerlink" title="选项"></a>选项</h3><ul>
+<li>-g：将组 ID 改为 GID</li>
+<li>-n：改名为 NEW_GROUP</li>
+<li>-o：允许使用重复的 GID</li>
+</ul>
+<h2 id="删除用户组：groupdel"><a href="#删除用户组：groupdel" class="headerlink" title="删除用户组：groupdel"></a>删除用户组：groupdel</h2><p>groupdel命令用于删除群组</p>
+<p>需要从系统上删除群组时，可用groupdel(group delete)指令来完成这项工作。倘若该群组中仍包括某些用户，则必须先删除这些用户后，方能删除群组。</p>
+<h2 id="用户组成员管理：gpasswd"><a href="#用户组成员管理：gpasswd" class="headerlink" title="用户组成员管理：gpasswd"></a>用户组成员管理：gpasswd</h2><p>gpasswd 是 Linux 下工作组文件 &#x2F;etc&#x2F;group 和 &#x2F;etc&#x2F;gshadow 管理工具，用于将一个用户添加到组或者从组中删除</p>
+<h3 id="选项-3"><a href="#选项-3" class="headerlink" title="选项"></a>选项</h3><ul>
+<li>-a：添加用户到组；</li>
+<li>-d：从组删除用户；</li>
+<li>-A：指定管理员，可以执行添加或者删除组员；</li>
+<li>-M：替换组中的全部用户列表，不包含在内的用户将会从组中删除；</li>
+<li>-R：限制用户登入组，只有组中的成员才可以用newgrp加入该组。</li>
+</ul>
+<h1 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h1><h2 id="添加用户：useradd"><a href="#添加用户：useradd" class="headerlink" title="添加用户：useradd"></a>添加用户：useradd</h2><p>useradd可以用来添加新的用户账号</p>
+<h3 id="选项-4"><a href="#选项-4" class="headerlink" title="选项"></a>选项</h3><ul>
+<li>-c comment：指定一段注释性描述。</li>
+<li>-d 目录：指定用户主目录，如果此目录不存在，则同时使用- -m选项，可以创建主目录。</li>
+<li>-m：创建用户的主目录</li>
+<li>-g 用户组：指定用户所属的用户组，默认会创建一个和用户名同名的用户组。</li>
+<li>-G 用户组：用户组 指定用户所属的附加组，一个用户可以属于多个附加组。</li>
+<li>-s Shell文件：指定用户的登录Shell。</li>
+<li>-u 用户号：指定用户的用户号，如果同时有-o选项，则可以重复使用其他用户的标识号。</li>
+</ul>
+<h2 id="切换用户：ud"><a href="#切换用户：ud" class="headerlink" title="切换用户：ud"></a>切换用户：ud</h2><p>su命令用户Linux系统中的用户切换</p>
+<h3 id="选项-5"><a href="#选项-5" class="headerlink" title="选项"></a>选项</h3><ul>
+<li>-：以目标用户的环境变量启动新会话。这将模拟用户完全登录到新用户账户，包括其家目录、环境变量等。</li>
+<li>-c 命令：执行指定的命令，并在执行完毕后返回原始用户。</li>
+<li>-s shell：使用指定的 shell 替代目标用户的默认shell。</li>
+</ul>
+<h2 id="修改用户：usermod"><a href="#修改用户：usermod" class="headerlink" title="修改用户：usermod"></a>修改用户：usermod</h2><p>usermod命令用于修改用户帐号，可用来修改用户帐号的各项设定</p>
+<h3 id="选项-6"><a href="#选项-6" class="headerlink" title="选项"></a>选项</h3><ul>
+<li>-c&lt;备注&gt;：修改用户帐号的备注文字。</li>
+<li>-a：追加，默认的修改是覆盖</li>
+<li>-d登入目录&gt;：修改用户登入时的目录。</li>
+<li>-e&lt;有效期限&gt;：修改帐号的有效期限。</li>
+<li>-f&lt;缓冲天数&gt;：修改在密码过期后多少天即关闭该帐号。</li>
+<li>-g&lt;群组&gt;：修改用户所属的群组。</li>
+<li>-G&lt;群组&gt;：修改用户所属的附加群组。</li>
+<li>-l&lt;帐号名称&gt;：修改用户帐号名称。</li>
+<li>-L：锁定用户密码，使密码无效。</li>
+<li>-s：修改用户登入后所使用的shell。</li>
+<li>-u：修改用户ID。</li>
+<li>-U：解除密码锁定。</li>
+</ul>
+<h2 id="删除用户：userdel"><a href="#删除用户：userdel" class="headerlink" title="删除用户：userdel"></a>删除用户：userdel</h2><p>userdel命令用于删除用户帐号，可删除用户帐号与相关的文件。若不加参数，则仅删除用户帐号，而不删除相关文件。</p>
+<ul>
+<li>-r：删除用户登入目录以及目录中所有文件</li>
+</ul>
+<h1 id="passwd文件中的shell"><a href="#passwd文件中的shell" class="headerlink" title="passwd文件中的shell"></a>passwd文件中的shell</h1><p>查看&#x2F;etc&#x2F;passwd文件会发现在每行的最后是登录成功之后执行的命令，有两种是使用最为频繁的：</p>
+<ul>
+<li>&#x2F;bin&#x2F;bash：这个是Linux的命令行工具，我们正常登陆之后默认就是进入命令行</li>
+<li>&#x2F;sbin&#x2F;nologin：如果写成nologin，那么用户将无法登录，有些用户是作为进程权限管理而存在的，不需要登录。如果提供登录的功能反而不安全，所以写成nologin</li>
+</ul>
+<h1 id="用户密码管理"><a href="#用户密码管理" class="headerlink" title="用户密码管理"></a>用户密码管理</h1><p>root用户可以直接设置普通用户密码，普通用户必须要提供原密码，才可以修改自己密码。</p>
+<h2 id="passwd"><a href="#passwd" class="headerlink" title="passwd"></a>passwd</h2><p>passwd命令用来更改使用者的密码</p>
+<h3 id="选项-7"><a href="#选项-7" class="headerlink" title="选项"></a>选项</h3><ul>
+<li>-k：保持身份验证令牌不过期</li>
+<li>-d：删除已命名帐号的密码(只有根用户才能进行此操作)</li>
+<li>-l：锁定指名帐户的密码(仅限 root 用户)</li>
+<li>-u：解锁指名账户的密码(仅限 root 用户)</li>
+<li>-x：密码的最长有效时限(只有根用户才能进行此操作)</li>
+<li>-n：密码的最短有效时限(只有根用户才能进行此操作)</li>
+<li>-w：在密码过期前多少天开始提醒用户(只有根用户才能进行此操作)</li>
+<li>-i：当密码过期后经过多少天该帐号会被禁用(只有根用户才能进行此操作)</li>
+<li>-S：报告已命名帐号的密码状态(只有根用户才能进行此操作)</li>
+<li>–stdin：从标准输入读取令牌(只有根用户才能进行此操作)</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# passwd test01<br>更改用户 test01 的密码 。<br>新的 密码：<br>重新输入新的 密码：<br>passwd：所有的身份验证令牌已经成功更新。<br><br>[root@localhost ~]# <span class="hljs-built_in">echo</span> 123456 | passwd --stdin test01<br>更改用户 test01 的密码 。<br>passwd：所有的身份验证令牌已经成功更新。<br></code></pre></td></tr></table></figure>
+
+<h2 id="login-defs文件"><a href="#login-defs文件" class="headerlink" title="login.defs文件"></a>login.defs文件</h2><p>&#x2F;etc&#x2F;login.defs文件是用来创建用户时进行一定的限制，但是优先级低于&#x2F;etc&#x2F;passwd和&#x2F;etc&#x2F;shadow,如果有冲突的地方,系统会以&#x2F;etc&#x2F;passwd和&#x2F;etc&#x2F;shadow为准</p>
+<h2 id="chage"><a href="#chage" class="headerlink" title="chage"></a>chage</h2><p>chage是用于更改用户密码过期信息</p>
+<h3 id="选项-8"><a href="#选项-8" class="headerlink" title="选项"></a>选项</h3><ul>
+<li>-d：设置密码的最后更改日期</li>
+<li>-E 过期日期：设置账号的过期日期</li>
+<li>-I INACITVE：设置密码过期后若未更改，多少天后用户账号被禁用。</li>
+<li>-l：显示用户账号的密码过期信息。</li>
+<li>-m 最小天数：设置两次改变密码之间相距的最小天数</li>
+<li>-M 最大天数：设置将两次改变密码之间相距的最大天数</li>
+<li>-W 警告天数：设置密码过期前的警告天数</li>
+</ul>
+<h1 id="sudoers"><a href="#sudoers" class="headerlink" title="sudoers"></a>sudoers</h1><p>Linux是多用户多任务的操作系统, 共享该系统的用户往往不只一个。出于安全性考虑, 有必要通过useradd创建一些非root用户, 只让它们拥有不完全的权限; 如有必要，再来提升权限执行。</p>
+<p>sudo就是来解决这个需求的: 这些非root用户不需要知道root的密码，就可以提权到root，执行一些root才能执行的命令。</p>
+<h2 id="sudo执行命令的过程"><a href="#sudo执行命令的过程" class="headerlink" title="sudo执行命令的过程"></a>sudo执行命令的过程</h2><p>1.当用户执行sudo时，系统会主动寻找&#x2F;etc&#x2F;sudoers文件，判断该用户是否有执行sudo的权限<br>2.确认用户具有可执行sudo的权限后，让用户输入用户自己的密码确认<br>3.若密码输入成功，则开始执行sudo后续的命令</p>
+<h2 id="赋予用户sudo操作的权限"><a href="#赋予用户sudo操作的权限" class="headerlink" title="赋予用户sudo操作的权限"></a>赋予用户sudo操作的权限</h2><p>通过useradd添加的用户，并不具备sudo权限。在ubuntu&#x2F;centos&#x2F;RockyLinux等系统下, 需要将用户加入admin组或者wheel组或者sudo组。以root用户身份执行如下命令, 将用户加入wheel&#x2F;admin&#x2F;sudo组。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">usermod -a -G wheel &lt;用户名&gt;<br><span class="hljs-comment"># 如果whell组不存在，则还需要先创建改组</span><br>groupadd wheel<br></code></pre></td></tr></table></figure>
+
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>sudo的权限控制可以在&#x2F;etc&#x2F;sudoers文件中查看到。一般来说，通过cat &#x2F;etc&#x2F;sudoers指令来查看该文件, 会看到如下几行代码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# egrep -v <span class="hljs-string">&#x27;^[ ]*$|^#&#x27;</span> /etc/sudoers<br>=====省略=====<br>root    ALL=(ALL)     ALL<br>%wheel    ALL=(ALL)    ALL<br><br><span class="hljs-comment">#对/etc/sudoers文件进行编辑的代码公式可以概括为</span><br>授权用户/组 主机=[(切换到哪些用户或组)] [是否需要输入密码验证] 命令1,命令2,...<br>字段1 字段2 =[(字段3)] [字段4] 字段5<br></code></pre></td></tr></table></figure>
+<p>凡是[ ]中的内容, 都能省略; 命令和命令之间用,号分隔，字段3、字段4，是可以省略的。</p>
+<ul>
+<li>“字段1”不以%号开头的表示”将要授权的用户”，以%号开头的表示”将要授权的组”。</li>
+<li>“字段2”表示允许登录的主机, ALL表示所有，;如果该字段不为ALL,表示授权用户只能在某些机器上登录本服务器来执行sudo命令</li>
+<li>“字段3”如果省略, 相当于(root:root)，表示可以通过sudo提权到root，如果为(ALL)或者(ALL:ALL), 表示能够提权到(任意用户:任意用户组)。</li>
+<li>“字段4”的可能取值是NOPASSWD:。请注意NOPASSWD后面带有冒号:。表示执行sudo时可以不需要输入密码。<br>– 比如:lucy ALL&#x3D;(ALL) NOPASSWD: &#x2F;bin&#x2F;useradd表示: 普通用户lucy可以在任何主机上, 通过sudo执行&#x2F;bin&#x2F;useradd命令, 并且不需要输入密码<br>– 比如:peter ALL&#x3D;(ALL) NOPASSWD: ALL,表示: 普通用户peter可以在任何主机上, 通过sudo执行任何命令, 并且不需要输入密码。</li>
+<li>“字段5”是使用逗号分开一系列命令,这些命令就是授权给用户的操作; ALL表示允许所有操作。命令都是使用绝对路径, 这是为了避免目录下有同名命令被执行，从而造成安全隐患。<br>– 如果你将授权写成如下安全性欠妥的格式:lucy ALL&#x3D;(ALL) chown,chmod,useradd那么用户就有可能创建一个他自己的程序, 也命名为userad, 然后放在它的本地路径中, 如此一来他就能够使用root来执行这个”名为useradd的程序”。这是相当危险的!</li>
+</ul>
+<h2 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h2><p>在实践中,去编辑&#x2F;etc&#x2F;sudoers文件，系统提示我没权限，这是因为&#x2F;etc&#x2F;sudoers的内容如此敏感，以至于该文件是只读的。所以，编辑该文件前，请确认清楚你知道自己正在做什么。</p>
+<p>强烈建议通过visudo命令来修改该文件，通过visudo修改，如果配置出错，会有提示。</p>
+<p>官方文档推荐的做法，不是直接修改&#x2F;etc&#x2F;sudoers文件，而是将修改写在&#x2F;etc&#x2F;sudoers.d&#x2F;目录下的文件中。如果使用这种方式修改sudoers，需要在&#x2F;etc&#x2F;sudoers文件的最后行，加上#includedir &#x2F;etc&#x2F;sudoers.d一行(默认已有)。需要注意，这个#includedir &#x2F;etc&#x2F;sudoers.d中的#并不是注释，请勿修改。</p>
+<h2 id="sudo选项"><a href="#sudo选项" class="headerlink" title="sudo选项"></a>sudo选项</h2><ul>
+<li>-u：以指定用户或 ID 运行命令(或编辑文件)</li>
+<li>-l：显示出自己（执行 sudo 的使用者）的权限</li>
+<li>-b：将要执行的指令放在后台执行</li>
+<li>-i： 以目标用户身份运行一个登录 shell；可同时指定一条命令。相当于切换到root，不过只需要用户自己的密码即可。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Linux/Linux%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="category-chain-item">Linux基础部分</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>用户权限管理</div>
+      <div>http://example.com/2025/09/27/用户权限管理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/27/%E6%96%87%E4%BB%B6%E5%9F%BA%E6%9C%AC%E5%B1%9E%E6%80%A7%E4%BA%8E%E6%96%87%E4%BB%B6%E6%9F%A5%E6%89%BE/" title="文件基本属性与文件查找">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">文件基本属性与文件查找</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/26/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="Linux文件管理">
+                        <span class="hidden-mobile">Linux文件管理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

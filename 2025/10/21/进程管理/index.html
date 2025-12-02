@@ -1,0 +1,1001 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/Cynthia.png">
+  <link rel="icon" href="/img/Cynthia.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="进程进程是一个在系统中运行的程序进程是已启动的可执行程序的运行实例，进程有以下组成部分  已分配内存的地址空间 安全属性，包括所有权凭据和特权 进程代码的一个或多个执行线程 进程状态  程序：二进制文件，是静态的 &#x2F;bin&#x2F;date，&#x2F;usr&#x2F;sbin&#x2F;httpd，&#x2F;usr&#x2F;sbin&#x2F;sshd，&#x2F;usr&amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程管理">
+<meta property="og:url" content="http://example.com/2025/10/21/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="进程进程是一个在系统中运行的程序进程是已启动的可执行程序的运行实例，进程有以下组成部分  已分配内存的地址空间 安全属性，包括所有权凭据和特权 进程代码的一个或多个执行线程 进程状态  程序：二进制文件，是静态的 &#x2F;bin&#x2F;date，&#x2F;usr&#x2F;sbin&#x2F;httpd，&#x2F;usr&#x2F;sbin&#x2F;sshd，&#x2F;usr&amp;#x">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-10-21T08:50:23.723Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>进程管理 - 我的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="进程管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-21 00:00" pubdate>
+          2025年10月21日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">进程管理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><p>进程是一个在系统中运行的程序<br>进程是已启动的可执行程序的运行实例，进程有以下组成部分</p>
+<ul>
+<li>已分配内存的地址空间</li>
+<li>安全属性，包括所有权凭据和特权</li>
+<li>进程代码的一个或多个执行线程</li>
+<li>进程状态</li>
+</ul>
+<p>程序：二进制文件，是静态的</p>
+<p>&#x2F;bin&#x2F;date，&#x2F;usr&#x2F;sbin&#x2F;httpd，&#x2F;usr&#x2F;sbin&#x2F;sshd，&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;ngix</p>
+<p>进程：是程序运行的过程，动态的，有生命周期及运行状态</p>
+<h2 id="进程类型"><a href="#进程类型" class="headerlink" title="进程类型"></a>进程类型</h2><p>守护进程：在系统引导过程中启动的进程，跟终端无关的进程</p>
+<p>前台进程：跟终端相关，通过终端启动的进程</p>
+<h2 id="进程生命周期"><a href="#进程生命周期" class="headerlink" title="进程生命周期"></a>进程生命周期</h2><p>父进程复制自己的地址空间(fork)创建一个新的(子)进程结构。每个新进程分配一个唯一的进程ID(PID)，满足跟踪安全性之需。PID和父进程ID(PPID)是子进程环境的元素，任何进程都可以创建子进程，所有进程都是第一个系统进程的后代。</p>
+<h1 id="systemd"><a href="#systemd" class="headerlink" title="systemd"></a>systemd</h1><p>首先 systmed 是一个用户空间的程序，属于应用程序，不属于 Linux 内核范畴。Systemd 是 Linux 系统中最新的初始化系统（init），它主要的设计目标是克服 sysvinit（这个是centos6中的初始化系统）固有的缺点，提高系统的启动速度。</p>
+<p>Linux内核加载启动后，用户空间的第一个进程就是初始化进程，这个程序的物理文件约定位于&#x2F;sbin&#x2F;init，当然也可以通过传递内核参数来让内核启动指定的程序。这个进程的特点是进程号为1，代表第一个运行的用户空间进程。</p>
+<p>RockyLinux上所有的进程都是systemd的后代，systemd的功能繁多，不仅用来管理服务，还可以管理挂载点，定义定时任务等。这些工作都是由编辑相应的配置单元文件完成的。</p>
+<h1 id="systemctl"><a href="#systemctl" class="headerlink" title="systemctl"></a>systemctl</h1><p>systemctl 是 systemd 的控制命令，用于管理 systemd 服务。</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>systemctl start name.service</td>
+<td>启动服务</td>
+</tr>
+<tr>
+<td>systemctl stop name.service</td>
+<td>停止服务</td>
+</tr>
+<tr>
+<td>systemctl restart name.service</td>
+<td>重启服务（没启动的服务会启动）</td>
+</tr>
+<tr>
+<td>systemctl try-restart name.service</td>
+<td>只重启正在运行的服务</td>
+</tr>
+<tr>
+<td>systemctl reload name.service</td>
+<td>重载配置文件</td>
+</tr>
+<tr>
+<td>systemctl status name.service systemctl is-active name.service</td>
+<td>检查服务状态检查服务是否启动</td>
+</tr>
+<tr>
+<td>systemctl list-units –type service –all</td>
+<td>显示所有的服务状态</td>
+</tr>
+<tr>
+<td>systemctl enable name.service</td>
+<td>启用开机自启服务</td>
+</tr>
+<tr>
+<td>systemctl disable name.service</td>
+<td>停用自启服务</td>
+</tr>
+<tr>
+<td>systemctl status name.service systemctl is-enabled name.service</td>
+<td>检查服务状态查看服务是否自启</td>
+</tr>
+<tr>
+<td>systemctl list-unit-files –type service</td>
+<td>查看所有服务</td>
+</tr>
+<tr>
+<td>systemctl list-dependencies –after</td>
+<td>列出在指定服务之前启动的服务（依赖）</td>
+</tr>
+<tr>
+<td>systemctl list-dependencies –before</td>
+<td>列出在指定服务之后启动的服务（被依赖）</td>
+</tr>
+</tbody></table>
+<h1 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h1><p>ps命令用于显示当前进程的状态，类似于 windows 的任务管理器</p>
+<h2 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h2><ul>
+<li>-a：列出所有的进程</li>
+<li>-e：列出所有的进程，等同于-A</li>
+<li>-f：显示不包含资源使用率的相关信息</li>
+<li>‐H：以进程层级格式显示进程相关信息</li>
+<li>-w：显示加宽可以显示较多的信息</li>
+<li>-u：显示较详细的信息</li>
+<li>-x：显示其他使用者的进程</li>
+</ul>
+<p>显示信息的格式说明</p>
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>USER</td>
+<td>进程拥有者</td>
+</tr>
+<tr>
+<td>PID</td>
+<td>进程ID</td>
+</tr>
+<tr>
+<td>%CPU</td>
+<td>占用的 CPU 使用率</td>
+</tr>
+<tr>
+<td>%MEM</td>
+<td>占用的内存使用率</td>
+</tr>
+<tr>
+<td>VSZ</td>
+<td>占用的虚拟内存大小</td>
+</tr>
+<tr>
+<td>RSS</td>
+<td>占用的常驻内存大小</td>
+</tr>
+<tr>
+<td>TTY</td>
+<td>执行的终端编号</td>
+</tr>
+<tr>
+<td>STAT</td>
+<td>该进程的状态*</td>
+</tr>
+<tr>
+<td>START</td>
+<td>进程开始时间</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>CPU使用时间</td>
+</tr>
+<tr>
+<td>COMMAND</td>
+<td>所执行的命令</td>
+</tr>
+</tbody></table>
+<p>*STAT表示的进程状态有如下几种：</p>
+<ul>
+<li>D: 无法中断的休眠状态 ，将一直等待事件的发生或等待某种系统资源</li>
+<li>R: 正在执行中</li>
+<li>S: 可中断状态</li>
+<li>T: 暂停执行</li>
+<li>Z: 不存在但暂时无法消除，也叫僵尸进程<br>– 每个进程在运行结束后都会处于僵死状态，等待父进程调用进而释放系统资源，处于该状态的进程已经运行结束，但是它的父进程还没有释放其系统资源</li>
+<li>W: 没有足够的内存可分配</li>
+<li>&lt;: 高优先序的进程</li>
+<li>N: 低优先序的进程</li>
+<li>+：前台进程</li>
+<li>l：多线程进程</li>
+<li>s：主进程(先导进程)</li>
+</ul>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="ps-aux"><a href="#ps-aux" class="headerlink" title="ps aux"></a>ps aux</h3><p>显示所有进程，包含用户名，进程ID，CPU使用率，内存使用率，虚拟内存大小，常驻内存大小，终端编号，进程状态，进程开始时间，CPU使用时间等</p>
+<h3 id="ps-aux-1"><a href="#ps-aux-1" class="headerlink" title="ps -aux"></a>ps -aux</h3><p>显示所有进程，包含用户名，进程ID，CPU使用率，内存使用率，虚拟内存大小，常驻内存大小，终端编号，进程状态，进程开始时间，CPU使用时间等</p>
+<p>这两个命令功能一样，但是有着不同的含义：</p>
+<ul>
+<li>ps aux 是一种 BSD 风格 的 ps 命令，它不需要破折号（-）作为选项的前缀。</li>
+<li>ps -aux这里的 - 表示使用的是 UNIX 标准 或 POSIX 标准 的 ps 选项</li>
+</ul>
+<h3 id="ps-ef"><a href="#ps-ef" class="headerlink" title="ps -ef"></a>ps -ef</h3><p>显示所有进程的完整格式程序信息，包含进程拥有者，进程ID，父进程ID，终端编号，进程状态，进程开始时间，进程名</p>
+<h3 id="ps-efH"><a href="#ps-efH" class="headerlink" title="ps -efH"></a>ps -efH</h3><p>显示所有进程的完整格式程序信息，查看进程以层级格式（类似于pstree命令）</p>
+<h3 id="按照CPU使用率排序查看所有进程"><a href="#按照CPU使用率排序查看所有进程" class="headerlink" title="按照CPU使用率排序查看所有进程"></a>按照CPU使用率排序查看所有进程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# ps -aux --<span class="hljs-built_in">sort</span> %cpu     <span class="hljs-comment"># 递增</span><br>[root@localhost ~]# ps -aux --<span class="hljs-built_in">sort</span> -%cpu    <span class="hljs-comment"># 递减</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="按照实际内存使用排序查看所有进程"><a href="#按照实际内存使用排序查看所有进程" class="headerlink" title="按照实际内存使用排序查看所有进程"></a>按照实际内存使用排序查看所有进程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# ps -aux --<span class="hljs-built_in">sort</span> rss     <span class="hljs-comment"># 递增</span><br>[root@localhost ~]# ps -aux --<span class="hljs-built_in">sort</span> -rss    <span class="hljs-comment"># 递减</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="按照父子进程显示ssh服务的层级关系"><a href="#按照父子进程显示ssh服务的层级关系" class="headerlink" title="按照父子进程显示ssh服务的层级关系"></a>按照父子进程显示ssh服务的层级关系</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# ps -auxf |grep sshd<br><span class="hljs-comment"># ps -efH</span><br>root       6814  0.0  0.2 112756  4320 ?        Ss   09:06   0:00 /usr/sbin/sshd -D<br>root       7097  0.0  0.2 158760  5576 ?        Ss   09:06   0:00  \_ sshd: root@pts/0<br>root       7337  0.1  0.2 158760  5588 ?        Ss   10:21   0:00  \_ sshd: root@pts/1<br>root       7364  0.0  0.0 112724   988 pts/1    S+   10:24   0:00          \_ grep --color=auto sshd<br></code></pre></td></tr></table></figure>
+
+<h3 id="自定义显示格式"><a href="#自定义显示格式" class="headerlink" title="自定义显示格式"></a>自定义显示格式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# ps -axo user,pid,ppid,%mem,%cpu,<span class="hljs-built_in">command</span> --<span class="hljs-built_in">sort</span> -%cpu<br></code></pre></td></tr></table></figure>
+
+<h3 id="查看指定进程的PID，多种查看的方式"><a href="#查看指定进程的PID，多种查看的方式" class="headerlink" title="查看指定进程的PID，多种查看的方式"></a>查看指定进程的PID，多种查看的方式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# <span class="hljs-built_in">cat</span> /run/sshd.pid <br>[root@localhost ~]# ps -aux |grep sshd<br>[root@localhost ~]# pgrep -l sshd<br>[root@localhost ~]# pidof sshd<br></code></pre></td></tr></table></figure>
+
+<h3 id="查看进程树"><a href="#查看进程树" class="headerlink" title="查看进程树"></a>查看进程树</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# yum install -y psmisc<br>[root@localhost ~]# pstree<br></code></pre></td></tr></table></figure>
+
+<h1 id="top"><a href="#top" class="headerlink" title="top"></a>top</h1><p>top命令用于显示当前正在运行的进程，更像windows 的任务管理器</p>
+<p>第1行：系统时间、运行时间、登录终端数、系统负载（三个数值分别为1分钟、5分钟、15分钟内的平均值，数值越小意味着负载越低）。<br>第2行：进程总数、运行中的进程数、睡眠中的进程数、停止的进程数、僵尸的进程数。<br>第3行：用户占用资源百分比、系统内核占用资源百分比、改变过优先级的进程资源百分比、空闲的资源百分比等。<br>第4行：物理内存总量、内存使用量、内存空闲量、作为内核缓存的内存量。（buffer和cache之间的区别，cache是提高cpu和内存之间的数据交换速度，buffer是io设备和存储设备之间的缓冲区）<br>第5行：虚拟内存总量、虚拟内存使用量、虚拟内存空闲量、已被提前加载的内存量。</p>
+<p>在top命令中，load average(系统负载平均值)表示单位时间内处于可运行状态（Running）和不可中断睡眠状态（Uninterruptible Sleep）的进程总数，通常显示三个数值，分别对应过去1分钟、5分钟、15分钟的平均负载。<br>具体计算逻辑：</p>
+<ul>
+<li>1.计算范围：<br>– 包含正在CPU上运行的进程<br>– 包含等待CPU资源的进程（处于就绪队列）<br>– 包括处于不可中断睡眠状态的进程</li>
+<li>2.计算方法：<br>系统通过一个“指数移动平均”算法计算，并非简单的算术平均。</li>
+<li>3.数值含义：<br>– 若数值等于CPU核数，则表示CPU刚好能处理所有任务<br>– 若数值小于CPU核数，则表示CPU较空闲<br>– 若数值大于CPU核数，则表示任务堆积，系统可能繁忙（如CPU、I&#x2F;O资源不足）</li>
+</ul>
+<h2 id="选项-1"><a href="#选项-1" class="headerlink" title="选项"></a>选项</h2><ul>
+<li>-d: 改变显示的更新速度，或是在交互式指令列( interactive command)按 s</li>
+<li>-c: 切换显示模式，共有两种模式，一是只显示程序的名称，另一种是显示完整的路径与名称</li>
+<li>-S: 累积模式，会将己完成或消失的子行程 ( dead child process ) 的 CPU time 累积起来</li>
+<li>-s: 安全模式，将交互式指令取消, 避免潜在的危机</li>
+<li>-i: 不显示任何闲置 (idle) 或无用 (zombie) 的行程</li>
+<li>-n: 更新的次数，完成后将会退出 top</li>
+<li>-b: 显示模式，搭配 “n” 参数一起使用，可以配合重定向&gt;用来将 top 的结果输出到文件内</li>
+<li>-z：彩色</li>
+<li>-p : 指定进程ID</li>
+<li>-u : 指定用户</li>
+</ul>
+<h2 id="交互模式快捷键"><a href="#交互模式快捷键" class="headerlink" title="交互模式快捷键"></a>交互模式快捷键</h2><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>空格</td>
+<td>立即刷新</td>
+</tr>
+<tr>
+<td>P根据CPU使用多少排序</td>
+<td></td>
+</tr>
+<tr>
+<td>T</td>
+<td>根据时间、累计排序</td>
+</tr>
+<tr>
+<td>q</td>
+<td>退出top命令</td>
+</tr>
+<tr>
+<td>m</td>
+<td>切换显示内存信息</td>
+</tr>
+<tr>
+<td>t</td>
+<td>切换显示进程和CPU状态信息</td>
+</tr>
+<tr>
+<td>c</td>
+<td>切换显示命令名称和完整命令行</td>
+</tr>
+<tr>
+<td>M</td>
+<td>根据内存的大小排序</td>
+</tr>
+<tr>
+<td>W</td>
+<td>将当前设置写入 ~&#x2F;.toprc 文件中，这是top配置文件推荐方法</td>
+</tr>
+<tr>
+<td>N</td>
+<td>以PID的大小排序</td>
+</tr>
+<tr>
+<td>z</td>
+<td>彩色</td>
+</tr>
+</tbody></table>
+<h1 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h1><p>kill 命令用于删除执行中的程序或工作<br>kill 可将指定的信号送至程序。预设的信号为 SIGTERM(15)，可将指定程序终止</p>
+<p>使用 kill -l 命令列出所有可用信号，最常用的信号如下：</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>信号名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>SIGHUP</td>
+<td>重新加载配置</td>
+</tr>
+<tr>
+<td>2</td>
+<td>SIGINT</td>
+<td>键盘中断ctrl c</td>
+</tr>
+<tr>
+<td>3</td>
+<td>SIGQUIT</td>
+<td>键盘退出</td>
+</tr>
+<tr>
+<td>9</td>
+<td>SIGKILL</td>
+<td>强制终止</td>
+</tr>
+<tr>
+<td>15</td>
+<td>SIGTERM</td>
+<td>终止(正常结束)</td>
+</tr>
+<tr>
+<td>18</td>
+<td>SIGCONT</td>
+<td>继续</td>
+</tr>
+<tr>
+<td>19</td>
+<td>SIGSTOP</td>
+<td>停止</td>
+</tr>
+<tr>
+<td>20</td>
+<td>SIGTSTP</td>
+<td>暂停ctrl z</td>
+</tr>
+</tbody></table>
+<h2 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#杀死所有的ping命令，在linux命令中，使用反引号`包含的命令会优先执行，并将执行的结果作为参数提供给命令。</span><br>[root@localhost ~]# <span class="hljs-built_in">kill</span> `pgrep ping`<br><span class="hljs-comment">#强制杀死进程</span><br>[root@localhost ~]# <span class="hljs-built_in">kill</span> -9 `pgrep ping`<br><span class="hljs-comment">#温柔地杀死进程</span><br>[root@localhost ~]# <span class="hljs-built_in">kill</span> -15 `pgrep ping`<br></code></pre></td></tr></table></figure>
+
+<h1 id="pkill"><a href="#pkill" class="headerlink" title="pkill"></a>pkill</h1><p>pkill 用于杀死一个进程，与 kill 不同的是它会杀死指定名字的所有进程<br>pkill [选项]  name</p>
+<h2 id="选项-2"><a href="#选项-2" class="headerlink" title="选项"></a>选项</h2><ul>
+<li>name： 进程名</li>
+<li>-u：指定用户名</li>
+<li>-t：指定终端</li>
+</ul>
+<h2 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#结束所有的sshd进程</span><br>[root@localhost ~]# pkill sshd<br><span class="hljs-comment">#结束用户user1的所有进程</span><br>[root@localhost ~]# pkill -u user1<br><span class="hljs-comment">#终止pts/2上所有进程</span><br>[root@localhost ~]# pkill -t pts/2<br><span class="hljs-comment">#终止pts/2上所有进程，并结束pts/2</span><br>[root@localhost ~]# pkill -9 -t pts/2<br><span class="hljs-comment">#查看远程登录用户，并踢出用户</span><br><span class="hljs-comment">#w是查看有哪些用户登录</span><br>[root@localhost ~]# w<br> 15:02:26 up  5:21,  2 <span class="hljs-built_in">users</span>,  load average: 0.05, 0.03, 0.05<br>USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT<br>root     tty1                      14:41   20:34   0.02s  0.02s -bash<br>root     pts/0    192.168.175.1    14:42    2.00s  0.05s  0.01s w<br>user1    pts/1   192.168.175.1     14:40   20:34   0.02s  0.02s -bash<br>[root@localhost ~]# pkill -u user1<br></code></pre></td></tr></table></figure>
+
+<h1 id="进程优先级nice"><a href="#进程优先级nice" class="headerlink" title="进程优先级nice"></a>进程优先级nice</h1><h2 id="Linux进程调度及多任务"><a href="#Linux进程调度及多任务" class="headerlink" title="Linux进程调度及多任务"></a>Linux进程调度及多任务</h2><p>每个CPU(或CPU核心)在一个时间点上只能处理一个进程，通过时间片技术，Linux实际能够运行的进程 (和线程数)可以超出实际可用的CPU及核心数量。Linux内核进程调度程序将多个进程在CPU核心上快速切换，从而给用户多个进程在同时运行的假象。（并发）</p>
+<h3 id="相对优先级"><a href="#相对优先级" class="headerlink" title="相对优先级"></a>相对优先级</h3><p>由于不是每个进程都与其他进程同样重要，可告知进程调度程序为不同的进程使用不同的调度策略。常规系统上运行的大多数进程所使用的的调度策略为SCHED_OTHER(也称为SCHED_NORMAL),但还有其他 一些调度策略用于不同的目的。SCHED_OTHER调度策略运行的进程的相对优先级称为进程的nice值， 可以有40种不同级别的nice值。<br>在Linux中，决定一个进程的优先级的因素有两个，一个是PR值，一个是NICE值，PR值是由系统内核动态调控。而NICE值由我们用户自己决定。不过，PR值跟NICE值之间也是有一定的关联的。</p>
+<ul>
+<li>NICE值的范围：-20到19，数值越小，优先级越高</li>
+<li>PR值的范围：0-139（数值越小，优先级越高），0-99为实时进程优先级，100-139为普通进程优先级</li>
+</ul>
+<p>两者关系：<br>    普通进程的PR值&#x3D;100+NICE值</p>
+<p>进程默认启动时nice为0，优先级为20</p>
+<p>nice值越高表示优先级越低，例如19，该进程容易将CPU使用量让给其他进程<br>nice值越低表示优先级越高，例如-20，该进程更倾向于不让出CPU</p>
+<h3 id="查看进程的nice级别"><a href="#查看进程的nice级别" class="headerlink" title="查看进程的nice级别"></a>查看进程的nice级别</h3><h4 id="ps-1"><a href="#ps-1" class="headerlink" title="ps"></a>ps</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# ps -axo pid,<span class="hljs-built_in">command</span>,<span class="hljs-built_in">nice</span> --<span class="hljs-built_in">sort</span>=<span class="hljs-built_in">nice</span><br>[root@localhost ~]# ps -axo pid,<span class="hljs-built_in">command</span>,<span class="hljs-built_in">nice</span>,cls --<span class="hljs-built_in">sort</span>=-<span class="hljs-built_in">nice</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="top-1"><a href="#top-1" class="headerlink" title="top"></a>top</h4><h4 id="启用具有不同nice级别地进程"><a href="#启用具有不同nice级别地进程" class="headerlink" title="启用具有不同nice级别地进程"></a>启用具有不同nice级别地进程</h4><p>启动进程的时候为进程指定nice值<br>启动进程时，通常会继承父进程的nice级别，默认为0</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# <span class="hljs-built_in">nice</span> -n -20 vim<br>[root@localhost ~]# ps -axo <span class="hljs-built_in">command</span>,pid,<span class="hljs-built_in">nice</span> |grep vim<br></code></pre></td></tr></table></figure>
+
+<h2 id="PRI"><a href="#PRI" class="headerlink" title="PRI"></a>PRI</h2><p>在top命令中可以看到有PR这个数值，PR 和 nice 值，都会影响进程执行的优先级。PR 由 OS 内核动态调整，用户不能调整（PR 值越低，进程执行的优先级越高）。</p>
+<p>nice值用户可以自己调整，在用户调整了nice值后系统会通过如下公式来调整新的PR值，从而确定这个进程在系统中的优先级</p>
+<ul>
+<li>PR(新) &#x3D; PR(旧) + nice<br>PR值是OS动态调整的，但是PR的最终值还是需要由OS分析决定的</li>
+</ul>
+<h3 id="更改现有进程地nice级别"><a href="#更改现有进程地nice级别" class="headerlink" title="更改现有进程地nice级别"></a>更改现有进程地nice级别</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#使用shell更改nice级别</span><br>[root@localhost ~]# vim<br>[root@localhost ~]# ps -axo <span class="hljs-built_in">command</span>,pid,<span class="hljs-built_in">nice</span> |grep vim<br>vim                            1855   0<br>grep --color=auto vim          1888   0<br>[root@localhost ~]# renice -20 1855<br>1855 (process ID) old priority 0, new priority -20<br>[root@localhost ~]# ps -axo <span class="hljs-built_in">command</span>,pid,<span class="hljs-built_in">nice</span> |grep vim<br>vim                            1855 -20<br>grep --color=auto vim          1895   0<br></code></pre></td></tr></table></figure>
+
+<h1 id="jobs"><a href="#jobs" class="headerlink" title="jobs"></a>jobs</h1><p>jobs 命令可以用来查看当前终端放入后台的任务</p>
+<h2 id="将任务放入后台"><a href="#将任务放入后台" class="headerlink" title="将任务放入后台"></a>将任务放入后台</h2><p>Linux 命令放入后台的方法有两种：</p>
+<ul>
+<li>在命令后面加入空格 &amp;。使用这种方法放入后台的命令，在后台处于执行状态</li>
+<li>命令执行过裎中按 Ctrl+Z 快捷键，命令在后台处于暂停状态</li>
+</ul>
+<p>将任务放入后台，然后查看任务</p>
+<ul>
+<li>“+”号代表最近一个放入后台的工作，也是工作恢复时默认恢复的工作</li>
+<li>“-“号代表倒数第二个放入后台的工作</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# top &amp;<br>[root@localhost ~]# vi &amp;<br>[root@localhost ~]# ping baidu.com &gt; /dev/null &amp;<br><span class="hljs-comment"># 让ping运行，但是不显示结果</span><br><span class="hljs-comment">#/dev/null有点类似于windows的回收站</span><br>[root@localhost ~]# <span class="hljs-built_in">jobs</span><br>[1]   已停止               top<br>[2]-  已停止               vi<br>[3]+  运行中               ping baidu.com &gt; /dev/null &amp;<br></code></pre></td></tr></table></figure>
+
+<h2 id="将任务恢复到前台"><a href="#将任务恢复到前台" class="headerlink" title="将任务恢复到前台"></a>将任务恢复到前台</h2><p>fg 命令用于把后台工作恢复到前台执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">fg</span> %工作号<br></code></pre></td></tr></table></figure>
+<p>注意，在使用此命令时，％ 可以省略，但若将% 工作号全部省略，则此命令会将带有 + 号的工作恢复到前台。另外，使用此命令的过程中， % 可有可无。</p>
+<p>将top恢复到前台</p>
+<ul>
+<li>命令虽然是对的，但是top这种需要交互的任务是无法后台的，所以也恢复不了</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# top &amp;<br>[1] 20584<br>[root@localhost ~]# <span class="hljs-built_in">jobs</span><br>[1]+  已停止               top<br>[root@localhost ~]# <span class="hljs-built_in">fg</span> 1<br></code></pre></td></tr></table></figure>
+
+<h2 id="后台任务恢复到后台运行"><a href="#后台任务恢复到后台运行" class="headerlink" title="后台任务恢复到后台运行"></a>后台任务恢复到后台运行</h2><p>前面讲过，使用Ctrl+z快捷键的方式，可以将前台工作放入后台，但是会处于暂停状态,可以使用bg命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">bg</span> %工作号<br></code></pre></td></tr></table></figure>
+<p>这里的 % 同上，可以省略</p>
+<p>将ping命令暂停到后台，然后恢复后台运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@localhost ~]# ping baidu.com &gt; /dev/null<br>^Z    <span class="hljs-comment"># 这边按下了Ctrl+z</span><br>[1]+  已停止               ping baidu.com &gt; /dev/null<br>[root@localhost ~]# <span class="hljs-built_in">jobs</span><br>[1]+  已停止               ping baidu.com &gt; /dev/null<br>[root@localhost ~]# <span class="hljs-built_in">bg</span> %1<br>[1]+ ping baidu.com &gt; /dev/null &amp;<br>[root@localhost ~]# <span class="hljs-built_in">jobs</span><br>[1]+  运行中               ping baidu.com &gt; /dev/null &amp;<br></code></pre></td></tr></table></figure>
+
+<h1 id="nohup"><a href="#nohup" class="headerlink" title="nohup"></a>nohup</h1><p>虽然可以将程序放在后台运行，但是一旦关闭远程连接那么程序就会中断，如果我们想要将程序一直保持在后台运行，那么我们可以有如下三个选择：</p>
+<ul>
+<li>把需要在后台执行的命令加入&#x2F;etc&#x2F;rc.local文件，让系统在启动时执行这个后台程序。这种方法的问题是，服务器是不能随便重启的，如果有临时后台任务，就不能执行了</li>
+<li>使用系统定时任务，让系统在指定的时间执行某个后台命令。这样放入后台的命令与终端无关，是不依赖登录终端的</li>
+<li>使用 nohup 命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">nohup</span> 命令 &amp;<br></code></pre></td></tr></table></figure>
+<p>注意，这里的&amp;表示此命令会在终端后台工作；反之，如果没有&amp;，则表示此命令会在终端前台工作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#让一个任务后台运行</span><br>[root@localhost ~]# <span class="hljs-built_in">nohup</span> ping baidu.com &amp;<br><span class="hljs-comment">#我们退出远程连接，然后重新登录回来，会看到ping baidu.com依旧在运行，查看~/nohup.out文件可以看到程序执行输出的内容</span><br>[root@localhost ~]# ps aux |grep ping<br>root       7157  0.0  0.0 149968  1988 ?        S    14:12   0:00 ping baidu.com<br>[root@localhost ~]# <span class="hljs-built_in">tail</span> -f nohup.out<br></code></pre></td></tr></table></figure>
+<p>如果想要把nohup丢到后台的任务恢复，nohup本身不支持，可以用别的方法来实现</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Linux/Linux%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="category-chain-item">Linux基础部分</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>进程管理</div>
+      <div>http://example.com/2025/10/21/进程管理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年10月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/10/21/%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" title="文件权限管理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">文件权限管理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/27/%E6%96%87%E4%BB%B6%E5%9F%BA%E6%9C%AC%E5%B1%9E%E6%80%A7%E4%BA%8E%E6%96%87%E4%BB%B6%E6%9F%A5%E6%89%BE/" title="文件基本属性与文件查找">
+                        <span class="hidden-mobile">文件基本属性与文件查找</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
